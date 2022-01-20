@@ -1,0 +1,4 @@
+-   Codeblock syntax highlighting
+-   Image preview
+-   LaTeX support
+-   Mermaid.js support
