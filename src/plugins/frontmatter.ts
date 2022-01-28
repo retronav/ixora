@@ -7,6 +7,7 @@ import { foldNodeProp } from '@codemirror/language';
 const frontMatterFence = /^---\s*$/m;
 
 const yamlNodes = [
+    // prefixed original YAML nodes
     'YAMLatom',
     { name: 'YAMLmeta', block: true },
     'YAMLnumber',
@@ -30,6 +31,7 @@ export const frontmatter: MarkdownConfig = {
             YAMLstring: tags.string,
             YAMLatom: tags.atom,
             YAMLmeta: tags.meta,
+            FrontmatterMark: tags.processingInstruction,
         }),
         foldNodeProp.add({
             // node.from has 3 added to it to prevent the hyphen fence
@@ -37,7 +39,11 @@ export const frontmatter: MarkdownConfig = {
             Frontmatter: (node) => ({ from: node.from + 3, to: node.to }),
         }),
     ],
-    defineNodes: [{ name: 'Frontmatter', block: true }, ...yamlNodes],
+    defineNodes: [
+        { name: 'Frontmatter', block: true },
+        'FrontmatterMark',
+        ...yamlNodes,
+    ],
     parseBlock: [
         {
             name: 'Fronmatter',
@@ -53,6 +59,9 @@ export const frontmatter: MarkdownConfig = {
                     if (frontMatterFence.test(line.text)) {
                         const parsedYaml = yamlParser.parse(matter);
                         const children = [];
+                        children.push(
+                            cx.elt('FrontmatterMark', startPos, startPos + 4)
+                        );
                         parsedYaml.iterate({
                             enter: (type, from, to) => {
                                 // We don't want the top node, we need the
@@ -70,6 +79,9 @@ export const frontmatter: MarkdownConfig = {
                             },
                         });
                         endPos = cx.lineStart + line.text.length;
+                        children.push(
+                            cx.elt('FrontmatterMark', cx.lineStart, endPos)
+                        );
                         cx.addElement(
                             cx.elt('Frontmatter', startPos, endPos, children)
                         );
