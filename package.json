@@ -4,6 +4,9 @@
     "description": "",
     "exports": "./dist/index.es.js",
     "types": "./dist/src/index.d.ts",
+    "publishConfig": {
+        "access": "restricted"
+    },
     "scripts": {
         "dev": "vite demo/",
         "build": "vite build",
