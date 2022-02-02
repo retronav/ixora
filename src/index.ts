@@ -1,11 +1,30 @@
+import { Extension } from '@codemirror/state';
+import { blockquote } from './plugins/blockquote';
+import { codeblock } from './plugins/code-block';
+import { headings } from './plugins/heading';
+import { hideMarks } from './plugins/hide-mark';
+import { links } from './plugins/link';
+import { lists } from './plugins/list';
+import { headingSlugField } from './state/heading-slug';
+
 // State fields
-export * from './state/heading-slug';
+export { headingSlugField } from './state/heading-slug';
 
 // Extensions
-export * from './plugins/blockquote';
-export * from './plugins/code-block';
-export * from './plugins/frontmatter';
-export * from './plugins/heading';
-export * from './plugins/hide-mark';
-export * from './plugins/link';
-export * from './plugins/list';
+export { blockquote } from './plugins/blockquote';
+export { codeblock } from './plugins/code-block';
+export { frontmatter } from './plugins/frontmatter';
+export { headings } from './plugins/heading';
+export { hideMarks } from './plugins/hide-mark';
+export { links } from './plugins/link';
+export { lists } from './plugins/list';
+
+export const basicSetup: Extension = [
+    headingSlugField,
+    blockquote(),
+    codeblock(),
+    headings(),
+    hideMarks(),
+    lists(),
+    links(),
+];

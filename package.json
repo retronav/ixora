@@ -7,17 +7,21 @@
     "publishConfig": {
         "access": "restricted"
     },
+    "files": [
+        "dist",
+        "CHANGELOG.md"
+    ],
     "scripts": {
         "dev": "vite demo/",
         "build": "vite build",
-        "lint": "eslint .",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "lint": "eslint ."
     },
     "keywords": [],
     "author": "Pranav Karawale",
     "dependencies": {
         "@codemirror/basic-setup": "^0.19.1",
         "@codemirror/commands": "^0.19.7",
+        "@codemirror/fold": "^0.19.3",
         "@codemirror/highlight": "^0.19.7",
         "@codemirror/lang-html": "^0.19.4",
         "@codemirror/lang-markdown": "^0.19.4",
@@ -36,6 +40,7 @@
         "@types/github-slugger": "^1.3.0",
         "@typescript-eslint/eslint-plugin": "^5.10.0",
         "@typescript-eslint/parser": "^5.10.0",
+        "cypress": "^9.3.1",
         "eslint": "^8.7.0",
         "rollup-plugin-visualizer": "^5.5.4",
         "typescript": "^4.5.5",
