@@ -1,6 +1,6 @@
 {
     "name": "@obnoxiousnerd/glass-badger",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "",
     "exports": "./dist/index.es.js",
     "types": "./dist/src/index.d.ts",
