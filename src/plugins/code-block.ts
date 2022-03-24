@@ -9,6 +9,7 @@ import {
     isCursorInRange,
     invisibleDecoration,
     iterateTreeInVisibleRanges,
+    editorLines,
 } from './util';
 
 /**
@@ -39,15 +40,12 @@ function decorateCodeBlocks(view: EditorView) {
     iterateTreeInVisibleRanges(view, {
         enter: (type, from, to, node) => {
             if (type.name !== 'FencedCode') return;
-            // Push line decorations
-            let accumulator = 0;
-            for (const line of view.state.doc.iterRange(from, to)) {
+            editorLines(view, from, to).map((block) => {
                 const lineDec = Decoration.line({
                     class: 'cm-codeblock',
                 });
-                widgets.push(lineDec.range(from + accumulator));
-                accumulator += line.length;
-            }
+                widgets.push(lineDec.range(block.from));
+            });
             if (isCursorInRange(view, [from, to])) return;
             const codeBlock = node().toTree();
             codeBlock.iterate({

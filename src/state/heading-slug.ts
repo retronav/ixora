@@ -1,6 +1,6 @@
 import { syntaxTree } from '@codemirror/language';
 import { EditorState, StateField } from '@codemirror/state';
-import Slugger from 'github-slugger';
+import { slugifyWithCounter } from '@sindresorhus/slugify';
 
 export interface HeadingSlug {
     slug: string;
@@ -35,16 +35,17 @@ export const headingSlugField = StateField.define<HeadingSlug[]>({
 
 function extractSlugs(state: EditorState) {
     const slugs: HeadingSlug[] = [];
-    const slugger = new Slugger();
+    const slugger = slugifyWithCounter();
     syntaxTree(state).iterate({
         enter: (type, from, to) => {
             if (!type.name.includes('ATXHeading')) return;
             slugs.push({
-                slug: slugger.slug(
+                slug: slugger(
                     // TODO: There can be areas if the heading has
                     // marks and could result in weird behaviour,
                     // this should be investigated.
-                    state.sliceDoc(from, to).replace(headingStartRE, '')
+                    state.sliceDoc(from, to).replace(headingStartRE, ''),
+                    {}
                 ),
                 pos: from,
             });

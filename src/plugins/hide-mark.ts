@@ -47,7 +47,8 @@ class HideMarkPlugin {
                     const innerTree = node().toTree();
                     innerTree.iterate({
                         enter(type, mfrom, mto) {
-                            // Check for mark types and push the replace decoration
+                            // Check for mark types and push the replace
+                            // decoration
                             if (!markTypes.includes(type.name)) return;
                             widgets.push(
                                 Decoration.replace({}).range(

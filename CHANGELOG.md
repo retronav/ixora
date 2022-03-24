@@ -1,4 +1,4 @@
-# @obnoxiousnerd/glass-badger
+# @retronav/glass-badger
 
 ## 0.1.2
 

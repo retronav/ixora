@@ -16,10 +16,10 @@ This library includes:
 
 ## Installation
 
-1. Install the `@obnoxiousnerd/glass-badger` package using the package manager
+1. Install the `@retronav/glass-badger` package using the package manager
    of your choice.
 2. Import the extensions you need
     ```ts
-    import { headings, codeblock } from '@obnoxiousnerd/glass-badger';
+    import { headings, codeblock } from '@retronav/glass-badger';
     ```
 3. Add them in the `extensions` parameter of your CodeMirror editor creation function.

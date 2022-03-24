@@ -4,13 +4,14 @@ import {
     EditorView,
     ViewPlugin,
     ViewUpdate,
+    WidgetType,
 } from '@codemirror/view';
 import { Range } from '@codemirror/rangeset';
 import { NodeType } from '@lezer/common';
 import {
     isCursorInRange,
-    invisibleDecoration,
     iterateTreeInVisibleRanges,
+    editorLines,
 } from './util';
 
 /**
@@ -18,6 +19,14 @@ import {
  */
 export function blockquote() {
     return [blockQuotePlugin, baseTheme];
+}
+
+class BlockQuoteBorderWidget extends WidgetType {
+    toDOM(): HTMLElement {
+        const element = document.createElement('span');
+        element.classList.add('cm-blockquote-border');
+        return element;
+    }
 }
 
 /**
@@ -42,18 +51,17 @@ class BlockQuotePlugin {
         iterateTreeInVisibleRanges(view, {
             enter: (type, from, to, node) => {
                 if (type.name !== 'Blockquote') return;
-                let accumulator = 0;
-                for (const line of view.state.doc.iterRange(from, to)) {
-                    const dec = Decoration.line({
+                const lines = editorLines(view, from, to);
+                lines.forEach((line) => {
+                    const lineDec = Decoration.line({
                         class: 'cm-blockquote',
                     });
-                    widgets.push(dec.range(from + accumulator));
-                    accumulator += line.length;
-                }
+                    widgets.push(lineDec.range(line.from));
+                });
                 node()
                     .toTree()
                     .iterate({
-                        enter: this.iterateQuoteMark(from, view, widgets),
+                        enter: this.iterateQuoteMark(from, to, view, widgets),
                     });
             },
         });
@@ -62,15 +70,25 @@ class BlockQuotePlugin {
 
     private iterateQuoteMark(
         from: number,
+        to: number,
         view: EditorView,
         widgets: Range<Decoration>[]
     ) {
         return (type: NodeType, nfrom: number, nto: number) => {
+            if (type.name !== 'QuoteMark') return;
             const range: [number, number] = [from + nfrom, from + nto];
-            if (isCursorInRange(view, range)) return;
-            if (type.name === 'QuoteMark') {
-                widgets.push(invisibleDecoration.range(...range));
-            }
+            const lines = editorLines(view, from, to);
+            if (
+                lines.some((line) =>
+                    isCursorInRange(view, [line.from, line.to])
+                )
+            )
+                return;
+            widgets.push(
+                Decoration.replace({
+                    widget: new BlockQuoteBorderWidget(),
+                }).range(...range)
+            );
         };
     }
 }
@@ -82,9 +100,8 @@ const blockQuotePlugin = ViewPlugin.fromClass(BlockQuotePlugin, {
  * Default styles for blockquotes.
  */
 const baseTheme = EditorView.baseTheme({
-    '.cm-blockquote': {
-        'background-color': '#f9f9f977',
+    '.cm-blockquote-border': {
         'border-left': '4px solid #ccc',
-        'padding-left': '1em',
+        'margin-right': '0.5em',
     },
 });
