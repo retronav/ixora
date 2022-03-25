@@ -14,7 +14,8 @@
     "scripts": {
         "dev": "vite demo/",
         "build": "vite build",
-        "lint": "eslint --ignore-path .gitignore ."
+        "lint": "eslint --ignore-path .gitignore .",
+        "test": "web-test-runner"
     },
     "keywords": [],
     "author": "Pranav Karawale",
