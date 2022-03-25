@@ -1,5 +1,5 @@
 import { EditorView } from '@codemirror/view';
-import { expect } from 'chai';
+import { expect } from '@open-wc/testing';
 import { setup } from './setup-editor';
 
 let editor!: EditorView;
@@ -21,7 +21,7 @@ beforeEach(() => {
     editor.dispatch(tn);
 });
 afterEach(() => {
-    document.body.removeChild(document.getElementById('editor')!);
+    document.body.removeChild(document.getElementById('editor'));
 });
 
 describe('Glass Badger Heading plugin', () => {
@@ -29,12 +29,13 @@ describe('Glass Badger Heading plugin', () => {
         expect(editor.state.doc.toString()).to.equal(content);
     });
 
-    it('Hide the heading marker', () => {
+    it('Should hide the heading marker appropriately', () => {
         const headingContent = '# Hello';
         const headingContentWithoutHash = 'Hello';
+        let headingEl = editor.domAtPos(0).node as HTMLElement;
 
         expect(
-            (editor.domAtPos(0).node as HTMLElement).textContent,
+            headingEl.textContent,
             'will not hide mark when cursor is on that line'
         ).to.equal(headingContent);
 
@@ -46,9 +47,35 @@ describe('Glass Badger Heading plugin', () => {
             })
         );
 
+        // CodeMirror uses this to mark the positions of hidden widgets
         expect(
-            (editor.domAtPos(0).node as HTMLElement).textContent,
+            headingEl.querySelector('img.cm-widgetBuffer')
+        ).to.exist.and.have.attribute('aria-hidden', 'true');
+
+        expect(
+            headingEl.textContent,
             'will hide mark when cursor is not on that line'
         ).to.equal(headingContentWithoutHash);
+    });
+
+    it('Should add an appropriate slug to heading', () => {
+        const headingEl = editor.domAtPos(0).node as HTMLElement;
+        expect(Array.from(headingEl.firstElementChild.classList)).to.contain(
+            'cm-heading-slug-hello'
+        );
+
+        let pos = editor.viewportLineBlocks[2].from;
+        const thirdHeadingEl = editor.domAtPos(pos).node as HTMLElement;
+        expect(thirdHeadingEl.querySelector('.cm-heading-slug-hello-2')).to
+            .exist;
+    });
+
+    it('Should add a class with heading level', () => {
+        const headingEl = editor.domAtPos(0).node as HTMLElement;
+        const heading2El = editor.domAtPos(editor.viewportLineBlocks[1].from)
+            .node as HTMLElement;
+
+        expect(headingEl.querySelector('.cm-heading-1')).to.exist;
+        expect(heading2El.querySelector('.cm-heading-2')).to.exist;
     });
 });
