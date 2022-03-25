@@ -4,15 +4,15 @@ import {
     EditorView,
     ViewPlugin,
     ViewUpdate,
-    WidgetType,
+    WidgetType
 } from '@codemirror/view';
 import { Range } from '@codemirror/rangeset';
 import { NodeType } from '@lezer/common';
 import {
     isCursorInRange,
     iterateTreeInVisibleRanges,
-    editorLines,
-} from './util';
+    editorLines
+} from '../util';
 
 /**
  * CodeMirror plugin to style Markdown blockquotes.
@@ -52,18 +52,18 @@ class BlockQuotePlugin {
             enter: (type, from, to, node) => {
                 if (type.name !== 'Blockquote') return;
                 const lines = editorLines(view, from, to);
-                lines.forEach((line) => {
+                lines.forEach(line => {
                     const lineDec = Decoration.line({
-                        class: 'cm-blockquote',
+                        class: 'cm-blockquote'
                     });
                     widgets.push(lineDec.range(line.from));
                 });
                 node()
                     .toTree()
                     .iterate({
-                        enter: this.iterateQuoteMark(from, to, view, widgets),
+                        enter: this.iterateQuoteMark(from, to, view, widgets)
                     });
-            },
+            }
         });
         return Decoration.set(widgets, true);
     }
@@ -78,22 +78,18 @@ class BlockQuotePlugin {
             if (type.name !== 'QuoteMark') return;
             const range: [number, number] = [from + nfrom, from + nto];
             const lines = editorLines(view, from, to);
-            if (
-                lines.some((line) =>
-                    isCursorInRange(view, [line.from, line.to])
-                )
-            )
+            if (lines.some(line => isCursorInRange(view, [line.from, line.to])))
                 return;
             widgets.push(
                 Decoration.replace({
-                    widget: new BlockQuoteBorderWidget(),
+                    widget: new BlockQuoteBorderWidget()
                 }).range(...range)
             );
         };
     }
 }
 const blockQuotePlugin = ViewPlugin.fromClass(BlockQuotePlugin, {
-    decorations: (v) => v.decorations,
+    decorations: v => v.decorations
 });
 
 /**
@@ -102,6 +98,6 @@ const blockQuotePlugin = ViewPlugin.fromClass(BlockQuotePlugin, {
 const baseTheme = EditorView.baseTheme({
     '.cm-blockquote-border': {
         'border-left': '4px solid #ccc',
-        'margin-right': '0.5em',
-    },
+        'margin-right': '0.5em'
+    }
 });

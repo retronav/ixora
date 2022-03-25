@@ -23,7 +23,7 @@ export function checkRangeOverlap(
  * @returns True if the cursor is in the range
  */
 export function isCursorInRange(view: EditorView, range: [number, number]) {
-    return view.state.selection.ranges.some((selection) =>
+    return view.state.selection.ranges.some(selection =>
         checkRangeOverlap(range, [selection.from, selection.to])
     );
 }
@@ -71,10 +71,36 @@ export const invisibleDecoration = Decoration.replace({});
  * @returns A list of line blocks that are in the range
  */
 export function editorLines(view: EditorView, from: number, to: number) {
-    const lines = view.viewportLineBlocks
-        .filter((block) =>
-            // Keep lines that are in the range
-            checkRangeOverlap([block.from, block.to], [from, to])
-        );
+    const lines = view.viewportLineBlocks.filter(block =>
+        // Keep lines that are in the range
+        checkRangeOverlap([block.from, block.to], [from, to])
+    );
     return lines;
+}
+
+/**
+ * Class containing methods to generate slugs from heading contents.
+ */
+export class Slugger {
+    /** Occurrences for each slug. */
+    private occurences: { [key: string]: number } = {};
+    /**
+     * Generate a slug from the given content.
+     * @param text - Content to generate the slug from
+     * @returns the slug
+     */
+    public slug(text: string) {
+        let slug = text
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^\w-]+/g, '');
+
+        if (slug in this.occurences) {
+            this.occurences[slug]++;
+            slug += '-' + this.occurences[slug];
+        } else {
+            this.occurences[slug] = 1;
+        }
+        return slug;
+    }
 }

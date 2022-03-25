@@ -3,19 +3,19 @@ import {
     DecorationSet,
     EditorView,
     ViewPlugin,
-    ViewUpdate,
+    ViewUpdate
 } from '@codemirror/view';
 import {
     checkRangeOverlap,
     isCursorInRange,
-    iterateTreeInVisibleRanges,
-} from './util';
+    iterateTreeInVisibleRanges
+} from '../util';
 
 export const typesWithMarks = [
     'Emphasis',
     'StrongEmphasis',
     'InlineCode',
-    'Strikethrough',
+    'Strikethrough'
 ];
 export const markTypes = ['EmphasisMark', 'CodeMark', 'StrikethroughMark'];
 
@@ -56,10 +56,10 @@ class HideMarkPlugin {
                                     from + mto
                                 )
                             );
-                        },
+                        }
                     });
                 }
-            },
+            }
         });
         return Decoration.set(widgets, true);
     }
@@ -70,6 +70,6 @@ class HideMarkPlugin {
  */
 export const hideMarks = () => [
     ViewPlugin.fromClass(HideMarkPlugin, {
-        decorations: (v) => v.decorations,
-    }),
+        decorations: v => v.decorations
+    })
 ];

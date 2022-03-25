@@ -1,6 +1,6 @@
 import { syntaxTree } from '@codemirror/language';
 import { EditorState, StateField } from '@codemirror/state';
-import { slugifyWithCounter } from '@sindresorhus/slugify';
+import { Slugger } from '../util';
 
 export interface HeadingSlug {
     slug: string;
@@ -17,7 +17,7 @@ const headingStartRE = /^(#{1,6}\s)/;
  * the document.
  */
 export const headingSlugField = StateField.define<HeadingSlug[]>({
-    create: (state) => {
+    create: state => {
         const slugs = new Array<HeadingSlug>();
         extractSlugs(state);
         return slugs;
@@ -30,26 +30,23 @@ export const headingSlugField = StateField.define<HeadingSlug[]>({
     },
     compare: (a, b) =>
         a.length === b.length &&
-        a.every((slug, i) => slug.slug === b[i].slug && slug.pos === b[i].pos),
+        a.every((slug, i) => slug.slug === b[i].slug && slug.pos === b[i].pos)
 });
 
 function extractSlugs(state: EditorState) {
     const slugs: HeadingSlug[] = [];
-    const slugger = slugifyWithCounter();
+    const slugger = new Slugger();
     syntaxTree(state).iterate({
         enter: (type, from, to) => {
             if (!type.name.includes('ATXHeading')) return;
-            slugs.push({
-                slug: slugger(
-                    // TODO: There can be areas if the heading has
-                    // marks and could result in weird behaviour,
-                    // this should be investigated.
-                    state.sliceDoc(from, to).replace(headingStartRE, ''),
-                    {}
-                ),
-                pos: from,
-            });
-        },
+            const slug = slugger.slug(
+                // TODO: There can be areas if the heading has
+                // marks and could result in weird behaviour,
+                // this should be investigated.
+                state.sliceDoc(from, to).replace(headingStartRE, '')
+            );
+            if (slug) slugs.push({ slug, pos: from });
+        }
     });
     return slugs;
 }

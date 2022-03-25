@@ -3,9 +3,9 @@ import {
     DecorationSet,
     EditorView,
     ViewPlugin,
-    ViewUpdate,
+    ViewUpdate
 } from '@codemirror/view';
-import { checkRangeOverlap, iterateTreeInVisibleRanges } from './util';
+import { checkRangeOverlap, iterateTreeInVisibleRanges } from '../util';
 import { headingSlugField } from '../state/heading-slug';
 
 /**
@@ -14,7 +14,7 @@ import { headingSlugField } from '../state/heading-slug';
 export const headings = () => [
     headingDecorationsPlugin,
     hideHeaderMarkPlugin,
-    baseTheme,
+    baseTheme
 ];
 
 //#region hide header marks plugin
@@ -48,7 +48,7 @@ class HideHeaderMarkPlugin {
                     const dec = Decoration.replace({});
                     widgets.push(dec.range(from, to + 1));
                 }
-            },
+            }
         });
         return Decoration.set(widgets, true);
     }
@@ -62,7 +62,7 @@ class HideHeaderMarkPlugin {
  * - The mark is on a line which is in the current selection
  */
 const hideHeaderMarkPlugin = ViewPlugin.fromClass(HideHeaderMarkPlugin, {
-    decorations: (v) => v.decorations,
+    decorations: v => v.decorations
 });
 //#endregion
 
@@ -88,20 +88,20 @@ class HeadingDecorationsPlugin {
                 if (!type.name.startsWith('ATXHeading')) return;
                 const slug = view.state
                     .field(headingSlugField)
-                    .find((s) => s.pos === from)?.slug;
+                    .find(s => s.pos === from)?.slug;
                 const createDec = (level: number) =>
                     Decoration.mark({
                         tagName: 'span',
                         class: [
                             'cm-heading',
                             `cm-heading-${level}`,
-                            slug ? `cm-heading-slug-${slug}` : '',
-                        ].join(' '),
+                            slug ? `cm-heading-slug-${slug}` : ''
+                        ].join(' ')
                     });
                 const level = parseInt(type.name.split('ATXHeading')[1]);
                 const dec = createDec(level);
                 widgets.push(dec.range(from, to));
-            },
+            }
         });
         return Decoration.set(widgets, true);
     }
@@ -109,18 +109,18 @@ class HeadingDecorationsPlugin {
 
 const headingDecorationsPlugin = ViewPlugin.fromClass(
     HeadingDecorationsPlugin,
-    { decorations: (v) => v.decorations }
+    { decorations: v => v.decorations }
 );
 //#endregion
 
 const baseTheme = EditorView.baseTheme({
     '.cm-heading': {
-        fontWeight: 'bold',
+        fontWeight: 'bold'
     },
     '.cm-heading-1': { fontSize: '2.2rem' },
     '.cm-heading-2': { fontSize: '1.8rem' },
     '.cm-heading-3': { fontSize: '1.4rem' },
     '.cm-heading-4': { fontSize: '1.2rem' },
     '.cm-heading-5': { fontSize: '1rem' },
-    '.cm-heading-6': { fontSize: '0.8rem' },
+    '.cm-heading-6': { fontSize: '0.8rem' }
 });

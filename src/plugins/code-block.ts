@@ -3,14 +3,14 @@ import {
     DecorationSet,
     Decoration,
     EditorView,
-    ViewUpdate,
+    ViewUpdate
 } from '@codemirror/view';
 import {
     isCursorInRange,
     invisibleDecoration,
     iterateTreeInVisibleRanges,
-    editorLines,
-} from './util';
+    editorLines
+} from '../util';
 
 /**
  * CodeMirror extension to style code blocks.
@@ -32,7 +32,7 @@ const codeBlockPlugin = ViewPlugin.fromClass(
                 this.decorations = decorateCodeBlocks(update.view);
         }
     },
-    { decorations: (v) => v.decorations }
+    { decorations: v => v.decorations }
 );
 
 function decorateCodeBlocks(view: EditorView) {
@@ -40,9 +40,9 @@ function decorateCodeBlocks(view: EditorView) {
     iterateTreeInVisibleRanges(view, {
         enter: (type, from, to, node) => {
             if (type.name !== 'FencedCode') return;
-            editorLines(view, from, to).map((block) => {
+            editorLines(view, from, to).map(block => {
                 const lineDec = Decoration.line({
-                    class: 'cm-codeblock',
+                    class: 'cm-codeblock'
                 });
                 widgets.push(lineDec.range(block.from));
             });
@@ -61,9 +61,9 @@ function decorateCodeBlocks(view: EditorView) {
                             widgets.push(decRange);
                             break;
                     }
-                },
+                }
             });
-        },
+        }
     });
     return Decoration.set(widgets, true);
 }
@@ -71,6 +71,6 @@ function decorateCodeBlocks(view: EditorView) {
 const baseTheme = EditorView.baseTheme({
     '.cm-codeblock': {
         padding: '0 1rem',
-        backgroundColor: '#CCC7',
-    },
+        backgroundColor: '#CCC7'
+    }
 });
