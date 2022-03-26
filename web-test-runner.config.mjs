@@ -8,6 +8,10 @@ const config = {
     files: ['test/**/*.test.ts', 'test/**/*.spec.ts'],
     plugins: [esbuildPlugin({ ts: true, target: 'esnext' })],
     nodeResolve: true,
+    coverage: true,
+    coverageConfig: {
+        include: ['src/**/*.ts']
+    },
     browsers: [puppeteerLauncher()]
 };
 
