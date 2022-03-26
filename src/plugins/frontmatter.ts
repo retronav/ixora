@@ -14,7 +14,7 @@ const yamlNodes = [
     'YAMLkeyword',
     'YAMLdef',
     'YAMLcomment',
-    'YAMLstring',
+    'YAMLstring'
 ];
 
 /**
@@ -31,18 +31,18 @@ export const frontmatter: MarkdownConfig = {
             YAMLstring: tags.string,
             YAMLatom: tags.atom,
             YAMLmeta: tags.meta,
-            FrontmatterMark: tags.processingInstruction,
+            FrontmatterMark: tags.processingInstruction
         }),
         foldNodeProp.add({
             // node.from has 3 added to it to prevent the hyphen fence
             // from getting folded
-            Frontmatter: (node) => ({ from: node.from + 3, to: node.to }),
-        }),
+            Frontmatter: node => ({ from: node.from + 3, to: node.to })
+        })
     ],
     defineNodes: [
         { name: 'Frontmatter', block: true },
         'FrontmatterMark',
-        ...yamlNodes,
+        ...yamlNodes
     ],
     parseBlock: [
         {
@@ -67,6 +67,7 @@ export const frontmatter: MarkdownConfig = {
                                 // We don't want the top node, we need the
                                 // inner nodes
                                 if (type.name === 'Document') return;
+                                if (startPos + 4 + to > matter.length) return;
                                 children.push(
                                     cx.elt(
                                         // The element name is prefixed with
@@ -76,7 +77,7 @@ export const frontmatter: MarkdownConfig = {
                                         startPos + 4 + to
                                     )
                                 );
-                            },
+                            }
                         });
                         endPos = cx.lineStart + line.text.length;
                         children.push(
@@ -91,7 +92,7 @@ export const frontmatter: MarkdownConfig = {
                     }
                 }
                 return true;
-            },
-        },
-    ],
+            }
+        }
+    ]
 };

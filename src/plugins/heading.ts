@@ -44,7 +44,11 @@ class HideHeaderMarkPlugin {
                     checkRangeOverlap([from, to], [line.from, line.to])
                 );
                 if (cursorOverlaps) return;
-                if (type.name === 'HeaderMark') {
+                if (
+                    type.name === 'HeaderMark' &&
+                    // Setext heading's horizontal lines are not hidden.
+                    /[#]/.test(view.state.sliceDoc(from, to))
+                ) {
                     const dec = Decoration.replace({});
                     widgets.push(dec.range(from, to + 1));
                 }
@@ -85,7 +89,7 @@ class HeadingDecorationsPlugin {
         const widgets = [];
         iterateTreeInVisibleRanges(view, {
             enter: (type, from, to) => {
-                if (!type.name.startsWith('ATXHeading')) return;
+                if (!type.name.includes('Heading')) return;
                 const slug = view.state
                     .field(headingSlugField)
                     .find(s => s.pos === from)?.slug;
@@ -98,7 +102,7 @@ class HeadingDecorationsPlugin {
                             slug ? `cm-heading-slug-${slug}` : ''
                         ].join(' ')
                     });
-                const level = parseInt(type.name.split('ATXHeading')[1]);
+                const level = parseInt(/[1-6]/.exec(type.name)[0]);
                 const dec = createDec(level);
                 widgets.push(dec.range(from, to));
             }

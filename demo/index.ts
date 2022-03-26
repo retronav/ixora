@@ -13,7 +13,7 @@ import {
     codeblock,
     blockquote,
     lists,
-    headingSlugField,
+    headingSlugField
 } from '../src';
 import { defaultHighlightStyle } from '@codemirror/highlight';
 
@@ -25,7 +25,7 @@ const editor = new EditorView({
             keymap.of([indentWithTab]),
             markdown({
                 base: markdownLanguage,
-                extensions: [frontmatter],
+                extensions: [frontmatter]
             }),
             StreamLanguage.define(yaml),
             EditorView.lineWrapping,
@@ -38,10 +38,10 @@ const editor = new EditorView({
             codeblock(),
             blockquote(),
             lists(),
-            headingSlugField,
-        ],
+            headingSlugField
+        ]
     }),
-    parent: document.body,
+    parent: document.body
 });
 
 editor.focus();

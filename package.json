@@ -1,5 +1,5 @@
 {
-    "name": "@obnoxiousnerd/glass-badger",
+    "name": "@retronav/glass-badger",
     "version": "0.1.2",
     "description": "",
     "exports": "./dist/index.es.js",
@@ -15,7 +15,9 @@
         "dev": "vite demo/",
         "build": "vite build",
         "lint": "eslint --ignore-path .gitignore .",
-        "test": "web-test-runner"
+        "lint:fix": "eslint --ignore-path .gitignore . --fix",
+        "test": "web-test-runner",
+        "prepare": "husky install"
     },
     "keywords": [],
     "author": "Pranav Karawale",
@@ -45,10 +47,15 @@
         "@web/test-runner-browserstack": "^0.5.0",
         "@web/test-runner-puppeteer": "^0.10.5",
         "eslint": "^8.11.0",
+        "husky": "^7.0.4",
+        "lint-staged": "^12.3.7",
         "prettier-eslint": "^13.0.0",
         "rollup-plugin-visualizer": "^5.6.0",
         "typescript": "^4.6.2",
         "vite": "^2.8.6",
         "vite-plugin-dts": "^0.9.10"
+    },
+    "lint-staged": {
+        "*.js": "eslint --cache --fix"
     }
 }
