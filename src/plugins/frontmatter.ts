@@ -67,7 +67,7 @@ export const frontmatter: MarkdownConfig = {
                                 // We don't want the top node, we need the
                                 // inner nodes
                                 if (type.name === 'Document') return;
-                                if (startPos + 4 + to > matter.length) return;
+                                if (startPos + to > matter.length) return;
                                 children.push(
                                     cx.elt(
                                         // The element name is prefixed with
