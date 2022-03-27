@@ -12,13 +12,13 @@ export default defineConfig({
                 dirname(new URL(import.meta.url).pathname),
                 'src/index.ts'
             ),
-            name: 'glass-badger',
-            fileName: (format) => `index.${format}.js`,
-            formats: ['es'],
+            name: 'ixora',
+            fileName: format => `index.${format}.js`,
+            formats: ['es']
         },
         rollupOptions: {
-            external: Object.keys(pkg.dependencies),
-        },
+            external: Object.keys(pkg.dependencies)
+        }
     },
-    plugins: [dts()],
+    plugins: [dts()]
 });

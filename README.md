@@ -1,4 +1,4 @@
-# Glass Badger
+# Ixora
 
 A CodeMirror 6 extension pack to make writing Markdown fun and beautiful.
 
@@ -16,10 +16,10 @@ This library includes:
 
 ## Installation
 
-1. Install the `@retronav/glass-badger` package using the package manager
+1. Install the `@retronav/ixora` package using the package manager
    of your choice.
 2. Import the extensions you need
     ```ts
-    import { headings, codeblock } from '@retronav/glass-badger';
+    import { headings, codeblock } from '@retronav/ixora';
     ```
 3. Add them in the `extensions` parameter of your CodeMirror editor creation function.

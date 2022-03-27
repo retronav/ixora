@@ -25,7 +25,7 @@ afterEach(() => {
     document.body.removeChild(document.getElementById('editor'));
 });
 
-describe('Glass badger links plugin', () => {
+describe('links plugin', () => {
     it('Should render an anchor beside the link', () => {
         const secondLine = editor.domAtPos(editor.viewportLineBlocks[1].from);
         const link = (secondLine.node as HTMLElement).querySelector('a');

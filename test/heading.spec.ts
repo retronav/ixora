@@ -24,7 +24,7 @@ afterEach(() => {
     document.body.removeChild(document.getElementById('editor'));
 });
 
-describe('Glass Badger Heading plugin', () => {
+describe('Heading plugin', () => {
     it('Should not mess with the doc content', () => {
         expect(editor.state.doc.toString()).to.equal(content);
     });

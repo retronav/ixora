@@ -1,4 +1,4 @@
-# @retronav/glass-badger
+# @retronav/ixora
 
 ## 0.1.2
 

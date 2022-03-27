@@ -23,7 +23,7 @@ afterEach(() => {
     document.body.removeChild(document.getElementById('editor'));
 });
 
-describe('Glass badger hide marks plugin', () => {
+describe('Hide marks plugin', () => {
     it(
         'Should hide the bold, italic and inline code marks when' +
             ' the cursor is not inside that text',

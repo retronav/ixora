@@ -23,7 +23,7 @@ afterEach(() => {
     document.body.removeChild(document.getElementById('editor'));
 });
 
-describe('Glass badger lists plugin', () => {
+describe('Lists plugin', () => {
     it('Should render a list item marker appropriately', () => {
         const listItem = editor.domAtPos(editor.viewportLineBlocks[0].from);
         let listItemBullet = (listItem.node as HTMLElement).querySelector(

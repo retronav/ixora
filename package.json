@@ -1,5 +1,5 @@
 {
-    "name": "@retronav/glass-badger",
+    "name": "@retronav/ixora",
     "version": "0.1.2",
     "description": "",
     "exports": "./dist/index.es.js",

@@ -25,7 +25,7 @@ afterEach(() => {
     document.body.removeChild(document.getElementById('editor'));
 });
 
-describe('Glass badger frontmatter plugin', () => {
+describe('Frontmatter plugin', () => {
     it('Should render a frontmatter block appropriately', () => {
         const from = editor.viewportLineBlocks[0].from;
         const to = editor.viewportLineBlocks[2].to;
