@@ -52,4 +52,31 @@ describe('Frontmatter plugin', () => {
             }
         });
     });
+
+    it('Should not parse any frontmatter not at the top', () => {
+        const content = `
+The thing below is not a frontmatter block
+
+---
+title: Hello
+---
+`;
+        const tn = editor.state.update({
+            changes: {
+                from: 0,
+                insert: content
+            }
+        });
+        editor.dispatch(tn);
+
+        const tree = syntaxTree(editor.state);
+        tree.iterate({
+            from: 0,
+            to: editor.state.doc.length,
+            enter: type => {
+                if (type.name === 'Frontmatter')
+                    expect.fail('Frontmatter should not be parsed');
+            }
+        });
+    });
 });

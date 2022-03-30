@@ -69,6 +69,8 @@ export const frontmatter: MarkdownConfig = {
                 const yamlParser = StreamLanguage.define(yaml).parser;
                 const startPos = cx.lineStart;
                 let endPos: number;
+                // Do not parse if frontmatter is not at the top
+                if (startPos !== 0) return false;
                 // Only continue when we find the start of the frontmatter
                 if (!frontMatterFence.test(line.text)) return false;
                 while (cx.nextLine()) {
