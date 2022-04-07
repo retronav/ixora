@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { EditorState, EditorView } from '@codemirror/basic-setup';
+import { basicSetup, EditorState, EditorView } from '@codemirror/basic-setup';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { theme } from './theme';
 import { indentWithTab } from '@codemirror/commands';
@@ -46,6 +46,8 @@ const editor = new EditorView({
             StreamLanguage.define(yaml),
             EditorView.lineWrapping,
             theme,
+
+            basicSetup,
 
             // linksPlugin,
             headings(),
