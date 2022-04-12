@@ -6,8 +6,8 @@
         "declaration": true,
         "declarationDir": "./dist",
         "esModuleInterop": true,
-        "noEmit": true,
+        "emitDeclarationOnly": true,
         "moduleResolution": "node"
     },
-    "include": ["src/**/*", "demo/**/*"]
+    "include": ["src/**/*"]
 }

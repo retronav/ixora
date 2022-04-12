@@ -39,7 +39,7 @@ This library includes:
 
 ## License
 
-The source code is licensed under the [Apache License 2.0](LICENSE).
+The source code is licensed under the [Apache License 2.0](./LICENSE).
 
 The artwork is licensed under [CC BY 4.0](./assets/LICENSE).
 
