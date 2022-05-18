@@ -13,7 +13,7 @@
         "CHANGELOG.md"
     ],
     "scripts": {
-        "dev": "vite demo/",
+        "dev": "wds",
         "build": "tsup",
         "lint": "eslint --ignore-path .gitignore .",
         "lint:fix": "eslint --ignore-path .gitignore . --fix",
