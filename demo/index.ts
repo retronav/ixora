@@ -2,48 +2,28 @@ import { basicSetup, EditorState, EditorView } from '@codemirror/basic-setup';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { theme } from './theme';
 import { indentWithTab } from '@codemirror/commands';
-import { highlightActiveLine, keymap } from '@codemirror/view';
+import { keymap } from '@codemirror/view';
 import { yaml } from '@codemirror/legacy-modes/mode/yaml';
 import { StreamLanguage } from '@codemirror/stream-parser';
-import {
-    frontmatter,
-    headings,
-    hideMarks,
-    links,
-    codeblock,
-    blockquote,
-    lists,
-    headingSlugField
-} from '../src';
-import { defaultHighlightStyle } from '@codemirror/highlight';
+import { basicSetup as ixoraBasicSetup, frontmatter } from '../src';
 
 const editor = new EditorView({
     state: EditorState.create({
         extensions: [
-            highlightActiveLine(),
-            defaultHighlightStyle,
             keymap.of([indentWithTab]),
             markdown({
                 base: markdownLanguage,
-                extensions: [frontmatter]
+                extensions: [frontmatter],
             }),
             StreamLanguage.define(yaml),
             EditorView.lineWrapping,
             theme,
 
             basicSetup,
-
-            // linksPlugin,
-            headings(),
-            hideMarks(),
-            links(),
-            codeblock(),
-            blockquote(),
-            lists(),
-            headingSlugField
-        ]
+            ixoraBasicSetup,
+        ],
     }),
-    parent: document.body
+    parent: document.body,
 });
 
 editor.focus();
