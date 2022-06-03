@@ -9,8 +9,7 @@
 A CodeMirror 6 extension pack to make writing Markdown fun and beautiful.
 
 > ⚠️ NOTE: Ixora is under development and probably has some bugs. Although it
-> is usable, but right now it's not suited for production use-cases. You'll
-> need to build it yourself as this is not pushed to NPM.
+> is usable, but right now it's not suited for production use-cases.
 
 ## Features
 
@@ -30,7 +29,7 @@ This library includes:
    of your choice.
 2. Import the extensions you need
     ```ts
-    import { headings, codeblock } from '@retronav/ixora';
+    import { value headings, value codeblock } from '@retronav/ixora';
     ```
 3. Add them in the `extensions` parameter of your CodeMirror editor creation
    function.
@@ -39,12 +38,16 @@ This library includes:
 
 ## License
 
-The source code is licensed under the [Apache License 2.0](./LICENSE).
+The source code is licensed under the
+[Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.txt).
 
-The artwork is licensed under [CC BY 4.0](./assets/LICENSE).
+The artwork is licensed under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 ## The logo
 
-The logo of this project is derived from [the Markdown Mark](https://dcurt.is/the-markdown-mark) by [Dustin Curtis](https://dcurt.is/). The logo uses the
-color #FF2400 (scarlet). Instead of the arrow pointing downward, there is an
-ixora flower beside the "M" which can be symbolised as an arrow pointing upward.
+The logo of this project is derived from
+[the Markdown Mark](https://dcurt.is/the-markdown-mark)
+by [Dustin Curtis](https://dcurt.is/). The logo uses the color #FF2400
+(scarlet). Instead of the arrow pointing downward, there is an
+ixora flower beside the "M" which can be thought of as an arrow pointing upward.
