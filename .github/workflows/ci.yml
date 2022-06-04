@@ -1,0 +1,67 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+    ci:
+        name: CI
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Install Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 16
+            - uses: pnpm/action-setup@v2
+              with:
+                  version: 7
+            - name: Get pnpm store directory
+              id: pnpm-cache
+              run: |
+                  echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+            - uses: actions/cache@v3
+              name: Setup pnpm cache
+              with:
+                  path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+                  key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+                  restore-keys: |
+                      ${{ runner.os }}-pnpm-store-
+            - name: Install dependencies
+              run: pnpm install
+            - name: Lint
+              run: pnpm run lint
+            - name: Build
+              run: pnpm run build
+            - name: Test
+              run: pnpm run test
+            - name: Upload build
+              uses: actions/upload-artifact@v3
+              with:
+                  name: build
+                  path: dist/
+                  if-no-files-found: error
+
+    release:
+        name: Release
+        needs: [ci]
+        if: ${{ github.ref_name == 'main' && github.repository_owner == 'retronav' }}
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v3
+              with:
+                  node-version: 16
+            - uses: pnpm/action-setup@v2
+              with:
+                  version: 7
+            - uses: actions/download-artifact@v3
+              with:
+                  name: build
+                  path: dist/
+            - name: Create Release Pull Request or Publish to npm
+              id: changesets
+              uses: changesets/action@v1
+              with:
+                  publish: pnpm run release
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
