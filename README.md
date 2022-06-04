@@ -1,12 +1,13 @@
-<p align="center">
-    <img src="./assets/logo.svg" alt="Ixora logo" />
-</p>
+![Ixora logo](https://github.com/retronav/ixora/raw/main/assets/social-preview.png)
 
 ---
 
 # Ixora
 
 A CodeMirror 6 extension pack to make writing Markdown fun and beautiful.
+
+[![Coverage Status](https://coveralls.io/repos/github/retronav/ixora/badge.svg?branch=main)](https://coveralls.io/github/retronav/ixora?branch=main)
+![npm version](https://img.shields.io/npm/v/@retronav/ixora?logo=npm&style=flat)
 
 > ⚠️ NOTE: Ixora is under development and probably has some bugs. Although it
 > is usable, but right now it's not suited for production use-cases.
