@@ -72,7 +72,9 @@ describe('Lists plugin', () => {
             ' and style the text appropriately',
         () => {
             const listItem = editor.domAtPos(editor.viewportLineBlocks[0].from);
-            const listItemCheckbox = (listItem.node as HTMLElement).querySelector(
+            const listItemCheckbox = (
+                listItem.node as HTMLElement
+            ).querySelector(
                 '.cm-task-marker-checkbox input[type="checkbox"]'
             ) as HTMLInputElement;
             expect(listItemCheckbox).to.exist;

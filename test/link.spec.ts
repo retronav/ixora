@@ -47,9 +47,9 @@ describe('links plugin', () => {
 
         expect(editor.state.selection.main.from).to.eq(from);
 
-        const link: HTMLAnchorElement = (thirdLine.node as HTMLElement).querySelector(
-            'a.cm-link'
-        );
+        const link: HTMLAnchorElement = (
+            thirdLine.node as HTMLElement
+        ).querySelector('a.cm-link');
         expect(link).to.exist;
 
         // Click the link

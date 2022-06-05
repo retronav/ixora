@@ -6,8 +6,8 @@ import {
     ViewUpdate,
     WidgetType
 } from '@codemirror/view';
-import { Range } from '@codemirror/rangeset';
-import { NodeType } from '@lezer/common';
+import { Range } from '@codemirror/state';
+import type { SyntaxNodeRef } from '@lezer/common';
 import {
     isCursorInRange,
     iterateTreeInVisibleRanges,
@@ -49,20 +49,18 @@ class BlockQuotePlugin {
     private styleBlockquote(view: EditorView) {
         const widgets = [];
         iterateTreeInVisibleRanges(view, {
-            enter: (type, from, to, node) => {
+            enter: ({ type, from, to, node }) => {
                 if (type.name !== 'Blockquote') return;
                 const lines = editorLines(view, from, to);
-                lines.forEach(line => {
+                lines.forEach((line) => {
                     const lineDec = Decoration.line({
                         class: 'cm-blockquote'
                     });
                     widgets.push(lineDec.range(line.from));
                 });
-                node()
-                    .toTree()
-                    .iterate({
-                        enter: this.iterateQuoteMark(from, to, view, widgets)
-                    });
+                node.toTree().iterate({
+                    enter: this.iterateQuoteMark(from, to, view, widgets)
+                });
             }
         });
         return Decoration.set(widgets, true);
@@ -74,11 +72,15 @@ class BlockQuotePlugin {
         view: EditorView,
         widgets: Range<Decoration>[]
     ) {
-        return (type: NodeType, nfrom: number, nto: number) => {
+        return ({ type, from: nodeFrom, to: nodeTo }: SyntaxNodeRef) => {
             if (type.name !== 'QuoteMark') return;
-            const range: [number, number] = [from + nfrom, from + nto];
+            const range: [number, number] = [from + nodeFrom, from + nodeTo];
             const lines = editorLines(view, from, to);
-            if (lines.some(line => isCursorInRange(view, [line.from, line.to])))
+            if (
+                lines.some((line) =>
+                    isCursorInRange(view, [line.from, line.to])
+                )
+            )
                 return;
             widgets.push(
                 Decoration.replace({
@@ -89,7 +91,7 @@ class BlockQuotePlugin {
     }
 }
 const blockQuotePlugin = ViewPlugin.fromClass(BlockQuotePlugin, {
-    decorations: v => v.decorations
+    decorations: (v) => v.decorations
 });
 
 /**

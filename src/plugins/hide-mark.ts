@@ -32,7 +32,7 @@ class HideMarkPlugin {
         const widgets = [];
         let parentRange: [number, number];
         iterateTreeInVisibleRanges(view, {
-            enter: (type, from, to, node) => {
+            enter: ({ type, from, to, node }) => {
                 if (typesWithMarks.includes(type.name)) {
                     // There can be a possibility that the current node is a
                     // child eg. a bold node in a emphasis node, so check
@@ -44,16 +44,16 @@ class HideMarkPlugin {
                         return;
                     else parentRange = [from, to];
                     if (isCursorInRange(view, [from, to])) return;
-                    const innerTree = node().toTree();
+                    const innerTree = node.toTree();
                     innerTree.iterate({
-                        enter(type, mfrom, mto) {
+                        enter({ type, from: markFrom, to: markTo }) {
                             // Check for mark types and push the replace
                             // decoration
                             if (!markTypes.includes(type.name)) return;
                             widgets.push(
                                 Decoration.replace({}).range(
-                                    from + mfrom,
-                                    from + mto
+                                    from + markFrom,
+                                    from + markTo
                                 )
                             );
                         }
@@ -70,6 +70,6 @@ class HideMarkPlugin {
  */
 export const hideMarks = () => [
     ViewPlugin.fromClass(HideMarkPlugin, {
-        decorations: v => v.decorations
+        decorations: (v) => v.decorations
     })
 ];

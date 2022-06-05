@@ -10,7 +10,7 @@ const config = {
     nodeResolve: true,
     coverage: true,
     coverageConfig: {
-        include: ['src/**/*.ts']
+        include: ['dist/**/*.js']
     },
     browsers: [puppeteerLauncher()]
 };

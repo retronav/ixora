@@ -33,7 +33,7 @@ describe('Frontmatter plugin', () => {
         tree.iterate({
             from,
             to,
-            enter: (type, from, to) => {
+            enter: ({ type, from, to }) => {
                 // These checks are to ensure everything is properly
                 // highlighted. Testing every data type of the YAML parser
                 // is not needed since that's not our job.
@@ -73,7 +73,7 @@ title: Hello
         tree.iterate({
             from: 0,
             to: editor.state.doc.length,
-            enter: type => {
+            enter: (type) => {
                 if (type.name === 'Frontmatter')
                     expect.fail('Frontmatter should not be parsed');
             }

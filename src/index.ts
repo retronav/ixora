@@ -19,7 +19,7 @@ export { hideMarks } from './plugins/hide-mark';
 export { links } from './plugins/link';
 export { lists } from './plugins/list';
 
-export const basicSetup: Extension = [
+const ixora: Extension = [
     headingSlugField,
     blockquote(),
     codeblock(),
@@ -28,3 +28,5 @@ export const basicSetup: Extension = [
     lists(),
     links()
 ];
+
+export default ixora;

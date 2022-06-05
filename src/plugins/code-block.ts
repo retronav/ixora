@@ -32,31 +32,31 @@ const codeBlockPlugin = ViewPlugin.fromClass(
                 this.decorations = decorateCodeBlocks(update.view);
         }
     },
-    { decorations: v => v.decorations }
+    { decorations: (v) => v.decorations }
 );
 
 function decorateCodeBlocks(view: EditorView) {
     const widgets = [];
     iterateTreeInVisibleRanges(view, {
-        enter: (type, from, to, node) => {
+        enter: ({ type, from, to, node }) => {
             if (!['FencedCode', 'CodeBlock'].includes(type.name)) return;
-            editorLines(view, from, to).map(block => {
+            editorLines(view, from, to).map((block) => {
                 const lineDec = Decoration.line({
                     class: 'cm-codeblock'
                 });
                 widgets.push(lineDec.range(block.from));
             });
             if (isCursorInRange(view, [from, to])) return;
-            const codeBlock = node().toTree();
+            const codeBlock = node.toTree();
             codeBlock.iterate({
-                enter: (type, nfrom, nto) => {
+                enter: ({ type, from: nodeFrom, to: nodeTo }) => {
                     switch (type.name) {
                         case 'CodeInfo':
                         case 'CodeMark':
                             // eslint-disable-next-line no-case-declarations
                             const decRange = invisibleDecoration.range(
-                                from + nfrom,
-                                from + nto
+                                from + nodeFrom,
+                                from + nodeTo
                             );
                             widgets.push(decRange);
                             break;

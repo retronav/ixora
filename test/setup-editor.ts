@@ -3,8 +3,8 @@ import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { indentWithTab } from '@codemirror/commands';
 import { keymap } from '@codemirror/view';
 import { yaml } from '@codemirror/legacy-modes/mode/yaml';
-import { StreamLanguage } from '@codemirror/stream-parser';
-import { basicSetup as ixoraBasicSetup, frontmatter } from '../src';
+import { StreamLanguage } from '@codemirror/language';
+import ixora, { frontmatter } from '../dist';
 
 /**
  * Basic CodeMirror setup for testing plugins.
@@ -18,16 +18,16 @@ export function setup(el: HTMLElement) {
                 keymap.of([indentWithTab]),
                 markdown({
                     base: markdownLanguage,
-                    extensions: [frontmatter],
+                    extensions: [frontmatter]
                 }),
                 StreamLanguage.define(yaml),
                 EditorView.lineWrapping,
 
                 basicSetup,
-                ixoraBasicSetup,
-            ],
+                ixora
+            ]
         }),
-        parent: el,
+        parent: el
     });
 
     editor.focus();

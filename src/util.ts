@@ -1,5 +1,5 @@
 import { syntaxTree } from '@codemirror/language';
-import { SyntaxNode, NodeType } from '@lezer/common';
+import type { SyntaxNodeRef } from '@lezer/common';
 import { Decoration, EditorView } from '@codemirror/view';
 
 /**
@@ -17,13 +17,26 @@ export function checkRangeOverlap(
 }
 
 /**
+ * Check if a range is inside another range
+ * @param parent - Parent (bigger) range
+ * @param child - Child (smaller) range
+ * @returns True if child is inside parent
+ */
+export function checkRangeSubset(
+    parent: [number, number],
+    child: [number, number]
+) {
+    return child[0] >= parent[0] && child[1] <= parent[1];
+}
+
+/**
  * Check if any of the editor cursors is in the given range
  * @param view - Editor view
  * @param range - Range to check
  * @returns True if the cursor is in the range
  */
 export function isCursorInRange(view: EditorView, range: [number, number]) {
-    return view.state.selection.ranges.some(selection =>
+    return view.state.selection.ranges.some((selection) =>
         checkRangeOverlap(range, [selection.from, selection.to])
     );
 }
@@ -35,23 +48,13 @@ export function isCursorInRange(view: EditorView, range: [number, number]) {
  */
 export function iterateTreeInVisibleRanges(
     view: EditorView,
-    iterateObj: {
-        enter(
-            type: NodeType,
-            from: number,
-            to: number,
-            get: () => SyntaxNode
-        ): false | void;
-        leave?(
-            type: NodeType,
-            from: number,
-            to: number,
-            get: () => SyntaxNode
-        ): void;
+    iterateFns: {
+        enter(node: SyntaxNodeRef): boolean | void;
+        leave?(node: SyntaxNodeRef): void;
     }
 ) {
     for (const { from, to } of view.visibleRanges) {
-        syntaxTree(view.state).iterate({ from, to, ...iterateObj });
+        syntaxTree(view.state).iterate({ ...iterateFns, from, to });
     }
 }
 
@@ -71,7 +74,7 @@ export const invisibleDecoration = Decoration.replace({});
  * @returns A list of line blocks that are in the range
  */
 export function editorLines(view: EditorView, from: number, to: number) {
-    const lines = view.viewportLineBlocks.filter(block =>
+    const lines = view.viewportLineBlocks.filter((block) =>
         // Keep lines that are in the range
         checkRangeOverlap([block.from, block.to], [from, to])
     );

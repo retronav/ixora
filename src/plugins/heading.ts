@@ -36,7 +36,7 @@ class HideHeaderMarkPlugin {
         const widgets = [];
         const ranges = view.state.selection.ranges;
         iterateTreeInVisibleRanges(view, {
-            enter: (type, from, to) => {
+            enter: ({ type, from, to }) => {
                 // Get the active line
                 const line = view.lineBlockAt(from);
                 // If any cursor overlaps with the heading line, skip
@@ -66,7 +66,7 @@ class HideHeaderMarkPlugin {
  * - The mark is on a line which is in the current selection
  */
 const hideHeaderMarkPlugin = ViewPlugin.fromClass(HideHeaderMarkPlugin, {
-    decorations: v => v.decorations
+    decorations: (v) => v.decorations
 });
 //#endregion
 
@@ -88,11 +88,11 @@ class HeadingDecorationsPlugin {
     private decorateHeadings(view: EditorView) {
         const widgets = [];
         iterateTreeInVisibleRanges(view, {
-            enter: (type, from, to) => {
+            enter: ({ type, from, to }) => {
                 if (!type.name.includes('Heading')) return;
                 const slug = view.state
                     .field(headingSlugField)
-                    .find(s => s.pos === from)?.slug;
+                    .find((s) => s.pos === from)?.slug;
                 const createDec = (level: number) =>
                     Decoration.mark({
                         tagName: 'span',
@@ -113,7 +113,7 @@ class HeadingDecorationsPlugin {
 
 const headingDecorationsPlugin = ViewPlugin.fromClass(
     HeadingDecorationsPlugin,
-    { decorations: v => v.decorations }
+    { decorations: (v) => v.decorations }
 );
 //#endregion
 

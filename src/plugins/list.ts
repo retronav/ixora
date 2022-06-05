@@ -7,9 +7,8 @@ import {
     WidgetType
 } from '@codemirror/view';
 import { isCursorInRange, iterateTreeInVisibleRanges } from '../util';
-import { ChangeSpec } from '@codemirror/state';
-import { Range } from '@codemirror/rangeset';
-import { NodeType, SyntaxNode } from '@lezer/common';
+import { ChangeSpec, Range } from '@codemirror/state';
+import { NodeType, SyntaxNodeRef } from '@lezer/common';
 
 const bulletListMarkerRE = /^[-+*]/;
 
@@ -37,7 +36,7 @@ class ListBulletPlugin {
     private decorateLists(view: EditorView) {
         const widgets = [];
         iterateTreeInVisibleRanges(view, {
-            enter: (type, from, to) => {
+            enter: ({ type, from, to }) => {
                 if (isCursorInRange(view, [from, to])) return;
                 if (type.name === 'ListMark') {
                     const listMark = view.state.sliceDoc(from, to);
@@ -54,7 +53,7 @@ class ListBulletPlugin {
     }
 }
 const listBulletPlugin = ViewPlugin.fromClass(ListBulletPlugin, {
-    decorations: v => v.decorations
+    decorations: (v) => v.decorations
 });
 
 /**
@@ -96,20 +95,13 @@ class TaskListsPlugin {
     }
 
     private iterateTree(view: EditorView, widgets: Range<Decoration>[]) {
-        return (
-            type: NodeType,
-            from: number,
-            to: number,
-            node: () => SyntaxNode
-        ) => {
+        return ({ type, from, to, node }: SyntaxNodeRef) => {
             if (type.name !== 'Task') return;
             let checked = false;
             // Iterate inside the task node to find the checkbox
-            node()
-                .toTree()
-                .iterate({
-                    enter: iterateInner
-                });
+            node.toTree().iterate({
+                enter: (ref) => iterateInner(ref.type, ref.from, ref.to)
+            });
             if (checked)
                 widgets.push(
                     Decoration.mark({
@@ -162,7 +154,7 @@ class CheckboxWidget extends WidgetType {
 }
 
 const taskListPlugin = ViewPlugin.fromClass(TaskListsPlugin, {
-    decorations: v => v.decorations
+    decorations: (v) => v.decorations
 });
 //#endregion
 

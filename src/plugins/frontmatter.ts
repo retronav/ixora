@@ -1,20 +1,20 @@
-import { MarkdownConfig } from '@lezer/markdown';
+import { Element, MarkdownConfig } from '@lezer/markdown';
 import { yaml } from '@codemirror/legacy-modes/mode/yaml';
-import { StreamLanguage } from '@codemirror/stream-parser';
-import { styleTags, tags } from '@codemirror/highlight';
-import { foldNodeProp } from '@codemirror/language';
+import { foldInside, foldNodeProp, StreamLanguage } from '@codemirror/language';
+import { styleTags, tags } from '@lezer/highlight';
 
 const frontMatterFence = /^---\s*$/m;
 
+// TODO: move all of the nodenames to a single place which could be used
+// for highlighting codeblocks as well.
 const yamlNodes = [
-    // prefixed original YAML nodes
-    'YAMLatom',
-    { name: 'YAMLmeta', block: true },
-    'YAMLnumber',
-    'YAMLkeyword',
-    'YAMLdef',
-    'YAMLcomment',
-    'YAMLstring'
+    'atom',
+    { name: 'meta', block: true },
+    'number',
+    'keyword',
+    'definition',
+    'comment',
+    'string'
 ];
 
 /**
@@ -24,19 +24,18 @@ const yamlNodes = [
 export const frontmatter: MarkdownConfig = {
     props: [
         styleTags({
-            YAMLnumber: tags.number,
-            YAMLkeyword: tags.keyword,
-            YAMLdef: tags.definition(tags.labelName),
-            YAMLcomment: tags.comment,
-            YAMLstring: tags.string,
-            YAMLatom: tags.atom,
-            YAMLmeta: tags.meta,
+            number: tags.number,
+            keyword: tags.keyword,
+            definition: tags.definition(tags.labelName),
+            comment: tags.comment,
+            string: tags.string,
+            atom: tags.atom,
+            meta: tags.meta,
             FrontmatterMark: tags.processingInstruction
         }),
         foldNodeProp.add({
-            // node.from has 3 added to it to prevent the hyphen fence
-            // from getting folded
-            Frontmatter: node => ({ from: node.from + 3, to: node.to })
+            Frontmatter: foldInside,
+            FrontmatterMark: () => null
         })
     ],
     defineNodes: [
@@ -50,50 +49,36 @@ export const frontmatter: MarkdownConfig = {
             before: 'HorizontalRule',
             parse: (cx, line) => {
                 let matter = '';
-                const yamlParser = StreamLanguage.define(yaml).parser;
-                const startPos = cx.lineStart;
-                let endPos: number;
-                // Do not parse if frontmatter is not at the top
-                if (startPos !== 0) return false;
-                // Only continue when we find the start of the frontmatter
-                if (!frontMatterFence.test(line.text)) return false;
-                while (cx.nextLine()) {
-                    if (frontMatterFence.test(line.text)) {
-                        const parsedYaml = yamlParser.parse(matter);
-                        const children = [];
-                        children.push(
-                            cx.elt('FrontmatterMark', startPos, startPos + 4)
-                        );
-                        parsedYaml.iterate({
-                            enter: (type, from, to) => {
-                                // We don't want the top node, we need the
-                                // inner nodes
-                                if (type.name === 'Document') return;
-                                if (startPos + to > matter.length) return;
-                                children.push(
-                                    cx.elt(
-                                        // The element name is prefixed with
-                                        // 'YAML' to prevent future collisions
-                                        'YAML' + type.name,
-                                        startPos + 4 + from,
-                                        startPos + 4 + to
-                                    )
-                                );
-                            }
-                        });
-                        endPos = cx.lineStart + line.text.length;
-                        children.push(
-                            cx.elt('FrontmatterMark', cx.lineStart, endPos)
-                        );
-                        cx.addElement(
-                            cx.elt('Frontmatter', startPos, endPos, children)
-                        );
-                        return false;
-                    } else {
+                const start = 0;
+                let end: number;
+                const children = new Array<Element>();
+                // If the first line in the document starts with the frontmatter
+                // fence, parse it.
+                if (frontMatterFence.test(line.text) && cx.lineStart === 0) {
+                    // 4 is the length of the frontmatter fence (---\n).
+                    children.push(cx.elt('FrontmatterMark', start, 4));
+                    while (cx.nextLine()) {
+                        if (frontMatterFence.test(line.text)) {
+                            end = cx.lineStart + 4;
+                            break;
+                        }
                         matter += line.text + '\n';
                     }
+                    const yamlParser = StreamLanguage.define(yaml).parser;
+                    const tree = yamlParser.parse(matter);
+
+                    tree.iterate({
+                        enter: ({ type, from, to }) => {
+                            if (type.name === 'Document') return;
+                            children.push(cx.elt(type.name, from + 4, to + 4));
+                        }
+                    });
+                    children.push(cx.elt('FrontmatterMark', end - 4, end));
+                    cx.addElement(cx.elt('Frontmatter', start, end, children));
+                    return true;
+                } else {
+                    return false;
                 }
-                return true;
             }
         }
     ]

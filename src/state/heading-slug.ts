@@ -17,7 +17,7 @@ const headingStartRE = /^(#{1,6}\s)/;
  * the document.
  */
 export const headingSlugField = StateField.define<HeadingSlug[]>({
-    create: state => {
+    create: (state) => {
         const slugs = new Array<HeadingSlug>();
         extractSlugs(state);
         return slugs;
@@ -37,7 +37,7 @@ function extractSlugs(state: EditorState) {
     const slugs: HeadingSlug[] = [];
     const slugger = new Slugger();
     syntaxTree(state).iterate({
-        enter: (type, from, to) => {
+        enter: ({ type, from, to }) => {
             if (!type.name.includes('ATXHeading')) return;
             const slug = slugger.slug(
                 // TODO: There can be areas if the heading has

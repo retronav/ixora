@@ -9,8 +9,11 @@ A CodeMirror 6 extension pack to make writing Markdown fun and beautiful.
 [![Coverage Status](https://coveralls.io/repos/github/retronav/ixora/badge.svg?branch=main)](https://coveralls.io/github/retronav/ixora?branch=main)
 ![npm version](https://img.shields.io/npm/v/@retronav/ixora?logo=npm&style=flat)
 
-> ⚠️ NOTE: Ixora is under development and probably has some bugs. Although it
-> is usable, but right now it's not suited for production use-cases.
+> ⚠️ NOTE: Ixora is under development, does not guarantee API stability at this
+> stage and probably has some bugs. Although it is usable, but right now it's
+> not suited for production use-cases.
+> The 0.x version should reflect overall instability and will be bumped to 1.x
+> as Ixora reaches stability and maturity.
 
 ## Features
 
@@ -30,10 +33,36 @@ This library includes:
    of your choice.
 2. Import the extensions you need
     ```ts
-    import { value headings, value codeblock } from '@retronav/ixora';
+    import { headings, codeblock, list } from '@retronav/ixora';
+    ```
+    Or import all of them at once
+    ```ts
+    import ixora from '@retronav/ixora';
     ```
 3. Add them in the `extensions` parameter of your CodeMirror editor creation
    function.
+
+    ```ts
+    const editor = new EditorView({
+        state: EditorState.create({
+            extensions: [
+                // If you import all at once
+                ixora,
+
+                // ...
+
+                // If you import indivivually
+                headings,
+                codeblock,
+                lists
+
+                // ...
+            ]
+        })
+    });
+    ```
+
+Check `test/setup-editor.ts` for an example of how to use Ixora with CodeMirror.
 
 # Additional information
 
