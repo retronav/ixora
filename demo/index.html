@@ -1,20 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-    </head>
-    <body>
-        <style>
-            html,
-            body {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-            }
-        </style>
-        <script type="module" src="./index.ts"></script>
-    </body>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+</head>
+
+<body>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        .darkThemeToggle {
+            position: absolute;
+            bottom: 30px;
+            right: 34px;
+            z-index: 10;
+
+        }
+
+
+        .darkThemeToggle .checkbox {
+            opacity: 0;
+            position: absolute;
+        }
+
+        .darkThemeToggle .label {
+            width: 50px;
+            height: 26px;
+            background-color: #111;
+
+            display: flex;
+            border-radius: 50px;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px;
+            position: relative;
+            transform: scale(1.5);
+            border: 2px solid white;
+
+        }
+
+        .darkThemeToggle .ball {
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            border-radius: 50%;
+            transition: transform 0.2s linear;
+        }
+
+        /*  target the elemenent after the label*/
+        .darkThemeToggle .checkbox:checked+.label .ball {
+            transform: translateX(24px);
+        }
+
+        .darkThemeToggle .fa-moon {
+            color: pink;
+        }
+
+        .darkThemeToggle .fa-sun {
+            color: yellow;
+        }
+    </style>
+
+
+    <div class="darkThemeToggle">
+        <input type="checkbox" class="checkbox" id="checkbox">
+        <label for="checkbox" class="label">
+            <i class="fas fa-sun"></i>
+            <i class='fas fa-moon'></i>
+            <div class='ball'>
+        </label>
+    </div>
+    <script type="module" src="./index.ts"></script>
+
+
+</body>
+
 </html>

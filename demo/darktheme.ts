@@ -1,6 +1,6 @@
 import { EditorView } from '@codemirror/basic-setup';
 
-export const theme = EditorView.theme(
+export const darkTheme = EditorView.theme(
     {
         '&': { height: '100%', fontSize: '20px' },
         '.cm-scroller': {
@@ -8,8 +8,15 @@ export const theme = EditorView.theme(
             margin: '0',
             overflow: 'auto',
             fontFamily: 'Segoe UI',
+            backgroundColor: "black",
         },
+        '.cm-activeLine': {
+            color: "white",
+        },
+        ".cm-line": {
+            color: "white",
+        }
       
     },
-    { dark: false }
+    { dark: true }
 );
