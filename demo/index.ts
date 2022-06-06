@@ -19,7 +19,7 @@ let darkThemed = false;
 const checkbox = document.getElementById('checkbox');
 
 
-let editor = new EditorView({
+const editor = new EditorView({
     state: EditorState.create({
         extensions: [
             syntaxHighlighting(defaultHighlightStyle),
