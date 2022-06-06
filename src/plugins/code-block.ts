@@ -1,3 +1,4 @@
+import { Extension } from '@codemirror/state';
 import {
     ViewPlugin,
     DecorationSet,
@@ -15,7 +16,7 @@ import {
 /**
  * CodeMirror extension to style code blocks.
  */
-export const codeblock = () => [codeBlockPlugin, baseTheme];
+export const codeblock = (): Extension => [codeBlockPlugin, baseTheme];
 
 const codeBlockPlugin = ViewPlugin.fromClass(
     class {
@@ -40,9 +41,15 @@ function decorateCodeBlocks(view: EditorView) {
     iterateTreeInVisibleRanges(view, {
         enter: ({ type, from, to, node }) => {
             if (!['FencedCode', 'CodeBlock'].includes(type.name)) return;
-            editorLines(view, from, to).map((block) => {
+            editorLines(view, from, to).forEach((block, i) => {
                 const lineDec = Decoration.line({
-                    class: 'cm-codeblock'
+                    class: `cm-codeblock ${
+                        i === 0
+                            ? 'cm-codeblock-begin'
+                            : block.to === to
+                            ? 'cm-codeblock-end'
+                            : ''
+                    }`
                 });
                 widgets.push(lineDec.range(block.from));
             });
@@ -70,7 +77,12 @@ function decorateCodeBlocks(view: EditorView) {
 
 const baseTheme = EditorView.baseTheme({
     '.cm-codeblock': {
-        padding: '0 1rem',
         backgroundColor: '#CCC7'
+    },
+    '.cm-codeblock-begin': {
+        borderRadius: '5px 5px 0 0'
+    },
+    '.cm-codeblock-end': {
+        borderRadius: '0 0 5px 5px'
     }
 });

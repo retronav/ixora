@@ -1,4 +1,4 @@
-import { syntaxTree } from '@codemirror/language';
+import { foldedRanges, syntaxTree } from '@codemirror/language';
 import type { SyntaxNodeRef } from '@lezer/common';
 import { Decoration, EditorView } from '@codemirror/view';
 
@@ -44,7 +44,7 @@ export function isCursorInRange(view: EditorView, range: [number, number]) {
 /**
  * Iterate over the syntax tree in the visible ranges of the document
  * @param view - Editor view
- * @param iterateObj - Object with `enter` and `leave` iterate function
+ * @param iterateFns - Object with `enter` and `leave` iterate function
  */
 export function iterateTreeInVisibleRanges(
     view: EditorView,
@@ -74,10 +74,19 @@ export const invisibleDecoration = Decoration.replace({});
  * @returns A list of line blocks that are in the range
  */
 export function editorLines(view: EditorView, from: number, to: number) {
-    const lines = view.viewportLineBlocks.filter((block) =>
+    let lines = view.viewportLineBlocks.filter((block) =>
         // Keep lines that are in the range
         checkRangeOverlap([block.from, block.to], [from, to])
     );
+
+    const folded = foldedRanges(view.state).iter();
+    while (folded.value) {
+        lines = lines.filter((line) =>
+            checkRangeSubset([folded.from, folded.to], [line.from, line.to])
+        );
+        folded.next();
+    }
+
     return lines;
 }
 
