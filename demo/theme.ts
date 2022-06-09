@@ -1,4 +1,4 @@
-import { EditorView } from '@codemirror/basic-setup';
+import { EditorView } from 'codemirror';
 
 export const theme = EditorView.theme(
     {
