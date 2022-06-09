@@ -13,7 +13,6 @@ export default defineConfig({
     dts: true,
     platform: 'browser',
     target: 'es2017',
-    minify: true,
     format: ['esm'],
     clean: true
 });

@@ -1,4 +1,5 @@
-import { basicSetup, EditorState, EditorView } from '@codemirror/basic-setup';
+import { minimalSetup, EditorView } from 'codemirror';
+import { EditorState } from '@codemirror/state';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { indentWithTab } from '@codemirror/commands';
 import { keymap } from '@codemirror/view';
@@ -23,7 +24,7 @@ export function setup(el: HTMLElement) {
                 StreamLanguage.define(yaml),
                 EditorView.lineWrapping,
 
-                basicSetup,
+                minimalSetup,
                 ixora
             ]
         }),
