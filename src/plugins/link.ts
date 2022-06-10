@@ -8,6 +8,7 @@ import {
     WidgetType
 } from '@codemirror/view';
 import { headingSlugField } from '../state/heading-slug';
+import { checkRangeOverlap, invisibleDecoration } from '../util';
 
 /**
  * CodeMirror plugin to enchance Markdown links.
@@ -51,8 +52,25 @@ function getLinkAnchor(view: EditorView) {
         syntaxTree(view.state).iterate({
             from,
             to,
-            enter: ({ type, from, to }) => {
+            enter: ({ type, from, to, node }) => {
                 if (type.name !== 'URL') return;
+                const parent = node.parent;
+                if (parent) {
+                    const marks = parent.getChildren('LinkMark');
+                    const ranges = view.state.selection.ranges;
+                    const cursorOverlaps = ranges.some(({ from, to }) =>
+                        checkRangeOverlap([from, to], [parent.from, parent.to])
+                    );
+                    if (!cursorOverlaps) {
+                        widgets.push(
+                            ...marks.map(({ from, to }) =>
+                                invisibleDecoration.range(from, to)
+                            ),
+                            invisibleDecoration.range(from, to)
+                        );
+                    }
+                }
+
                 const dec = Decoration.widget({
                     widget: new GoToLinkWidget(view.state.sliceDoc(from, to)),
                     side: 1
@@ -62,7 +80,7 @@ function getLinkAnchor(view: EditorView) {
         });
     }
 
-    return Decoration.set(widgets);
+    return Decoration.set(widgets, true);
 }
 
 export const goToLinkPlugin = ViewPlugin.fromClass(
