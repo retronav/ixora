@@ -99,7 +99,10 @@ const blockQuotePlugin = ViewPlugin.fromClass(BlockQuotePlugin, {
  */
 const baseTheme = EditorView.baseTheme({
     '.cm-blockquote-border': {
-        'border-left': '4px solid #ccc',
-        'margin-right': '0.5em'
+        'margin-right': '0.5em',
+        'border-left': '4px solid #ccc'
+    },
+    '.cm-blockquote': {
+        color: '#555'
     }
 });
