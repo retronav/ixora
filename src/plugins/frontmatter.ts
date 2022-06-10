@@ -1,36 +1,16 @@
-import { Element, MarkdownConfig } from '@lezer/markdown';
+import { parseMixed } from '@lezer/common';
 import { yaml } from '@codemirror/legacy-modes/mode/yaml';
+import { Element, MarkdownExtension } from '@lezer/markdown';
 import { foldInside, foldNodeProp, StreamLanguage } from '@codemirror/language';
 import { styleTags, tags } from '@lezer/highlight';
 
 const frontMatterFence = /^---\s*$/m;
 
-// TODO: move all of the nodenames to a single place which could be used
-// for highlighting codeblocks as well.
-const yamlNodes = [
-    'atom',
-    { name: 'meta', block: true },
-    'number',
-    'keyword',
-    'definition',
-    'comment',
-    'string'
-];
-
-/**
- * Lezer Markdown extension for YAML frontmatter support. This includes support
- * for parsing, syntax highlighting and folding.
- */
-export const frontmatter: MarkdownConfig = {
+export const frontmatter: MarkdownExtension = {
+    defineNodes: [{ name: 'Frontmatter', block: true }, 'FrontmatterMark'],
     props: [
         styleTags({
-            number: tags.number,
-            keyword: tags.keyword,
-            definition: tags.definition(tags.labelName),
-            comment: tags.comment,
-            string: tags.string,
-            atom: tags.atom,
-            meta: tags.meta,
+            Frontmatter: [tags.documentMeta, tags.monospace],
             FrontmatterMark: tags.processingInstruction
         }),
         foldNodeProp.add({
@@ -38,43 +18,35 @@ export const frontmatter: MarkdownConfig = {
             FrontmatterMark: () => null
         })
     ],
-    defineNodes: [
-        { name: 'Frontmatter', block: true },
-        'FrontmatterMark',
-        ...yamlNodes
-    ],
+    wrap: parseMixed((node) => {
+        const { parser } = StreamLanguage.define(yaml);
+        if (node.type.name === 'Frontmatter') {
+            return {
+                parser,
+                overlay: [{ from: node.from + 4, to: node.to - 4 }]
+            };
+        } else {
+            return null;
+        }
+    }),
     parseBlock: [
         {
             name: 'Fronmatter',
             before: 'HorizontalRule',
             parse: (cx, line) => {
-                let matter = '';
-                const start = 0;
                 let end: number;
                 const children = new Array<Element>();
-                // If the first line in the document starts with the frontmatter
-                // fence, parse it.
-                if (frontMatterFence.test(line.text) && cx.lineStart === 0) {
+                if (cx.lineStart === 0 && frontMatterFence.test(line.text)) {
                     // 4 is the length of the frontmatter fence (---\n).
-                    children.push(cx.elt('FrontmatterMark', start, 4));
+                    children.push(cx.elt('FrontmatterMark', 0, 4));
                     while (cx.nextLine()) {
                         if (frontMatterFence.test(line.text)) {
                             end = cx.lineStart + 4;
                             break;
                         }
-                        matter += line.text + '\n';
                     }
-                    const yamlParser = StreamLanguage.define(yaml).parser;
-                    const tree = yamlParser.parse(matter);
-
-                    tree.iterate({
-                        enter: ({ type, from, to }) => {
-                            if (type.name === 'Document') return;
-                            children.push(cx.elt(type.name, from + 4, to + 4));
-                        }
-                    });
                     children.push(cx.elt('FrontmatterMark', end - 4, end));
-                    cx.addElement(cx.elt('Frontmatter', start, end, children));
+                    cx.addElement(cx.elt('Frontmatter', 0, end, children));
                     return true;
                 } else {
                     return false;
