@@ -1,5 +1,11 @@
 # @retronav/ixora
 
+## 0.1.4
+
+### Patch Changes
+
+-   d2123da: Update dependencies (CodeMirror 6 released)
+
 ## 0.1.3
 
 ### Patch Changes
