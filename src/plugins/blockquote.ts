@@ -6,12 +6,11 @@ import {
     ViewUpdate,
     WidgetType
 } from '@codemirror/view';
-import { Range } from '@codemirror/state';
-import type { SyntaxNodeRef } from '@lezer/common';
 import {
     isCursorInRange,
     iterateTreeInVisibleRanges,
-    editorLines
+    editorLines,
+    checkRangeSubset
 } from '../util';
 
 /**
@@ -25,6 +24,17 @@ class BlockQuoteBorderWidget extends WidgetType {
     toDOM(): HTMLElement {
         const element = document.createElement('span');
         element.classList.add('cm-blockquote-border');
+        const editorStyle = getComputedStyle(
+            document.querySelector('.cm-content')
+        );
+
+        // Fancy juggling to get the blockquote border to match the
+        // line's height and get properly positioned
+        element.style.height = editorStyle.lineHeight;
+        element.style.marginBottom =
+            parseFloat(editorStyle.fontSize) -
+            parseFloat(editorStyle.lineHeight) +
+            'px';
         return element;
     }
 }
@@ -51,6 +61,7 @@ class BlockQuotePlugin {
         iterateTreeInVisibleRanges(view, {
             enter: ({ type, from, to, node }) => {
                 if (type.name !== 'Blockquote') return;
+                const marks = node.getChildren('QuoteMark');
                 const lines = editorLines(view, from, to);
                 lines.forEach((line) => {
                     const lineDec = Decoration.line({
@@ -58,38 +69,45 @@ class BlockQuotePlugin {
                     });
                     widgets.push(lineDec.range(line.from));
                 });
-                node.toTree().iterate({
-                    enter: this.iterateQuoteMark(from, to, view, widgets)
-                });
+
+                if (
+                    // Check if cursor is not in the blockquote
+                    !lines.some((line) =>
+                        isCursorInRange(view, [line.from, line.to])
+                    )
+                ) {
+                    const markDecorations = marks.map((mark) =>
+                        Decoration.replace({
+                            widget: new BlockQuoteBorderWidget()
+                        }).range(mark.from, mark.to)
+                    );
+                    widgets.push(...markDecorations);
+
+                    lines.forEach((line) => {
+                        // Sometimes a blockquote can be continued to the next
+                        // line without adding the quote mark on the next line.
+                        // Add blockquote decoration to them as well.
+                        if (
+                            !marks.some((mark) =>
+                                checkRangeSubset(
+                                    [line.from, line.to],
+                                    [mark.from, mark.to]
+                                )
+                            )
+                        )
+                            widgets.push(
+                                Decoration.widget({
+                                    widget: new BlockQuoteBorderWidget()
+                                }).range(line.from)
+                            );
+                    });
+                }
             }
         });
         return Decoration.set(widgets, true);
     }
-
-    private iterateQuoteMark(
-        from: number,
-        to: number,
-        view: EditorView,
-        widgets: Range<Decoration>[]
-    ) {
-        return ({ type, from: nodeFrom, to: nodeTo }: SyntaxNodeRef) => {
-            if (type.name !== 'QuoteMark') return;
-            const range: [number, number] = [from + nodeFrom, from + nodeTo];
-            const lines = editorLines(view, from, to);
-            if (
-                lines.some((line) =>
-                    isCursorInRange(view, [line.from, line.to])
-                )
-            )
-                return;
-            widgets.push(
-                Decoration.replace({
-                    widget: new BlockQuoteBorderWidget()
-                }).range(...range)
-            );
-        };
-    }
 }
+
 const blockQuotePlugin = ViewPlugin.fromClass(BlockQuotePlugin, {
     decorations: (v) => v.decorations
 });
@@ -100,7 +118,8 @@ const blockQuotePlugin = ViewPlugin.fromClass(BlockQuotePlugin, {
 const baseTheme = EditorView.baseTheme({
     '.cm-blockquote-border': {
         'margin-right': '0.5em',
-        'border-left': '4px solid #ccc'
+        'border-left': '4px solid #ccc',
+        display: 'inline-block'
     },
     '.cm-blockquote': {
         color: '#555'
