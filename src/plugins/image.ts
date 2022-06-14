@@ -3,8 +3,11 @@ import { hoverTooltip, Tooltip } from '@codemirror/view';
 import { imageURLStateField } from '../state/image';
 
 export interface ImagePluginOptions {
+    /** Options for image preview. */
     preview?: {
+        /** Maximum height of the image in preview. */
         maxHeight?: number;
+        /** Maximum width of the image in preview. */
         maxWidth?: number;
     };
 }
@@ -57,7 +60,15 @@ const imagePreviewTooltip = (config?: ImagePluginOptions['preview']) =>
             }
         };
     });
-
+/**
+ * Ixora Image plugin.
+ *
+ * This plugin allows to
+ * - Show a preview of an image in the document using a tooltip.
+ *
+ * @param config - Configuration options for the image plugin.
+ * @returns The image plugin.
+ */
 export const image = (config?: ImagePluginOptions): Extension => [
     imagePreviewTooltip(config?.preview),
     imageURLStateField

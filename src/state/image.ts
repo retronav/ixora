@@ -1,10 +1,25 @@
 import { syntaxTree } from '@codemirror/language';
 import { StateField, EditorState } from '@codemirror/state';
 
+/**
+ * Representation of the data held by the image URL state field.
+ */
 interface ImageURLInfo {
+    /**
+     * The URL of the image.
+     */
     url: string;
+    /**
+     * The starting position of the image element in the document.
+     */
     from: number;
+    /**
+     * The end position of the image element in the document.
+     */
     to: number;
+    /**
+     * The alt text of the image.
+     */
     alt: string;
 }
 
