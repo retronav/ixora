@@ -1,0 +1,21 @@
+name: Sync Codeberg.org Mirror
+
+on:
+  schedule:
+    - cron: "0 0,16 * * *"
+  workflow_dispatch:
+
+
+jobs:
+  sync-mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Add Codeberg origin URL
+        run: |
+          git remote add codeberg https://retronav:$CODEBERG_TOKEN@codeberg.org/retronav/ixora.git
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+      - name: Push
+        run: |
+          git push -u codeberg
