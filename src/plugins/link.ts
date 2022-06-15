@@ -11,7 +11,10 @@ import { headingSlugField } from '../state/heading-slug';
 import { checkRangeOverlap, invisibleDecoration } from '../util';
 
 /**
- * CodeMirror plugin to enchance Markdown links.
+ * Ixora Links plugin.
+ *
+ * This plugin allows to:
+ * - Add an interactive link icon to a URL which can navigate to the URL.
  */
 export const links = () => [goToLinkPlugin, baseTheme];
 
@@ -101,6 +104,9 @@ export const goToLinkPlugin = ViewPlugin.fromClass(
     { decorations: (v) => v.decorations }
 );
 
+/**
+ * Base theme for the links plugin.
+ */
 const baseTheme = EditorView.baseTheme({
     '.cm-link': {
         cursor: 'pointer',

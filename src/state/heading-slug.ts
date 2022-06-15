@@ -2,6 +2,11 @@ import { syntaxTree } from '@codemirror/language';
 import { EditorState, StateField } from '@codemirror/state';
 import { Slugger } from '../util';
 
+/**
+ * A heading slug is a string that is used to identify/reference
+ * a heading in the document. Heading slugs are URI-compatible and can be used
+ * in permalinks as heading IDs.
+ */
 export interface HeadingSlug {
     slug: string;
     pos: number;
@@ -33,7 +38,12 @@ export const headingSlugField = StateField.define<HeadingSlug[]>({
         a.every((slug, i) => slug.slug === b[i].slug && slug.pos === b[i].pos)
 });
 
-function extractSlugs(state: EditorState) {
+/**
+ *
+ * @param state - The current editor state.
+ * @returns An array of heading slugs.
+ */
+function extractSlugs(state: EditorState): HeadingSlug[] {
     const slugs: HeadingSlug[] = [];
     const slugger = new Slugger();
     syntaxTree(state).iterate({

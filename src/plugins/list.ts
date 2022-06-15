@@ -13,14 +13,14 @@ import { NodeType, SyntaxNodeRef } from '@lezer/common';
 const bulletListMarkerRE = /^[-+*]/;
 
 /**
- * CodeMirror plugin to add make Markdown lists look better.
- * This includes:
- * - Custom list mark
- * - Checkbox for task lists
+ * Ixora Lists plugin.
+ *
+ * This plugin allows to:
+ * - Customize list mark
+ * - Add an interactive checkbox for task lists
  */
 export const lists = () => [listBulletPlugin, taskListPlugin, baseTheme];
 
-//#region list bullet plugin
 /**
  * Plugin to add custom list bullet mark.
  */
@@ -71,11 +71,8 @@ class ListBulletWidget extends WidgetType {
     }
 }
 
-//#endregion
-
-//#region task list plugin
 /**
- * Plugin to add checkbox for task lists.
+ * Plugin to add checkboxes in task lists.
  */
 class TaskListsPlugin {
     decorations: DecorationSet = Decoration.none;
@@ -126,7 +123,7 @@ class TaskListsPlugin {
 }
 
 /**
- * Widget to render checkbox for task list.
+ * Widget to render checkbox for a task list item.
  */
 class CheckboxWidget extends WidgetType {
     constructor(public checked: boolean, readonly pos: number) {
@@ -156,7 +153,6 @@ class CheckboxWidget extends WidgetType {
 const taskListPlugin = ViewPlugin.fromClass(TaskListsPlugin, {
     decorations: (v) => v.decorations
 });
-//#endregion
 
 /**
  * Base theme for the lists plugin.

@@ -14,7 +14,11 @@ import {
 } from '../util';
 
 /**
- * CodeMirror extension to style code blocks.
+ * Ixora code block plugin.
+ *
+ * This plugin allows to:
+ * - Add default styling to code blocks
+ * - Customize visibility of code block markers and language
  */
 export const codeblock = (): Extension => [codeBlockPlugin, baseTheme];
 
@@ -75,6 +79,9 @@ function decorateCodeBlocks(view: EditorView) {
     return Decoration.set(widgets, true);
 }
 
+/**
+ * Base theme for code block plugin.
+ */
 const baseTheme = EditorView.baseTheme({
     '.cm-codeblock': {
         backgroundColor: '#CCC7'

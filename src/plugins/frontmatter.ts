@@ -4,8 +4,14 @@ import { Element, MarkdownExtension } from '@lezer/markdown';
 import { foldInside, foldNodeProp, StreamLanguage } from '@codemirror/language';
 import { styleTags, tags } from '@lezer/highlight';
 
+// A frontmatter fence usually consists of a seperator used three times.
+// These can be: ---, +++, ===, etc.
+// FIXME: make this configurable
 const frontMatterFence = /^---\s*$/m;
 
+/**
+ * Ixora frontmatter plugin for Markdown.
+ */
 export const frontmatter: MarkdownExtension = {
     defineNodes: [{ name: 'Frontmatter', block: true }, 'FrontmatterMark'],
     props: [
@@ -15,6 +21,7 @@ export const frontmatter: MarkdownExtension = {
         }),
         foldNodeProp.add({
             Frontmatter: foldInside,
+            // Marks don't need to be folded
             FrontmatterMark: () => null
         })
     ],

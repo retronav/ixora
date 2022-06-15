@@ -7,18 +7,28 @@ import {
 } from '@codemirror/view';
 import {
     checkRangeOverlap,
+    invisibleDecoration,
     isCursorInRange,
     iterateTreeInVisibleRanges
 } from '../util';
 
+/**
+ * These types contain markers as child elements that can be hidden.
+ */
 export const typesWithMarks = [
     'Emphasis',
     'StrongEmphasis',
     'InlineCode',
     'Strikethrough'
 ];
+/**
+ * The elements which are used as marks.
+ */
 export const markTypes = ['EmphasisMark', 'CodeMark', 'StrikethroughMark'];
 
+/**
+ * Plugin to hide marks when the they are not in the editor selection.
+ */
 class HideMarkPlugin {
     decorations: DecorationSet;
     constructor(view: EditorView) {
@@ -51,7 +61,7 @@ class HideMarkPlugin {
                             // decoration
                             if (!markTypes.includes(type.name)) return;
                             widgets.push(
-                                Decoration.replace({}).range(
+                                invisibleDecoration.range(
                                     from + markFrom,
                                     from + markTo
                                 )
@@ -66,7 +76,10 @@ class HideMarkPlugin {
 }
 
 /**
- * CodeMirror plugin to hide Markdown decoration marks.
+ * Ixora hide marks plugin.
+ *
+ * This plugin allows to:
+ * - Hide marks when they are not in the editor selection.
  */
 export const hideMarks = () => [
     ViewPlugin.fromClass(HideMarkPlugin, {

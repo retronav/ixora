@@ -6,6 +6,7 @@ import {
     ViewUpdate,
     WidgetType
 } from '@codemirror/view';
+import { Range } from '@codemirror/state';
 import {
     isCursorInRange,
     iterateTreeInVisibleRanges,
@@ -14,7 +15,11 @@ import {
 } from '../util';
 
 /**
- * CodeMirror plugin to style Markdown blockquotes.
+ * Ixora blockquote plugin.
+ *
+ * This plugin allows to:
+ * - Decorate blockquote marks in the editor
+ * - Add default styling to blockquote marks
  */
 export function blockquote() {
     return [blockQuotePlugin, baseTheme];
@@ -56,8 +61,13 @@ class BlockQuotePlugin {
             this.decorations = this.styleBlockquote(update.view);
         }
     }
-    private styleBlockquote(view: EditorView) {
-        const widgets = [];
+    /**
+     *
+     * @param view - The editor view
+     * @returns The blockquote decorations to add to the editor
+     */
+    private styleBlockquote(view: EditorView): DecorationSet {
+        const widgets: Range<Decoration>[] = [];
         iterateTreeInVisibleRanges(view, {
             enter: ({ type, from, to, node }) => {
                 if (type.name !== 'Blockquote') return;

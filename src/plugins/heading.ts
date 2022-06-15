@@ -9,7 +9,11 @@ import { checkRangeOverlap, iterateTreeInVisibleRanges } from '../util';
 import { headingSlugField } from '../state/heading-slug';
 
 /**
- * CodeMirror plugin to enchance Markdown headings.
+ * Ixora headings plugin.
+ *
+ * This plugin allows to:
+ * - Size headings according to their heading level
+ * - Add default styling to headings
  */
 export const headings = () => [
     headingDecorationsPlugin,
@@ -17,7 +21,6 @@ export const headings = () => [
     baseTheme
 ];
 
-//#region hide header marks plugin
 class HideHeaderMarkPlugin {
     decorations: DecorationSet;
     constructor(view: EditorView) {
@@ -59,7 +62,7 @@ class HideHeaderMarkPlugin {
 }
 
 /**
- * CodeMirror Plugin to hide the header mark
+ * Plugin to hide the header mark.
  *
  * The header mark will not be hidden when:
  * - The cursor is on the active line
@@ -68,9 +71,7 @@ class HideHeaderMarkPlugin {
 const hideHeaderMarkPlugin = ViewPlugin.fromClass(HideHeaderMarkPlugin, {
     decorations: (v) => v.decorations
 });
-//#endregion
 
-//#region heading decorations plugin
 class HeadingDecorationsPlugin {
     decorations: DecorationSet;
     constructor(view: EditorView) {
@@ -115,8 +116,10 @@ const headingDecorationsPlugin = ViewPlugin.fromClass(
     HeadingDecorationsPlugin,
     { decorations: (v) => v.decorations }
 );
-//#endregion
 
+/**
+ * Base theme for headings.
+ */
 const baseTheme = EditorView.baseTheme({
     '.cm-heading': {
         fontWeight: 'bold'
