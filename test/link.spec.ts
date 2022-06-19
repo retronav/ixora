@@ -1,6 +1,6 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
-import { setup } from './setup-editor';
+import { setup } from './util';
 
 let editor!: EditorView;
 const content = `# Hello
@@ -22,7 +22,7 @@ beforeEach(() => {
     editor.dispatch(tn);
 });
 afterEach(() => {
-    document.body.removeChild(document.getElementById('editor'));
+    document.body.removeChild(document.getElementById('editor') as HTMLElement);
 });
 
 describe('links plugin', () => {
@@ -47,9 +47,10 @@ describe('links plugin', () => {
 
         expect(editor.state.selection.main.from).to.eq(from);
 
-        const link: HTMLAnchorElement = (
+        const link = (
             thirdLine.node as HTMLElement
-        ).querySelector('a.cm-link');
+        ).querySelector('a.cm-link') as HTMLAnchorElement;
+
         expect(link).to.exist;
 
         // Click the link

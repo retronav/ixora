@@ -1,6 +1,6 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
-import { setup } from './setup-editor';
+import { moveCursor, setEditorContent, setup } from './util';
 
 let editor!: EditorView;
 const content = `**_\`foo\`_** is bar`;
@@ -11,16 +11,10 @@ beforeEach(() => {
     editorEl.id = 'editor';
     document.body.appendChild(editorEl);
     editor = setup(editorEl);
-    const tn = editor.state.update({
-        changes: {
-            from: 0,
-            insert: content
-        }
-    });
-    editor.dispatch(tn);
+    setEditorContent(content, editor);
 });
 afterEach(() => {
-    document.body.removeChild(document.getElementById('editor'));
+    document.body.removeChild(document.getElementById('editor') as HTMLElement);
 });
 
 describe('Hide marks plugin', () => {
@@ -28,11 +22,7 @@ describe('Hide marks plugin', () => {
         'Should hide the bold, italic and inline code marks when' +
             ' the cursor is not inside that text',
         () => {
-            editor.dispatch(
-                editor.state.update({
-                    selection: { anchor: editor.viewportLineBlocks[0].to }
-                })
-            );
+            moveCursor('position', editor.viewportLineBlocks[0].to, editor);
             const firstLine = editor.domAtPos(
                 editor.viewportLineBlocks[0].from
             );
@@ -40,11 +30,7 @@ describe('Hide marks plugin', () => {
         }
     );
     it('Should not hide the marks when the cursor is on the text', () => {
-        editor.dispatch(
-            editor.state.update({
-                selection: { anchor: editor.viewportLineBlocks[0].from }
-            })
-        );
+        moveCursor('line', 0, editor);
         const firstLine = editor.domAtPos(editor.viewportLineBlocks[0].from);
         expect(firstLine.node).to.have.text(content);
     });

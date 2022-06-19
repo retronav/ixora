@@ -1,6 +1,6 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
-import { setup } from './setup-editor';
+import { moveCursor, setEditorContent, setup } from './util';
 
 let editor!: EditorView;
 const content = `\`\`\`typescript
@@ -14,16 +14,10 @@ beforeEach(() => {
     editorEl.id = 'editor';
     document.body.appendChild(editorEl);
     editor = setup(editorEl);
-    const tn = editor.state.update({
-        changes: {
-            from: 0,
-            insert: content
-        }
-    });
-    editor.dispatch(tn);
+    setEditorContent(content, editor);
 });
 afterEach(() => {
-    document.body.removeChild(document.getElementById('editor'));
+    document.body.removeChild(document.getElementById('editor') as HTMLElement);
 });
 
 describe('Codeblock plugin', () => {
@@ -44,12 +38,7 @@ describe('Codeblock plugin', () => {
 
     it('Should remove the code marks and language name', () => {
         /// Move cursor out of the codeblock
-        const tn = editor.state.update({
-            selection: {
-                anchor: editor.viewportLineBlocks.pop().from
-            }
-        });
-        editor.dispatch(tn);
+        moveCursor("line", editor.viewportLineBlocks.length-1, editor);
         const firstLine = editor.domAtPos(editor.viewportLineBlocks[0].from)
             .node as HTMLElement;
         const secondLine = editor.domAtPos(editor.viewportLineBlocks[1].from)

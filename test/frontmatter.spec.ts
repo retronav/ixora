@@ -1,7 +1,7 @@
 import { syntaxTree } from '@codemirror/language';
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
-import { setup } from './setup-editor';
+import { setEditorContent, setup } from './util';
 
 let editor!: EditorView;
 const content = `---
@@ -13,16 +13,10 @@ beforeEach(() => {
     editorEl.id = 'editor';
     document.body.appendChild(editorEl);
     editor = setup(editorEl);
-    const tn = editor.state.update({
-        changes: {
-            from: 0,
-            insert: content
-        }
-    });
-    editor.dispatch(tn);
+    setEditorContent(content, editor);
 });
 afterEach(() => {
-    document.body.removeChild(document.getElementById('editor'));
+    document.body.removeChild(document.getElementById('editor') as HTMLElement);
 });
 
 describe('Frontmatter plugin', () => {
@@ -33,21 +27,15 @@ describe('Frontmatter plugin', () => {
         tree.iterate({
             from,
             to,
-            enter: ({ type, from, to }) => {
+            enter: ({ name, from, to }) => {
                 // These checks are to ensure everything is properly
                 // highlighted. Testing every data type of the YAML parser
                 // is not needed since that's not our job.
-                if (type.name === 'Frontmatter') {
+                if (name === 'Frontmatter') {
                     expect(editor.state.sliceDoc(from, to)).to.eq(content);
                 }
-                if (type.name === 'FrontmatterMark') {
+                if (name === 'FrontmatterMark') {
                     expect(editor.state.sliceDoc(from, to).trim()).to.eq('---');
-                }
-                if (type.name === 'YAMLatom') {
-                    expect(editor.state.sliceDoc(from, to)).to.eq('title');
-                }
-                if (type.name === 'YAMLstring') {
-                    expect(editor.state.sliceDoc(from, to)).to.eq('Hello');
                 }
             }
         });
@@ -61,13 +49,7 @@ The thing below is not a frontmatter block
 title: Hello
 ---
 `;
-        const tn = editor.state.update({
-            changes: {
-                from: 0,
-                insert: content
-            }
-        });
-        editor.dispatch(tn);
+        setEditorContent(content, editor);
 
         const tree = syntaxTree(editor.state);
         tree.iterate({

@@ -62,7 +62,7 @@ This library includes:
     });
     ```
 
-Check `test/setup-editor.ts` for an example of how to use Ixora with CodeMirror.
+Check `test/util.ts` for an example of how to use Ixora with CodeMirror.
 
 # Additional information
 

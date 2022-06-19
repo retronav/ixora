@@ -1,6 +1,6 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
-import { setup } from './setup-editor';
+import { moveCursor, setEditorContent, setup } from './util';
 
 let editor!: EditorView;
 const content = `> Hello
@@ -51,17 +51,8 @@ describe('Blockquote plugin', () => {
             const contentWithoutQuote = `> Hello
 I am still in a blockquote
 `;
-            const tn = editor.state.update({
-                changes: {
-                    from: 0,
-                    to: content.length,
-                    insert: contentWithoutQuote
-                },
-                selection: {
-                    anchor: contentWithoutQuote.length
-                }
-            });
-            editor.dispatch(tn);
+            setEditorContent(contentWithoutQuote, editor);
+            moveCursor("line", editor.viewportLineBlocks.length-1, editor);
 
             const secondLine = editor.domAtPos(
                 editor.viewportLineBlocks[1].from

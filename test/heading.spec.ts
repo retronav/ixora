@@ -1,6 +1,6 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
-import { setup } from './setup-editor';
+import { setup, setEditorContent, moveCursor } from './util';
 
 let editor!: EditorView;
 const content = `# Hello
@@ -12,16 +12,10 @@ beforeEach(() => {
     editorEl.id = 'editor';
     document.body.appendChild(editorEl);
     editor = setup(editorEl);
-    const tn = editor.state.update({
-        changes: {
-            from: 0,
-            insert: content
-        }
-    });
-    editor.dispatch(tn);
+    setEditorContent(content, editor);
 });
 afterEach(() => {
-    document.body.removeChild(document.getElementById('editor'));
+    document.body.removeChild(document.getElementById('editor') as HTMLElement);
 });
 
 describe('Heading plugin', () => {
@@ -40,12 +34,7 @@ describe('Heading plugin', () => {
         ).to.equal(headingContent);
 
         // Move the cursor to a position after the heading
-        editor.dispatch(
-            editor.state.update({
-                // Move the cursor to the start of next line
-                selection: { anchor: editor.viewportLineBlocks[1].from }
-            })
-        );
+        moveCursor("line", 1, editor);
 
         // CodeMirror uses this to mark the positions of hidden widgets
         expect(
@@ -60,7 +49,9 @@ describe('Heading plugin', () => {
 
     it('Should add an appropriate slug to heading', () => {
         const headingEl = editor.domAtPos(0).node as HTMLElement;
-        expect(Array.from(headingEl.firstElementChild.classList)).to.contain(
+        expect(headingEl.firstElementChild).to.exist;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        expect(Array.from(headingEl.firstElementChild!.classList)).to.contain(
             'cm-heading-slug-hello'
         );
 
@@ -83,13 +74,7 @@ describe('Heading plugin', () => {
         const content = `Hello
 =========
 `;
-        const tn = editor.state.update({
-            changes: {
-                from: 0,
-                insert: content
-            }
-        });
-        editor.dispatch(tn);
+        setEditorContent(content, editor);
 
         const headingEl = editor.domAtPos(0).node as HTMLElement;
         const headingLineEl = editor.domAtPos(editor.viewportLineBlocks[1].from)
