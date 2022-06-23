@@ -58,6 +58,7 @@ function getLinkAnchor(view: EditorView) {
             enter: ({ type, from, to, node }) => {
                 if (type.name !== 'URL') return;
                 const parent = node.parent;
+                // FIXME: make this configurable
                 const blackListedParents = ['Image'];
                 if (parent && !blackListedParents.includes(parent.name)) {
                     const marks = parent.getChildren('LinkMark');

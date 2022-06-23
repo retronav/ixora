@@ -89,23 +89,21 @@ class HeadingDecorationsPlugin {
     private decorateHeadings(view: EditorView) {
         const widgets = [];
         iterateTreeInVisibleRanges(view, {
-            enter: ({ type, from, to }) => {
-                if (!type.name.includes('Heading')) return;
+            enter: ({ name, from }) => {
+                // To capture ATXHeading and SetextHeading
+                if (!name.includes('Heading')) return;
                 const slug = view.state
                     .field(headingSlugField)
-                    .find((s) => s.pos === from)?.slug;
-                const createDec = (level: number) =>
-                    Decoration.mark({
-                        tagName: 'span',
-                        class: [
-                            'cm-heading',
-                            `cm-heading-${level}`,
-                            slug ? `cm-heading-slug-${slug}` : ''
-                        ].join(' ')
-                    });
-                const level = parseInt(/[1-6]/.exec(type.name)[0]);
-                const dec = createDec(level);
-                widgets.push(dec.range(from, to));
+                    .find((s) => s.pos === from).slug;
+                const level = parseInt(/[1-6]$/.exec(name)[0]);
+                const dec = Decoration.line({
+                    class: [
+                        'cm-heading',
+                        `cm-heading-${level}`,
+                        `cm-heading-slug-${slug}`
+                    ].join(' ')
+                });
+                widgets.push(dec.range(view.state.doc.lineAt(from).from));
             }
         });
         return Decoration.set(widgets, true);

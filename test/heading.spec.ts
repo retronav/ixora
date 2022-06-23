@@ -34,7 +34,7 @@ describe('Heading plugin', () => {
         ).to.equal(headingContent);
 
         // Move the cursor to a position after the heading
-        moveCursor("line", 1, editor);
+        moveCursor('line', 1, editor);
 
         // CodeMirror uses this to mark the positions of hidden widgets
         expect(
@@ -49,16 +49,11 @@ describe('Heading plugin', () => {
 
     it('Should add an appropriate slug to heading', () => {
         const headingEl = editor.domAtPos(0).node as HTMLElement;
-        expect(headingEl.firstElementChild).to.exist;
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        expect(Array.from(headingEl.firstElementChild!.classList)).to.contain(
-            'cm-heading-slug-hello'
-        );
+        expect(headingEl).to.have.class('cm-heading-slug-hello');
 
         const pos = editor.viewportLineBlocks[2].from;
         const thirdHeadingEl = editor.domAtPos(pos).node as HTMLElement;
-        expect(thirdHeadingEl.querySelector('.cm-heading-slug-hello-2')).to
-            .exist;
+        expect(thirdHeadingEl).to.have.class('cm-heading-slug-hello-2');
     });
 
     it('Should add a class with heading level', () => {
@@ -66,8 +61,8 @@ describe('Heading plugin', () => {
         const heading2El = editor.domAtPos(editor.viewportLineBlocks[1].from)
             .node as HTMLElement;
 
-        expect(headingEl.querySelector('.cm-heading-1')).to.exist;
-        expect(heading2El.querySelector('.cm-heading-2')).to.exist;
+        expect(headingEl).to.have.class('cm-heading-1');
+        expect(heading2El).to.have.class('cm-heading-2');
     });
 
     it('Should support Setext headings and not hide the underline', () => {
@@ -77,14 +72,9 @@ describe('Heading plugin', () => {
         setEditorContent(content, editor);
 
         const headingEl = editor.domAtPos(0).node as HTMLElement;
-        const headingLineEl = editor.domAtPos(editor.viewportLineBlocks[1].from)
-            .node as HTMLElement;
-
-        expect(headingEl.querySelector('.cm-heading-1')).to.exist.and.have.text(
-            content.split('\n')[0]
-        );
-        expect(
-            headingLineEl.querySelector('.cm-heading-1')
-        ).to.exist.and.have.text(content.split('\n')[1]);
+        expect(headingEl)
+            .to.exist.and.have.class('cm-heading-1')
+            // .and.have.class('cm-heading-slug-hello')
+            .and.have.text(content.split('\n')[0]);
     });
 });

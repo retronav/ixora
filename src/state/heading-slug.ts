@@ -12,10 +12,6 @@ export interface HeadingSlug {
     pos: number;
 }
 
-// A header starts with a hash character (upto 6), then a space,
-// then the header content.
-const headingStartRE = /^(#{1,6}\s)/;
-
 /**
  * A plugin that stores the calculated slugs of the document headings in the
  * editor state. These can be useful when resolving links to headings inside
@@ -27,11 +23,9 @@ export const headingSlugField = StateField.define<HeadingSlug[]>({
         extractSlugs(state);
         return slugs;
     },
-    update: (_value, tx) => {
-        // It seems very hard to incrementially calculate slugs, so a
-        // recalculation is the best option.
-        const slugs = extractSlugs(tx.state);
-        return slugs;
+    update: (value, tx) => {
+        if (tx.docChanged) return extractSlugs(tx.state);
+        return value;
     },
     compare: (a, b) =>
         a.length === b.length &&
@@ -47,15 +41,15 @@ function extractSlugs(state: EditorState): HeadingSlug[] {
     const slugs: HeadingSlug[] = [];
     const slugger = new Slugger();
     syntaxTree(state).iterate({
-        enter: ({ type, from, to }) => {
-            if (!type.name.includes('ATXHeading')) return;
-            const slug = slugger.slug(
-                // TODO: There can be areas if the heading has
-                // marks and could result in weird behaviour,
-                // this should be investigated.
-                state.sliceDoc(from, to).replace(headingStartRE, '')
-            );
-            if (slug) slugs.push({ slug, pos: from });
+        enter: ({ name, from, to, node }) => {
+            // Capture ATXHeading and SetextHeading
+            if (!name.includes('Heading')) return;
+            const mark = node.getChild('HeaderMark');
+
+            const headerText = state.sliceDoc(from, to).split('');
+            headerText.splice(mark.from - from, mark.to - mark.from);
+            const slug = slugger.slug(headerText.join('').trim());
+            slugs.push({ slug, pos: from });
         }
     });
     return slugs;
