@@ -10,10 +10,17 @@ export const theme = EditorView.theme(
             width: '80ch',
             margin: 'auto',
             overflow: 'auto',
-            fontFamily: 'sans-serif'
+            fontFamily: 'Arial'
         },
         '.cm-content': {
-            fontSize: '18px'
+            margin: '0 0.5rem'
+        },
+        '.cm-tooltip': {
+            padding: '0.5rem',
+            borderRadius: '5px'
+        },
+        '.cm-codeblock': {
+            fontFamily: 'Victor Mono',
         }
     },
     { dark: false }
