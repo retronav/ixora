@@ -58,7 +58,8 @@ function getLinkAnchor(view: EditorView) {
             enter: ({ type, from, to, node }) => {
                 if (type.name !== 'URL') return;
                 const parent = node.parent;
-                if (parent) {
+                const blackListedParents = ['Image'];
+                if (parent && !blackListedParents.includes(parent.name)) {
                     const marks = parent.getChildren('LinkMark');
                     const ranges = view.state.selection.ranges;
                     const cursorOverlaps = ranges.some(({ from, to }) =>
