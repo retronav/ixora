@@ -8,39 +8,19 @@ import {
 } from '@codemirror/view';
 import { Range } from '@codemirror/state';
 import {
-    isCursorInRange,
     iterateTreeInVisibleRanges,
     editorLines,
+    isCursorInRange,
     checkRangeSubset
 } from '../util';
 
-/**
- * Ixora blockquote plugin.
- *
- * This plugin allows to:
- * - Decorate blockquote marks in the editor
- * - Add default styling to blockquote marks
- */
-export function blockquote() {
-    return [blockQuotePlugin, baseTheme];
-}
+const quoteMarkRE = /^(\s*>+)/gm;
 
 class BlockQuoteBorderWidget extends WidgetType {
     toDOM(): HTMLElement {
-        const element = document.createElement('span');
-        element.classList.add('cm-blockquote-border');
-        const editorStyle = getComputedStyle(
-            document.querySelector('.cm-content')
-        );
-
-        // Fancy juggling to get the blockquote border to match the
-        // line's height and get properly positioned
-        element.style.height = editorStyle.lineHeight;
-        element.style.marginBottom =
-            parseFloat(editorStyle.fontSize) -
-            parseFloat(editorStyle.lineHeight) +
-            'px';
-        return element;
+        const dom = document.createElement('span');
+        dom.classList.add('cm-blockquote-border');
+        return dom;
     }
 }
 
@@ -69,10 +49,10 @@ class BlockQuotePlugin {
     private styleBlockquote(view: EditorView): DecorationSet {
         const widgets: Range<Decoration>[] = [];
         iterateTreeInVisibleRanges(view, {
-            enter: ({ type, from, to, node }) => {
-                if (type.name !== 'Blockquote') return;
-                const marks = node.getChildren('QuoteMark');
+            enter: ({ name, from, to }) => {
+                if (name !== 'Blockquote') return;
                 const lines = editorLines(view, from, to);
+
                 lines.forEach((line) => {
                     const lineDec = Decoration.line({
                         class: 'cm-blockquote'
@@ -81,22 +61,20 @@ class BlockQuotePlugin {
                 });
 
                 if (
-                    // Check if cursor is not in the blockquote
-                    !lines.some((line) =>
-                        isCursorInRange(view, [line.from, line.to])
+                    lines.every(
+                        (line) => !isCursorInRange(view, [line.from, line.to])
                     )
                 ) {
-                    const markDecorations = marks.map((mark) =>
-                        Decoration.replace({
-                            widget: new BlockQuoteBorderWidget()
-                        }).range(mark.from, mark.to)
-                    );
-                    widgets.push(...markDecorations);
-
+                    const marks = Array.from(
+                        view.state.sliceDoc(from, to).matchAll(quoteMarkRE)
+                    )
+                        .map((x) => from + x.index)
+                        .map((i) =>
+                            Decoration.replace({
+                                widget: new BlockQuoteBorderWidget()
+                            }).range(i, i + 1)
+                        );
                     lines.forEach((line) => {
-                        // Sometimes a blockquote can be continued to the next
-                        // line without adding the quote mark on the next line.
-                        // Add blockquote decoration to them as well.
                         if (
                             !marks.some((mark) =>
                                 checkRangeSubset(
@@ -105,12 +83,14 @@ class BlockQuotePlugin {
                                 )
                             )
                         )
-                            widgets.push(
+                            marks.push(
                                 Decoration.widget({
                                     widget: new BlockQuoteBorderWidget()
                                 }).range(line.from)
                             );
                     });
+
+                    widgets.push(...marks);
                 }
             }
         });
@@ -127,11 +107,20 @@ const blockQuotePlugin = ViewPlugin.fromClass(BlockQuotePlugin, {
  */
 const baseTheme = EditorView.baseTheme({
     '.cm-blockquote-border': {
-        'margin-right': '0.5em',
-        'border-left': '4px solid #ccc',
-        display: 'inline-block'
+        'border-left': '4px solid #ccc'
     },
     '.cm-blockquote': {
         color: '#555'
     }
 });
+
+/**
+ * Ixora blockquote plugin.
+ *
+ * This plugin allows to:
+ * - Decorate blockquote marks in the editor
+ * - Add default styling to blockquote marks
+ */
+export function blockquote() {
+    return [blockQuotePlugin, baseTheme];
+}
