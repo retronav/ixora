@@ -1,12 +1,12 @@
 # Features todo
 
-- [ ] Codeblock syntax highlighting
-- [ ] Image preview
-- [ ] LaTeX support
-- [ ] Mermaid.js support
+- Image preview
+- LaTeX support
+- Mermaid.js support
 
 # Known bugs
 
 # Minor improvements
 
-- [ ] Move all line decorations into a single plugin
+- Move all line decorations into a single plugin
+- Allow usage of custom slugger
