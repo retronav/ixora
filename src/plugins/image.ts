@@ -1,75 +1,70 @@
-import { Extension } from '@codemirror/state';
-import { hoverTooltip, Tooltip } from '@codemirror/view';
+import { Extension, Range } from '@codemirror/state';
+import { EditorView } from 'codemirror';
 import { imageURLStateField } from '../state/image';
+import { image as classes } from '../classes';
+import {
+    Decoration,
+    DecorationSet,
+    ViewPlugin,
+    ViewUpdate
+} from '@codemirror/view';
+import {
+    iterateTreeInVisibleRanges,
+    isCursorInRange,
+    invisibleDecoration
+} from '../util';
 
-export interface ImagePluginOptions {
-    /** Options for image preview. */
-    preview?: {
-        /** Maximum height of the image in preview. */
-        maxHeight?: number;
-        /** Maximum width of the image in preview. */
-        maxWidth?: number;
-    };
+function hideNodes(view: EditorView) {
+    const widgets = new Array<Range<Decoration>>();
+    iterateTreeInVisibleRanges(view, {
+        enter(node) {
+            if (
+                node.name === 'Image' &&
+                !isCursorInRange(view, [node.from, node.to])
+            ) {
+                widgets.push(invisibleDecoration.range(node.from, node.to));
+            }
+        }
+    });
+    return Decoration.set(widgets, true);
 }
 
-const imagePreviewTooltip = (config?: ImagePluginOptions['preview']) =>
-    hoverTooltip((view, pos): Tooltip => {
-        const imageInfo = view.state
-            .field(imageURLStateField)
-            .find((val) => val.from <= pos && pos <= val.to);
+const hideImageNodePlugin = ViewPlugin.fromClass(
+    class {
+        decorations: DecorationSet;
 
-        const onTooltipMount = async (
-            message: HTMLSpanElement,
-            img: HTMLImageElement
-        ) => {
-            const blob = await fetch(imageInfo.url)
-                .then((res) => res.blob())
-                .catch(() => {
-                    message.textContent = `Error loading image preview; Image description: ${imageInfo.alt}`;
-                });
-            if (blob) {
-                img.src = imageInfo.url;
-                img.alt = imageInfo.alt;
-                img.addEventListener('load', () => {
-                    message.textContent = '';
-                });
-            }
-        };
+        constructor(view: EditorView) {
+            this.decorations = hideNodes(view);
+        }
 
-        return {
-            pos,
-            above: false,
-            create: () => {
-                const dom = document.createElement('div');
-                const message = document.createElement('span');
-                const img = new Image();
-                img.style.objectFit = 'contain';
-                if (config && config.maxHeight)
-                    img.style.maxHeight = `${config.maxHeight}px`;
-                if (config && config.maxWidth)
-                    img.style.maxWidth = `${config.maxWidth}px`;
+        update(update: ViewUpdate) {
+            if (update.docChanged || update.selectionSet)
+                this.decorations = hideNodes(update.view);
+        }
+    },
+    { decorations: (v) => v.decorations }
+);
 
-                message.textContent = 'Loading...';
-                dom.appendChild(message);
-                dom.appendChild(img);
-
-                return {
-                    dom,
-                    mount: () => onTooltipMount(message, img)
-                };
-            }
-        };
-    });
 /**
  * Ixora Image plugin.
  *
  * This plugin allows to
- * - Show a preview of an image in the document using a tooltip.
+ * - Add a preview of an image in the document.
  *
- * @param config - Configuration options for the image plugin.
  * @returns The image plugin.
  */
-export const image = (config?: ImagePluginOptions): Extension => [
-    imagePreviewTooltip(config?.preview),
-    imageURLStateField
+export const image = (): Extension => [
+    imageURLStateField,
+    hideImageNodePlugin,
+    baseTheme
 ];
+
+const baseTheme = EditorView.baseTheme({
+    ['.' + classes.widget]: {
+        // display: 'block',
+        objectFit: 'contain',
+        maxWidth: '100%',
+        maxHeight: '100%',
+        userSelect: 'none'
+    }
+});
