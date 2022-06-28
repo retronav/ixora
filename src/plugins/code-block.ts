@@ -12,6 +12,7 @@ import {
     iterateTreeInVisibleRanges,
     editorLines
 } from '../util';
+import { codeblock as classes } from '../classes';
 
 /**
  * Ixora code block plugin.
@@ -47,13 +48,14 @@ function decorateCodeBlocks(view: EditorView) {
             if (!['FencedCode', 'CodeBlock'].includes(type.name)) return;
             editorLines(view, from, to).forEach((block, i) => {
                 const lineDec = Decoration.line({
-                    class: `cm-codeblock ${
+                    class: [
+                        classes.widget,
                         i === 0
-                            ? 'cm-codeblock-begin'
+                            ? classes.widgetBegin
                             : block.to === to
-                            ? 'cm-codeblock-end'
+                            ? classes.widgetEnd
                             : ''
-                    }`
+                    ].join(' ')
                 });
                 widgets.push(lineDec.range(block.from));
             });
@@ -83,13 +85,13 @@ function decorateCodeBlocks(view: EditorView) {
  * Base theme for code block plugin.
  */
 const baseTheme = EditorView.baseTheme({
-    '.cm-codeblock': {
+    ['.'+classes.widget]: {
         backgroundColor: '#CCC7'
     },
-    '.cm-codeblock-begin': {
+    ['.'+classes.widgetBegin]: {
         borderRadius: '5px 5px 0 0'
     },
-    '.cm-codeblock-end': {
+    ['.'+classes.widgetEnd]: {
         borderRadius: '0 0 5px 5px'
     }
 });

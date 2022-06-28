@@ -19,6 +19,9 @@ export { hideMarks } from './plugins/hide-mark';
 export { links } from './plugins/link';
 export { lists } from './plugins/list';
 
+// Classes
+export * as classes from './classes';
+
 const ixora: Extension = [
     headingSlugField,
     blockquote(),

@@ -9,6 +9,7 @@ import {
 import { isCursorInRange, iterateTreeInVisibleRanges } from '../util';
 import { ChangeSpec, Range } from '@codemirror/state';
 import { NodeType, SyntaxNodeRef } from '@lezer/common';
+import { list as classes } from '../classes';
 
 const bulletListMarkerRE = /^[-+*]/;
 
@@ -131,7 +132,7 @@ class CheckboxWidget extends WidgetType {
     }
     toDOM(view: EditorView): HTMLElement {
         const wrap = document.createElement('span');
-        wrap.classList.add('cm-task-marker-checkbox');
+        wrap.classList.add(classes.taskCheckbox);
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.checked = this.checked;
@@ -158,14 +159,14 @@ const taskListPlugin = ViewPlugin.fromClass(TaskListsPlugin, {
  * Base theme for the lists plugin.
  */
 const baseTheme = EditorView.baseTheme({
-    '.cm-list-bullet': {
+    ['.' + classes.bullet]: {
         position: 'relative',
         visibility: 'hidden'
     },
-    '.cm-task-checked': {
+    ['.' + classes.taskChecked]: {
         textDecoration: 'line-through !important'
     },
-    '.cm-list-bullet:after': {
+    ['.' + classes.bullet + ':after']: {
         visibility: 'visible',
         position: 'absolute',
         top: 0,

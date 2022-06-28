@@ -7,6 +7,7 @@ import {
 } from '@codemirror/view';
 import { checkRangeOverlap, iterateTreeInVisibleRanges } from '../util';
 import { headingSlugField } from '../state/heading-slug';
+import { heading as classes } from '../classes';
 
 /**
  * Ixora headings plugin.
@@ -98,9 +99,9 @@ class HeadingDecorationsPlugin {
                 const level = parseInt(/[1-6]$/.exec(name)[0]);
                 const dec = Decoration.line({
                     class: [
-                        'cm-heading',
-                        `cm-heading-${level}`,
-                        `cm-heading-slug-${slug}`
+                        classes.heading,
+                        classes.level(level),
+                        classes.slug(slug)
                     ].join(' ')
                 });
                 widgets.push(dec.range(view.state.doc.lineAt(from).from));
@@ -122,10 +123,10 @@ const baseTheme = EditorView.baseTheme({
     '.cm-heading': {
         fontWeight: 'bold'
     },
-    '.cm-heading-1': { fontSize: '2.2rem' },
-    '.cm-heading-2': { fontSize: '1.8rem' },
-    '.cm-heading-3': { fontSize: '1.4rem' },
-    '.cm-heading-4': { fontSize: '1.2rem' },
-    '.cm-heading-5': { fontSize: '1rem' },
-    '.cm-heading-6': { fontSize: '0.8rem' }
+    ['.' + classes.level(1)]: { fontSize: '2.2rem' },
+    ['.' + classes.level(2)]: { fontSize: '1.8rem' },
+    ['.' + classes.level(3)]: { fontSize: '1.4rem' },
+    ['.' + classes.level(4)]: { fontSize: '1.2rem' },
+    ['.' + classes.level(5)]: { fontSize: '1rem' },
+    ['.' + classes.level(6)]: { fontSize: '0.8rem' }
 });

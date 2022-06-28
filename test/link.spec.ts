@@ -1,5 +1,6 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
+import { classes } from '../dist';
 import { setup } from './util';
 
 let editor!: EditorView;
@@ -22,7 +23,8 @@ beforeEach(() => {
     editor.dispatch(tn);
 });
 afterEach(() => {
-    document.body.removeChild(document.getElementById('editor') as HTMLElement);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    document.body.removeChild(document.getElementById('editor')!);
 });
 
 describe('links plugin', () => {
@@ -30,7 +32,7 @@ describe('links plugin', () => {
         const secondLine = editor.domAtPos(editor.viewportLineBlocks[1].from);
         const link = (secondLine.node as HTMLElement).querySelector('a');
         expect(link)
-            .to.exist.and.have.class('cm-link')
+            .to.exist.and.have.class(classes.link.widget)
             .and.have.text('🔗')
             .and.have.attr('href', 'https://example.com');
     });
@@ -47,11 +49,11 @@ describe('links plugin', () => {
 
         expect(editor.state.selection.main.from).to.eq(from);
 
-        const link = (
-            thirdLine.node as HTMLElement
-        ).querySelector('a.cm-link') as HTMLAnchorElement;
+        const link = (thirdLine.node as HTMLElement).querySelector(
+            'a'
+        ) as HTMLAnchorElement;
 
-        expect(link).to.exist;
+        expect(link).to.exist.and.have.class(classes.link.widget);
 
         // Click the link
         link.click();

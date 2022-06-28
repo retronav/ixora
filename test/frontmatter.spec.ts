@@ -16,7 +16,8 @@ beforeEach(() => {
     setEditorContent(content, editor);
 });
 afterEach(() => {
-    document.body.removeChild(document.getElementById('editor') as HTMLElement);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    document.body.removeChild(document.getElementById('editor')!);
 });
 
 describe('Frontmatter plugin', () => {

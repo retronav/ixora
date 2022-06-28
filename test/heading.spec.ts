@@ -1,5 +1,6 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
+import { classes } from '../dist';
 import { setup, setEditorContent, moveCursor } from './util';
 
 let editor!: EditorView;
@@ -15,7 +16,8 @@ beforeEach(() => {
     setEditorContent(content, editor);
 });
 afterEach(() => {
-    document.body.removeChild(document.getElementById('editor') as HTMLElement);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    document.body.removeChild(document.getElementById('editor')!);
 });
 
 describe('Heading plugin', () => {
@@ -49,11 +51,11 @@ describe('Heading plugin', () => {
 
     it('Should add an appropriate slug to heading', () => {
         const headingEl = editor.domAtPos(0).node as HTMLElement;
-        expect(headingEl).to.have.class('cm-heading-slug-hello');
+        expect(headingEl).to.have.class(classes.heading.slug('hello'));
 
         const pos = editor.viewportLineBlocks[2].from;
         const thirdHeadingEl = editor.domAtPos(pos).node as HTMLElement;
-        expect(thirdHeadingEl).to.have.class('cm-heading-slug-hello-2');
+        expect(thirdHeadingEl).to.have.class(classes.heading.slug('hello-2'));
     });
 
     it('Should add a class with heading level', () => {
@@ -61,8 +63,8 @@ describe('Heading plugin', () => {
         const heading2El = editor.domAtPos(editor.viewportLineBlocks[1].from)
             .node as HTMLElement;
 
-        expect(headingEl).to.have.class('cm-heading-1');
-        expect(heading2El).to.have.class('cm-heading-2');
+        expect(headingEl).to.have.class(classes.heading.level(1));
+        expect(heading2El).to.have.class(classes.heading.level(2));
     });
 
     it('Should support Setext headings and not hide the underline', () => {
@@ -73,8 +75,8 @@ describe('Heading plugin', () => {
 
         const headingEl = editor.domAtPos(0).node as HTMLElement;
         expect(headingEl)
-            .to.exist.and.have.class('cm-heading-1')
-            // .and.have.class('cm-heading-slug-hello')
+            .to.exist.and.have.class(classes.heading.level(1))
+            .and.have.class(classes.heading.slug('hello'))
             .and.have.text(content.split('\n')[0]);
     });
 });

@@ -9,6 +9,7 @@ import {
 } from '@codemirror/view';
 import { headingSlugField } from '../state/heading-slug';
 import { checkRangeOverlap, invisibleDecoration } from '../util';
+import { link as classes } from '../classes';
 
 /**
  * Ixora Links plugin.
@@ -42,7 +43,7 @@ export class GoToLinkWidget extends WidgetType {
             });
         } else anchor.href = this.link;
         anchor.target = '_blank';
-        anchor.classList.add('cm-link');
+        anchor.classList.add(classes.widget);
         anchor.textContent = '🔗';
         return anchor;
     }
@@ -110,7 +111,7 @@ export const goToLinkPlugin = ViewPlugin.fromClass(
  * Base theme for the links plugin.
  */
 const baseTheme = EditorView.baseTheme({
-    '.cm-link': {
+    ['.'+classes.widget]: {
         cursor: 'pointer',
         textDecoration: 'underline'
     }

@@ -13,13 +13,14 @@ import {
     isCursorInRange,
     checkRangeSubset
 } from '../util';
+import { blockquote as classes } from '../classes';
 
 const quoteMarkRE = /^(\s*>+)/gm;
 
 class BlockQuoteBorderWidget extends WidgetType {
     toDOM(): HTMLElement {
         const dom = document.createElement('span');
-        dom.classList.add('cm-blockquote-border');
+        dom.classList.add(classes.mark);
         return dom;
     }
 }
@@ -55,7 +56,7 @@ class BlockQuotePlugin {
 
                 lines.forEach((line) => {
                     const lineDec = Decoration.line({
-                        class: 'cm-blockquote'
+                        class: classes.widget
                     });
                     widgets.push(lineDec.range(line.from));
                 });
@@ -106,10 +107,10 @@ const blockQuotePlugin = ViewPlugin.fromClass(BlockQuotePlugin, {
  * Default styles for blockquotes.
  */
 const baseTheme = EditorView.baseTheme({
-    '.cm-blockquote-border': {
+    ['.' + classes.mark]: {
         'border-left': '4px solid #ccc'
     },
-    '.cm-blockquote': {
+    ['.' + classes.widget]: {
         color: '#555'
     }
 });

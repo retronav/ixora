@@ -1,5 +1,6 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
+import { classes } from '../dist';
 import { moveCursor, setEditorContent, setup } from './util';
 
 let editor!: EditorView;
@@ -17,7 +18,8 @@ beforeEach(() => {
     setEditorContent(content, editor);
 });
 afterEach(() => {
-    document.body.removeChild(document.getElementById('editor') as HTMLElement);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    document.body.removeChild(document.getElementById('editor')!);
 });
 
 describe('Codeblock plugin', () => {
@@ -29,16 +31,18 @@ describe('Codeblock plugin', () => {
         const lastLine = editor.domAtPos(editor.viewportLineBlocks[2].from)
             .node as HTMLElement;
 
-        expect(firstLine.className).to.contain(
-            'cm-codeblock cm-codeblock-begin'
-        );
-        expect(secondLine.className).to.contain('cm-codeblock');
-        expect(lastLine.className).to.contain('cm-codeblock cm-codeblock-end');
+        expect(firstLine)
+            .to.have.class(classes.codeblock.widget)
+            .and.class(classes.codeblock.widgetBegin);
+        expect(secondLine).to.have.class(classes.codeblock.widget);
+        expect(lastLine)
+            .to.have.class(classes.codeblock.widget)
+            .and.class(classes.codeblock.widgetEnd);
     });
 
     it('Should remove the code marks and language name', () => {
         /// Move cursor out of the codeblock
-        moveCursor("line", editor.viewportLineBlocks.length-1, editor);
+        moveCursor('line', editor.viewportLineBlocks.length - 1, editor);
         const firstLine = editor.domAtPos(editor.viewportLineBlocks[0].from)
             .node as HTMLElement;
         const secondLine = editor.domAtPos(editor.viewportLineBlocks[1].from)

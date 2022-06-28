@@ -1,5 +1,6 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
+import { classes } from '../dist';
 import { moveCursor, setEditorContent, setup } from './util';
 
 let editor!: EditorView;
@@ -21,7 +22,8 @@ beforeEach(() => {
     editor.dispatch(tn);
 });
 afterEach(() => {
-    document.body.removeChild(document.getElementById('editor') as HTMLElement);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    document.body.removeChild(document.getElementById('editor')!);
 });
 
 describe('Blockquote plugin', () => {
@@ -41,8 +43,10 @@ describe('Blockquote plugin', () => {
         expect(firstLine).to.have.trimmed.text('Hello');
         expect(secondLine).to.have.trimmed.text('Hi!');
 
-        expect(firstLine.querySelector('.cm-blockquote-border')).to.exist;
-        expect(secondLine.querySelector('.cm-blockquote-border')).to.exist;
+        expect(firstLine.getElementsByClassName(classes.blockquote.mark)).to
+            .exist;
+        expect(secondLine.getElementsByClassName(classes.blockquote.mark)).to
+            .exist;
     });
     it(
         'Should render the decoration if the line is in a blockquote' +
@@ -52,16 +56,17 @@ describe('Blockquote plugin', () => {
 I am still in a blockquote
 `;
             setEditorContent(contentWithoutQuote, editor);
-            moveCursor("line", editor.viewportLineBlocks.length-1, editor);
+            moveCursor('line', editor.viewportLineBlocks.length - 1, editor);
 
             const secondLine = editor.domAtPos(
                 editor.viewportLineBlocks[1].from
-                ).node as HTMLElement;
+            ).node as HTMLElement;
 
             expect(secondLine.textContent).to.equal(
                 'I am still in a blockquote'
             );
-            expect(secondLine.querySelector('.cm-blockquote-border')).to.exist;
+            expect(secondLine.getElementsByClassName(classes.blockquote.mark))
+                .to.exist;
         }
     );
 });
