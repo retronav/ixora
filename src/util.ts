@@ -82,7 +82,7 @@ export function editorLines(view: EditorView, from: number, to: number) {
     const folded = foldedRanges(view.state).iter();
     while (folded.value) {
         lines = lines.filter((line) =>
-            !checkRangeSubset([folded.from, folded.to], [line.from, line.to])
+            !checkRangeOverlap([folded.from, folded.to], [line.from, line.to])
         );
         folded.next();
     }

@@ -75,13 +75,15 @@ function getLinkAnchor(view: EditorView) {
                             invisibleDecoration.range(from, to)
                         );
                     }
-                }
 
-                const dec = Decoration.widget({
-                    widget: new GoToLinkWidget(view.state.sliceDoc(from, to)),
-                    side: 1
-                });
-                widgets.push(dec.range(to, to));
+                    const dec = Decoration.widget({
+                        widget: new GoToLinkWidget(
+                            view.state.sliceDoc(from, to)
+                        ),
+                        side: 1
+                    });
+                    widgets.push(dec.range(to, to));
+                }
             }
         });
     }
@@ -111,7 +113,7 @@ export const goToLinkPlugin = ViewPlugin.fromClass(
  * Base theme for the links plugin.
  */
 const baseTheme = EditorView.baseTheme({
-    ['.'+classes.widget]: {
+    ['.' + classes.widget]: {
         cursor: 'pointer',
         textDecoration: 'underline'
     }
