@@ -1,0 +1,28 @@
+{
+	"name": "@example/basics",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"dev": "astro dev",
+		"start": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview"
+	},
+	"devDependencies": {
+		"@astrojs/svelte": "^0.2.0",
+		"astro": "^1.0.0-beta.58",
+		"sass": "^1.53.0",
+		"svelte": "^3.46.4",
+		"windicss": "^3.5.5"
+	},
+	"dependencies": {
+		"@codemirror/language": "^6.1.0",
+		"@codemirror/language-data": "^6.1.0",
+		"@codemirror/view": "^6.0.2",
+		"@lezer/highlight": "^1.0.0",
+		"@retronav/ixora": "^0.1.4",
+		"codemirror": "^6.0.0",
+		"prettier-plugin-astro": "^0.1.1",
+		"vite-plugin-windicss": "^1.8.5"
+	}
+}

@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/base.astro';
+import Editor from '../components/editor.svelte';
+---
+
+<Base>
+<section class='hero'>
+	<h1 class='mb-0 md:text-6xl text-4xl text-center'>
+		Write and preview Markdown at the same time.
+	</h1>
+	<p class="text-xl text-center">
+		Ixora is a CodeMirror 6 extension pack to enchance the way you write
+		Markdown.
+	</p>
+
+	<div class='h-[40vh] w-8/10 mx-auto editor-wrapper'>
+		<Editor client:load />
+	</div>
+</section>
+</Base>
+
+<style lang="scss">
+	.hero {
+		@apply max-w-7/10 <md:max-w-9/10 mx-auto;
+	}
+
+	.editor-wrapper {
+		@apply border-5 border-black border-solid rounded-[5px];
+	}
+</style>
