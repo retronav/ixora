@@ -10,18 +10,18 @@ import ixora, { frontmatter } from '../dist';
  * @param append Whether to append or replace the text.
  */
 export function setEditorContent(
-    content: string,
-    view: EditorView,
-    append = false
+	content: string,
+	view: EditorView,
+	append = false
 ): void {
-    const tx = view.state.update({
-        changes: {
-            from: append ? view.state.doc.length : 0,
-            insert: content,
-            to: append ? content.length : undefined
-        }
-    });
-    view.dispatch(tx);
+	const tx = view.state.update({
+		changes: {
+			from: append ? view.state.doc.length : 0,
+			insert: content,
+			to: append ? content.length : undefined
+		}
+	});
+	view.dispatch(tx);
 }
 
 /**
@@ -31,53 +31,52 @@ export function setEditorContent(
  * @param view The editor view.
  */
 export function moveCursor(
-    type: 'line' | 'position',
-    value: number,
-    view: EditorView
+	type: 'line' | 'position',
+	value: number,
+	view: EditorView
 ): void {
-    if (type === 'line') {
-        const line = view.viewportLineBlocks[value];
-        const tx = view.state.update({
-            selection: {
-                anchor: line.from
-            }
-        });
-        view.dispatch(tx);
-    } else if (type === 'position') {
-        const tx = view.state.update({
-            selection: {
-                anchor: value
-            }
-        });
-        view.dispatch(tx);
-    } else {
-        throw new Error('Invalid type');
-    }
+	if (type === 'line') {
+		const line = view.viewportLineBlocks[value];
+		const tx = view.state.update({
+			selection: {
+				anchor: line.from
+			}
+		});
+		view.dispatch(tx);
+	} else if (type === 'position') {
+		const tx = view.state.update({
+			selection: {
+				anchor: value
+			}
+		});
+		view.dispatch(tx);
+	} else {
+		throw new Error('Invalid type');
+	}
 }
-
 
 /**
  * Minimal CodeMirror setup for testing plugins.
  * @param el - The element to attach the editor to.
  * @returns The editor instance.
  */
- export function setup(el: HTMLElement) {
-    const editor = new EditorView({
-        state: EditorState.create({
-            extensions: [
-                markdown({
-                    base: markdownLanguage,
-                    extensions: [frontmatter]
-                }),
-                EditorView.lineWrapping,
+export function setup(el: HTMLElement) {
+	const editor = new EditorView({
+		state: EditorState.create({
+			extensions: [
+				markdown({
+					base: markdownLanguage,
+					extensions: [frontmatter]
+				}),
+				EditorView.lineWrapping,
 
-                minimalSetup,
-                ixora
-            ]
-        }),
-        parent: el
-    });
+				minimalSetup,
+				ixora
+			]
+		}),
+		parent: el
+	});
 
-    editor.focus();
-    return editor;
+	editor.focus();
+	return editor;
 }

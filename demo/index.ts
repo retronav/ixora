@@ -6,31 +6,31 @@ import { indentWithTab } from '@codemirror/commands';
 import { keymap } from '@codemirror/view';
 import { languages } from '@codemirror/language-data';
 import {
-    defaultHighlightStyle,
-    syntaxHighlighting
+	defaultHighlightStyle,
+	syntaxHighlighting
 } from '@codemirror/language';
 import ixora, { frontmatter } from '../src';
 
 const editor = new EditorView({
-    state: EditorState.create({
-        extensions: [
-            syntaxHighlighting(defaultHighlightStyle),
-            syntaxHighlighting(highlightStyle),
+	state: EditorState.create({
+		extensions: [
+			syntaxHighlighting(defaultHighlightStyle),
+			syntaxHighlighting(highlightStyle),
 
-            keymap.of([indentWithTab]),
-            markdown({
-                base: markdownLanguage,
-                codeLanguages: languages,
-                extensions: [frontmatter, { props: [tagStyles] }]
-            }),
-            EditorView.lineWrapping,
-            theme,
+			keymap.of([indentWithTab]),
+			markdown({
+				base: markdownLanguage,
+				codeLanguages: languages,
+				extensions: [frontmatter, { props: [tagStyles] }]
+			}),
+			EditorView.lineWrapping,
+			theme,
 
-            basicSetup,
-            ixora
-        ]
-    }),
-    parent: document.body
+			basicSetup,
+			ixora
+		]
+	}),
+	parent: document.body
 });
 
 editor.focus();

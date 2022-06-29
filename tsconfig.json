@@ -1,13 +1,13 @@
 {
-    "compilerOptions": {
-        "module": "ESNext",
-        "target": "ESNext",
-        "lib": ["ES2017", "DOM", "ES2020"],
-        "declaration": true,
-        "declarationDir": "./dist",
-        "esModuleInterop": true,
-        "emitDeclarationOnly": true,
-        "moduleResolution": "node"
-    },
-    "include": ["src/**/*"]
+	"compilerOptions": {
+		"module": "ESNext",
+		"target": "ESNext",
+		"lib": ["ES2017", "DOM", "ES2020"],
+		"declaration": true,
+		"declarationDir": "./dist",
+		"esModuleInterop": true,
+		"emitDeclarationOnly": true,
+		"moduleResolution": "node"
+	},
+	"include": ["src/**/*"]
 }

@@ -23,13 +23,13 @@ export { lists } from './plugins/list';
 export * as classes from './classes';
 
 const ixora: Extension = [
-    headingSlugField,
-    blockquote(),
-    codeblock(),
-    headings(),
-    hideMarks(),
-    lists(),
-    links()
+	headingSlugField,
+	blockquote(),
+	codeblock(),
+	headings(),
+	hideMarks(),
+	lists(),
+	links()
 ];
 
 export default ixora;

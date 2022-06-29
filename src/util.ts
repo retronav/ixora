@@ -10,10 +10,10 @@ import { Decoration, EditorView } from '@codemirror/view';
  * @returns True if the ranges overlap
  */
 export function checkRangeOverlap(
-    range1: [number, number],
-    range2: [number, number]
+	range1: [number, number],
+	range2: [number, number]
 ) {
-    return range1[0] <= range2[1] && range2[0] <= range1[1];
+	return range1[0] <= range2[1] && range2[0] <= range1[1];
 }
 
 /**
@@ -23,10 +23,10 @@ export function checkRangeOverlap(
  * @returns True if child is inside parent
  */
 export function checkRangeSubset(
-    parent: [number, number],
-    child: [number, number]
+	parent: [number, number],
+	child: [number, number]
 ) {
-    return child[0] >= parent[0] && child[1] <= parent[1];
+	return child[0] >= parent[0] && child[1] <= parent[1];
 }
 
 /**
@@ -36,9 +36,9 @@ export function checkRangeSubset(
  * @returns True if the cursor is in the range
  */
 export function isCursorInRange(view: EditorView, range: [number, number]) {
-    return view.state.selection.ranges.some((selection) =>
-        checkRangeOverlap(range, [selection.from, selection.to])
-    );
+	return view.state.selection.ranges.some((selection) =>
+		checkRangeOverlap(range, [selection.from, selection.to])
+	);
 }
 
 /**
@@ -47,15 +47,15 @@ export function isCursorInRange(view: EditorView, range: [number, number]) {
  * @param iterateFns - Object with `enter` and `leave` iterate function
  */
 export function iterateTreeInVisibleRanges(
-    view: EditorView,
-    iterateFns: {
-        enter(node: SyntaxNodeRef): boolean | void;
-        leave?(node: SyntaxNodeRef): void;
-    }
+	view: EditorView,
+	iterateFns: {
+		enter(node: SyntaxNodeRef): boolean | void;
+		leave?(node: SyntaxNodeRef): void;
+	}
 ) {
-    for (const { from, to } of view.visibleRanges) {
-        syntaxTree(view.state).iterate({ ...iterateFns, from, to });
-    }
+	for (const { from, to } of view.visibleRanges) {
+		syntaxTree(view.state).iterate({ ...iterateFns, from, to });
+	}
 }
 
 /**
@@ -74,45 +74,49 @@ export const invisibleDecoration = Decoration.replace({});
  * @returns A list of line blocks that are in the range
  */
 export function editorLines(view: EditorView, from: number, to: number) {
-    let lines = view.viewportLineBlocks.filter((block) =>
-        // Keep lines that are in the range
-        checkRangeOverlap([block.from, block.to], [from, to])
-    );
+	let lines = view.viewportLineBlocks.filter((block) =>
+		// Keep lines that are in the range
+		checkRangeOverlap([block.from, block.to], [from, to])
+	);
 
-    const folded = foldedRanges(view.state).iter();
-    while (folded.value) {
-        lines = lines.filter((line) =>
-            !checkRangeOverlap([folded.from, folded.to], [line.from, line.to])
-        );
-        folded.next();
-    }
+	const folded = foldedRanges(view.state).iter();
+	while (folded.value) {
+		lines = lines.filter(
+			(line) =>
+				!checkRangeOverlap(
+					[folded.from, folded.to],
+					[line.from, line.to]
+				)
+		);
+		folded.next();
+	}
 
-    return lines;
+	return lines;
 }
 
 /**
  * Class containing methods to generate slugs from heading contents.
  */
 export class Slugger {
-    /** Occurrences for each slug. */
-    private occurences: { [key: string]: number } = {};
-    /**
-     * Generate a slug from the given content.
-     * @param text - Content to generate the slug from
-     * @returns the slug
-     */
-    public slug(text: string) {
-        let slug = text
-            .toLowerCase()
-            .replace(/\s+/g, '-')
-            .replace(/[^\w-]+/g, '');
+	/** Occurrences for each slug. */
+	private occurences: { [key: string]: number } = {};
+	/**
+	 * Generate a slug from the given content.
+	 * @param text - Content to generate the slug from
+	 * @returns the slug
+	 */
+	public slug(text: string) {
+		let slug = text
+			.toLowerCase()
+			.replace(/\s+/g, '-')
+			.replace(/[^\w-]+/g, '');
 
-        if (slug in this.occurences) {
-            this.occurences[slug]++;
-            slug += '-' + this.occurences[slug];
-        } else {
-            this.occurences[slug] = 1;
-        }
-        return slug;
-    }
+		if (slug in this.occurences) {
+			this.occurences[slug]++;
+			slug += '-' + this.occurences[slug];
+		} else {
+			this.occurences[slug] = 1;
+		}
+		return slug;
+	}
 }

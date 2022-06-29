@@ -1,118 +1,118 @@
 import {
-    Decoration,
-    DecorationSet,
-    EditorView,
-    ViewPlugin,
-    ViewUpdate,
-    WidgetType
+	Decoration,
+	DecorationSet,
+	EditorView,
+	ViewPlugin,
+	ViewUpdate,
+	WidgetType
 } from '@codemirror/view';
 import { Range } from '@codemirror/state';
 import {
-    iterateTreeInVisibleRanges,
-    editorLines,
-    isCursorInRange,
-    checkRangeSubset
+	iterateTreeInVisibleRanges,
+	editorLines,
+	isCursorInRange,
+	checkRangeSubset
 } from '../util';
 import { blockquote as classes } from '../classes';
 
 const quoteMarkRE = /^(\s*>+)/gm;
 
 class BlockQuoteBorderWidget extends WidgetType {
-    toDOM(): HTMLElement {
-        const dom = document.createElement('span');
-        dom.classList.add(classes.mark);
-        return dom;
-    }
+	toDOM(): HTMLElement {
+		const dom = document.createElement('span');
+		dom.classList.add(classes.mark);
+		return dom;
+	}
 }
 
 /**
  * Plugin to add style blockquotes.
  */
 class BlockQuotePlugin {
-    decorations: DecorationSet;
-    constructor(view: EditorView) {
-        this.decorations = this.styleBlockquote(view);
-    }
-    update(update: ViewUpdate) {
-        if (
-            update.docChanged ||
-            update.viewportChanged ||
-            update.selectionSet
-        ) {
-            this.decorations = this.styleBlockquote(update.view);
-        }
-    }
-    /**
-     *
-     * @param view - The editor view
-     * @returns The blockquote decorations to add to the editor
-     */
-    private styleBlockquote(view: EditorView): DecorationSet {
-        const widgets: Range<Decoration>[] = [];
-        iterateTreeInVisibleRanges(view, {
-            enter: ({ name, from, to }) => {
-                if (name !== 'Blockquote') return;
-                const lines = editorLines(view, from, to);
+	decorations: DecorationSet;
+	constructor(view: EditorView) {
+		this.decorations = this.styleBlockquote(view);
+	}
+	update(update: ViewUpdate) {
+		if (
+			update.docChanged ||
+			update.viewportChanged ||
+			update.selectionSet
+		) {
+			this.decorations = this.styleBlockquote(update.view);
+		}
+	}
+	/**
+	 *
+	 * @param view - The editor view
+	 * @returns The blockquote decorations to add to the editor
+	 */
+	private styleBlockquote(view: EditorView): DecorationSet {
+		const widgets: Range<Decoration>[] = [];
+		iterateTreeInVisibleRanges(view, {
+			enter: ({ name, from, to }) => {
+				if (name !== 'Blockquote') return;
+				const lines = editorLines(view, from, to);
 
-                lines.forEach((line) => {
-                    const lineDec = Decoration.line({
-                        class: classes.widget
-                    });
-                    widgets.push(lineDec.range(line.from));
-                });
+				lines.forEach((line) => {
+					const lineDec = Decoration.line({
+						class: classes.widget
+					});
+					widgets.push(lineDec.range(line.from));
+				});
 
-                if (
-                    lines.every(
-                        (line) => !isCursorInRange(view, [line.from, line.to])
-                    )
-                ) {
-                    const marks = Array.from(
-                        view.state.sliceDoc(from, to).matchAll(quoteMarkRE)
-                    )
-                        .map((x) => from + x.index)
-                        .map((i) =>
-                            Decoration.replace({
-                                widget: new BlockQuoteBorderWidget()
-                            }).range(i, i + 1)
-                        );
-                    lines.forEach((line) => {
-                        if (
-                            !marks.some((mark) =>
-                                checkRangeSubset(
-                                    [line.from, line.to],
-                                    [mark.from, mark.to]
-                                )
-                            )
-                        )
-                            marks.push(
-                                Decoration.widget({
-                                    widget: new BlockQuoteBorderWidget()
-                                }).range(line.from)
-                            );
-                    });
+				if (
+					lines.every(
+						(line) => !isCursorInRange(view, [line.from, line.to])
+					)
+				) {
+					const marks = Array.from(
+						view.state.sliceDoc(from, to).matchAll(quoteMarkRE)
+					)
+						.map((x) => from + x.index)
+						.map((i) =>
+							Decoration.replace({
+								widget: new BlockQuoteBorderWidget()
+							}).range(i, i + 1)
+						);
+					lines.forEach((line) => {
+						if (
+							!marks.some((mark) =>
+								checkRangeSubset(
+									[line.from, line.to],
+									[mark.from, mark.to]
+								)
+							)
+						)
+							marks.push(
+								Decoration.widget({
+									widget: new BlockQuoteBorderWidget()
+								}).range(line.from)
+							);
+					});
 
-                    widgets.push(...marks);
-                }
-            }
-        });
-        return Decoration.set(widgets, true);
-    }
+					widgets.push(...marks);
+				}
+			}
+		});
+		return Decoration.set(widgets, true);
+	}
 }
 
 const blockQuotePlugin = ViewPlugin.fromClass(BlockQuotePlugin, {
-    decorations: (v) => v.decorations
+	decorations: (v) => v.decorations
 });
 
 /**
  * Default styles for blockquotes.
  */
 const baseTheme = EditorView.baseTheme({
-    ['.' + classes.mark]: {
-        'border-left': '4px solid #ccc'
-    },
-    ['.' + classes.widget]: {
-        color: '#555'
-    }
+	['.' + classes.mark]: {
+		'border-left': '4px solid #ccc'
+	},
+	['.' + classes.widget]: {
+		color: '#555'
+	}
 });
 
 /**
@@ -123,5 +123,5 @@ const baseTheme = EditorView.baseTheme({
  * - Add default styling to blockquote marks
  */
 export function blockquote() {
-    return [blockQuotePlugin, baseTheme];
+	return [blockQuotePlugin, baseTheme];
 }

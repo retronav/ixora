@@ -8,8 +8,8 @@ import { Slugger } from '../util';
  * in permalinks as heading IDs.
  */
 export interface HeadingSlug {
-    slug: string;
-    pos: number;
+	slug: string;
+	pos: number;
 }
 
 /**
@@ -18,18 +18,18 @@ export interface HeadingSlug {
  * the document.
  */
 export const headingSlugField = StateField.define<HeadingSlug[]>({
-    create: (state) => {
-        const slugs = new Array<HeadingSlug>();
-        extractSlugs(state);
-        return slugs;
-    },
-    update: (value, tx) => {
-        if (tx.docChanged) return extractSlugs(tx.state);
-        return value;
-    },
-    compare: (a, b) =>
-        a.length === b.length &&
-        a.every((slug, i) => slug.slug === b[i].slug && slug.pos === b[i].pos)
+	create: (state) => {
+		const slugs = new Array<HeadingSlug>();
+		extractSlugs(state);
+		return slugs;
+	},
+	update: (value, tx) => {
+		if (tx.docChanged) return extractSlugs(tx.state);
+		return value;
+	},
+	compare: (a, b) =>
+		a.length === b.length &&
+		a.every((slug, i) => slug.slug === b[i].slug && slug.pos === b[i].pos)
 });
 
 /**
@@ -38,19 +38,19 @@ export const headingSlugField = StateField.define<HeadingSlug[]>({
  * @returns An array of heading slugs.
  */
 function extractSlugs(state: EditorState): HeadingSlug[] {
-    const slugs: HeadingSlug[] = [];
-    const slugger = new Slugger();
-    syntaxTree(state).iterate({
-        enter: ({ name, from, to, node }) => {
-            // Capture ATXHeading and SetextHeading
-            if (!name.includes('Heading')) return;
-            const mark = node.getChild('HeaderMark');
+	const slugs: HeadingSlug[] = [];
+	const slugger = new Slugger();
+	syntaxTree(state).iterate({
+		enter: ({ name, from, to, node }) => {
+			// Capture ATXHeading and SetextHeading
+			if (!name.includes('Heading')) return;
+			const mark = node.getChild('HeaderMark');
 
-            const headerText = state.sliceDoc(from, to).split('');
-            headerText.splice(mark.from - from, mark.to - mark.from);
-            const slug = slugger.slug(headerText.join('').trim());
-            slugs.push({ slug, pos: from });
-        }
-    });
-    return slugs;
+			const headerText = state.sliceDoc(from, to).split('');
+			headerText.splice(mark.from - from, mark.to - mark.from);
+			const slug = slugger.slug(headerText.join('').trim());
+			slugs.push({ slug, pos: from });
+		}
+	});
+	return slugs;
 }

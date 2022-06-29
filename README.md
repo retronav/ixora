@@ -44,21 +44,21 @@ This library includes:
 
     ```ts
     const editor = new EditorView({
-        state: EditorState.create({
-            extensions: [
-                // If you import all at once
-                ixora,
+    	state: EditorState.create({
+    		extensions: [
+    			// If you import all at once
+    			ixora,
 
-                // ...
+    			// ...
 
-                // If you import indivivually
-                headings,
-                codeblock,
-                lists
+    			// If you import indivivually
+    			headings(),
+    			codeblock(),
+    			lists()
 
-                // ...
-            ]
-        })
+    			// ...
+    		]
+    	})
     });
     ```
 
