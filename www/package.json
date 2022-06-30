@@ -12,21 +12,21 @@
 		"@astrojs/svelte": "^0.2.0",
 		"@iconify-json/eva": "^1.1.2",
 		"@iconify-json/simple-icons": "^1.1.18",
-		"astro": "^1.0.0-beta.58",
+		"astro": "1.0.0-beta.59",
 		"sass": "^1.53.0",
-		"svelte": "^3.46.4",
-		"windicss": "^3.5.5"
+		"svelte": "^3.48.0",
+		"windicss": "^3.5.6"
 	},
 	"dependencies": {
 		"@codemirror/commands": "^6.0.1",
-		"@codemirror/language": "^6.1.0",
+		"@codemirror/language": "^6.2.0",
 		"@codemirror/language-data": "^6.1.0",
 		"@codemirror/view": "^6.0.2",
 		"@lezer/highlight": "^1.0.0",
-		"@retronav/ixora": "^0.1.4",
-		"codemirror": "^6.0.0",
+		"@retronav/ixora": "^0.2.1",
+		"codemirror": "^6.0.1",
 		"prettier-plugin-astro": "^0.1.1",
-		"unplugin-icons": "^0.14.6",
-		"vite-plugin-windicss": "^1.8.5"
+		"unplugin-icons": "^0.14.7",
+		"vite-plugin-windicss": "^1.8.6"
 	}
 }
