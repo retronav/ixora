@@ -12,24 +12,22 @@ import {
 import ixora, { frontmatter } from '../src';
 
 const editor = new EditorView({
-	state: EditorState.create({
-		extensions: [
-			syntaxHighlighting(defaultHighlightStyle),
-			syntaxHighlighting(highlightStyle),
+	extensions: [
+		syntaxHighlighting(defaultHighlightStyle),
+		syntaxHighlighting(highlightStyle),
 
-			keymap.of([indentWithTab]),
-			markdown({
-				base: markdownLanguage,
-				codeLanguages: languages,
-				extensions: [frontmatter, { props: [tagStyles] }]
-			}),
-			EditorView.lineWrapping,
-			theme,
+		keymap.of([indentWithTab]),
+		markdown({
+			base: markdownLanguage,
+			codeLanguages: languages,
+			extensions: [frontmatter, { props: [tagStyles] }]
+		}),
+		EditorView.lineWrapping,
+		theme,
 
-			basicSetup,
-			ixora
-		]
-	}),
+		basicSetup,
+		ixora
+	],
 	parent: document.body
 });
 
