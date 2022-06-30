@@ -1,6 +1,6 @@
 {
 	"name": "@retronav/ixora",
-	"version": "0.1.4",
+	"version": "0.2.0",
 	"description": "A CodeMirror 6 extension pack to make writing Markdown fun and beautiful.",
 	"license": "Apache-2.0",
 	"module": "./dist/index.js",
