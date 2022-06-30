@@ -1,5 +1,12 @@
 # @retronav/ixora
 
+## 0.2.1
+
+### Patch Changes
+
+Changeset committed in 64acd12
+Fix heading plugin crash if slugs are not calculated
+
 ## 0.2.0
 
 ### Minor Changes
