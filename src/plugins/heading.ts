@@ -95,13 +95,13 @@ class HeadingDecorationsPlugin {
 				if (!name.includes('Heading')) return;
 				const slug = view.state
 					.field(headingSlugField)
-					.find((s) => s.pos === from).slug;
+					.find((s) => s.pos === from)?.slug;
 				const level = parseInt(/[1-6]$/.exec(name)[0]);
 				const dec = Decoration.line({
 					class: [
 						classes.heading,
 						classes.level(level),
-						classes.slug(slug)
+						slug ? classes.slug(slug) : ''
 					].join(' ')
 				});
 				widgets.push(dec.range(view.state.doc.lineAt(from).from));
