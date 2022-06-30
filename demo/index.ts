@@ -1,5 +1,4 @@
 import { basicSetup, EditorView } from 'codemirror';
-import { EditorState } from '@codemirror/state';
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { highlightStyle, tagStyles, theme } from './theme';
 import { indentWithTab } from '@codemirror/commands';
