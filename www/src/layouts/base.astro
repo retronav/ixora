@@ -2,6 +2,7 @@
 import 'virtual:windi.css';
 import 'virtual:windi-devtools';
 import '../styles/index.scss';
+import Navbar from '../components/navbar.svelte';
 
 export interface Props {
 	title?: string;
@@ -20,6 +21,9 @@ const { title = 'Ixora' } = Astro.props as Props;
 	</head>
 
 	<body>
+		<header>
+			<Navbar client:load />
+		</header>
 		<slot></slot>
 	</body>
 </html>

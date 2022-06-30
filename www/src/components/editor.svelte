@@ -1,14 +1,21 @@
 <script lang="ts">
-	import { basicSetup, EditorView } from 'codemirror';
-	import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
-	import { languages } from '@codemirror/language-data';
-	import ixora, { frontmatter } from '@retronav/ixora';
-	import { defaultHighlightStyle, syntaxHighlighting } from '@codemirror/language';
-	import { highlightStyle, theme } from '../lib/theme';
 	import { onMount } from 'svelte';
 	let editorEl: HTMLElement;
 
-	onMount(() => {
+	onMount(async () => {
+		const { basicSetup, EditorView } = await import('codemirror');
+		const { markdown, markdownLanguage } = await import(
+			'@codemirror/lang-markdown'
+		);
+		const { languages } = await import('@codemirror/language-data');
+		const { default: ixora, frontmatter } = await import('@retronav/ixora');
+		const { defaultHighlightStyle, syntaxHighlighting } = await import(
+			'@codemirror/language'
+		);
+		const { highlightStyle, theme, customTagStyles } = await import(
+			'../lib/theme'
+		);
+		editorEl.innerHTML = '';
 		const editor = new EditorView({
 			extensions: [
 				basicSetup,
@@ -16,7 +23,7 @@
 				markdown({
 					codeLanguages: languages,
 					base: markdownLanguage,
-					extensions: [frontmatter]
+					extensions: [frontmatter, { props: [customTagStyles] }]
 				}),
 				syntaxHighlighting(defaultHighlightStyle),
 				syntaxHighlighting(highlightStyle),
@@ -27,4 +34,9 @@
 	});
 </script>
 
-<div class="editor h-full w-full" bind:this={editorEl} />
+<div class="editor h-full w-full" bind:this={editorEl}>
+	<div class="placeholder w-full h-full flex items-center justify-center">
+		Loading editor...
+		<noscript>This editor requires JavaScript to run.</noscript>
+	</div>
+</div>
