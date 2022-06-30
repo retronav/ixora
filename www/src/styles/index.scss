@@ -8,3 +8,7 @@ body {
 	line-height: 1.5;
 	font-family: 'Switzer-Variable', sans-serif;
 }
+
+a, a:visited {
+	@apply text-blue-600;
+}

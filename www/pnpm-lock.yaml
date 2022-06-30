@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@astrojs/svelte': ^0.2.0
+  '@codemirror/commands': ^6.0.1
   '@codemirror/language': ^6.1.0
   '@codemirror/language-data': ^6.1.0
   '@codemirror/view': ^6.0.2
@@ -19,6 +20,7 @@ specifiers:
   windicss: ^3.5.5
 
 dependencies:
+  '@codemirror/commands': 6.0.1
   '@codemirror/language': 6.1.0
   '@codemirror/language-data': 6.1.0
   '@codemirror/view': 6.0.2
@@ -429,8 +431,8 @@ packages:
       '@lezer/common': 1.0.0
     dev: false
 
-  /@codemirror/commands/6.0.0:
-    resolution: {integrity: sha512-nVJDPiCQXWXj5AZxqNVXyIM3nOYauF4Dko9NGPSwgVdK+lXWJQhI5LGhS/AvdG5b7u7/pTQBkrQmzkLWRBF62A==}
+  /@codemirror/commands/6.0.1:
+    resolution: {integrity: sha512-iNHDByicYqQjs0Wo1MKGfqNbMYMyhS9WV6EwMVwsHXImlFemgEUC+c5X22bXKBStN3qnwg4fArNZM+gkv22baQ==}
     dependencies:
       '@codemirror/language': 6.1.0
       '@codemirror/state': 6.0.1
@@ -852,7 +854,7 @@ packages:
   /@retronav/ixora/0.1.4:
     resolution: {integrity: sha512-8OROvW94mo8K8CBnb8hoQ18Ggx/3VjVSy4IYIDVMuETnIskwfAvC/KvycOCy4Wvwq+H2x5VHBsJz3MWJsa2m3w==}
     dependencies:
-      '@codemirror/commands': 6.0.0
+      '@codemirror/commands': 6.0.1
       '@codemirror/lang-html': 6.1.0
       '@codemirror/lang-markdown': 6.0.0
       '@codemirror/language': 6.1.0
@@ -1342,7 +1344,7 @@ packages:
     resolution: {integrity: sha512-c4XR9QtDn+NhKLM2FBsnRn9SFdRH7G6594DYC/fyKKIsTOcdLF0WNWRd+f6kNyd5j1vgYPucbIeq2XkywYCwhA==}
     dependencies:
       '@codemirror/autocomplete': 6.0.2
-      '@codemirror/commands': 6.0.0
+      '@codemirror/commands': 6.0.1
       '@codemirror/language': 6.1.0
       '@codemirror/lint': 6.0.0
       '@codemirror/search': 6.0.0

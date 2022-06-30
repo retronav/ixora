@@ -1,31 +1,45 @@
 ---
 import Base from '../layouts/base.astro';
 import Editor from '../components/editor.svelte';
+import EvaArrowUpward from "virtual:icons/eva/arrow-upward-fill";
+
+const readmeContent = await (await fetch('https://github.com/retronav/ixora/raw/main/README.md')).text()
 ---
 
 <Base>
-	<section class='hero'>
-		<div class='container'>
-			<h1 class='m-0 md:text-6xl text-4xl text-center'>
-				Write and preview Markdown at the same time.
-			</h1>
-			<p class='text-xl text-center'>
-				Ixora is a CodeMirror 6 extension pack to enchance the way you
-				write Markdown.
-			</p>
+<section class='hero'>
+	<div class='container'>
+		<h1 class='m-0 md:text-6xl text-4xl text-center'>
+			Write and preview Markdown at the same time.
+		</h1>
+		<p class='text-xl text-center'>
+			Ixora is a CodeMirror 6 extension pack to enchance the way you
+			write Markdown.
+		</p>
 
-			<div class='editor-wrapper'>
-				<Editor client:load />
-			</div>
+		<section class="mx-auto m-4 flex items-center justify-center">
+			<a class="btn btn-red text-xl" href="/docs">Get started</a>
+		</section>
+
+		<div class='editor-wrapper'>
+			<Editor content={readmeContent} client:load />
 		</div>
-	</section>
+		<p class="mb-0 text-center">
+			<Fragment set:html={EvaArrowUpward} />
+			<small>
+				This is Ixora in action, editing the project README
+			</small>
+		</p>
+	</div>
+</section>
 </Base>
 
 <style lang='scss'>
 	.hero {
 		@apply bg-melon p-8;
+
 		.container {
-			@apply max-w-7/10 <lg:max-w-9/10 mx-auto;
+			@apply max-w-7/10 <lg: max-w-full mx-auto;
 		}
 	}
 
