@@ -19,11 +19,11 @@ export default defineConfig({
 		plugin(({ addComponents }) => {
 			const buttons = {
 				'.btn': {
-					padding: '.5rem 1rem',
 					border: '2px solid black',
 					borderBottomWidth: '6px',
 					borderRadius: '.25rem',
 					fontWeight: '700',
+					transition: 'border-bottom-width 50ms, margin-top 50ms',
 					'&:active': {
 						borderBottomWidth: '2px',
 						marginTop: '4px'

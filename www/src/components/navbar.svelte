@@ -21,7 +21,7 @@
 		<img src="/logo.svg" alt="Ixora logo" height="48" width="48" />
 		<span class="font-600 text-scarlet">Ixora</span>
 	</section>
-	<button bind:this={menuToggle}>
+	<button class="btn" bind:this={menuToggle}>
 		{@html HamburgerIcon}
 	</button>
 	<ul class="links" bind:this={menuLinks}>
@@ -45,13 +45,13 @@
 		@apply border-solid border-0 border-b-2 border-black;
 	}
 	button {
-		@apply sm:hidden w-fit h-8 justify-self-end bg-transparent border-solid border-black rounded-[3px];
+		@apply sm:hidden w-fit h-8 justify-self-end bg-transparent;
 	}
 	.links {
 		@apply h-full list-none p-0 m-0 flex justify-center items-center gap-4 sm:justify-end <sm:hidden;
 		@apply col-start-3 col-end-4 <sm:(col-start-1 row-start-2 col-end-3);
 		a {
-			@apply text-black;
+			@apply text-black transition-colors duration-100;
 			&:hover {
 				@apply text-scarlet;
 			}

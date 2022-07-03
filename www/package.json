@@ -14,6 +14,7 @@
 		"@iconify-json/simple-icons": "^1.1.18",
 		"astro": "1.0.0-beta.59",
 		"sass": "^1.53.0",
+		"sharp": "^0.30.7",
 		"svelte": "^3.48.0",
 		"windicss": "^3.5.6"
 	},

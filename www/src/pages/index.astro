@@ -18,7 +18,7 @@ const readmeContent = await (await fetch('https://github.com/retronav/ixora/raw/
 		</p>
 
 		<section class="mx-auto m-4 flex items-center justify-center">
-			<a class="btn btn-red text-xl" href="/docs">Get started</a>
+			<a class="btn btn-red text-xl px-4 py-2" href="/docs">Get started</a>
 		</section>
 
 		<div class='editor-wrapper'>
@@ -39,12 +39,12 @@ const readmeContent = await (await fetch('https://github.com/retronav/ixora/raw/
 		@apply bg-melon p-8;
 
 		.container {
-			@apply max-w-7/10 <lg: max-w-full mx-auto;
+			@apply max-w-7/10 <lg:max-w-full mx-auto;
 		}
 	}
 
 	.editor-wrapper {
-		@apply border-5 border-black border-solid rounded-[5px] bg-white h-[40vh] w-8/10 mx-auto;
+		@apply border-5 border-black border-solid rounded-[5px] bg-white h-[40vh] w-8/10 <sm:w-full mx-auto;
 
 		&:focus-within {
 			@apply py-0 border-10 -mt-[5px] -mb-[4px];
