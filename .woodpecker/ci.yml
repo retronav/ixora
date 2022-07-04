@@ -9,7 +9,7 @@ pipeline:
         commands:
             - npm run lint
     test:
-        image: node:16
+        image: satantime/puppeteer-node:16
         environment:
             - COVERALLS_SERVICE_NAME="Codeberg CI"
         commands:
