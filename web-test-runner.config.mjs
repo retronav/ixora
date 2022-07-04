@@ -12,7 +12,15 @@ const config = {
 	coverageConfig: {
 		include: ['dist/**/*.js']
 	},
-	browsers: [puppeteerLauncher()]
+	browsers: [
+		puppeteerLauncher({
+			launchOptions: process.env.CI
+				? {
+						args: ['--no-sandbox', '--disable-setuid-sandbox']
+				  }
+				: {}
+		})
+	]
 };
 
 export default config;
