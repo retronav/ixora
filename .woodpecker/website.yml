@@ -1,8 +1,11 @@
 pipeline:
-  build:
-    image: node:16
-    commands:
-      - npm i pnpm -g
-      - pnpm i
-      - pnpm vercel --prod --scope retronav --token=$VERCEL_TOKEN
-    secrets: [VERCEL_PROJECT_ID, VERCEL_ORG_ID, VERCEL_TOKEN]
+    deploy:
+        image: node:16
+        commands:
+            - npm i pnpm -g
+            - pnpm i
+            - pnpm vercel --prod --scope retronav --token=$VERCEL_TOKEN
+        secrets:
+            - VERCEL_PROJECT_ID
+            - VERCEL_ORG_ID
+            - VERCEL_TOKEN
