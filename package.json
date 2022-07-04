@@ -57,6 +57,7 @@
 		"@web/test-runner": "^0.13.31",
 		"@web/test-runner-browserstack": "^0.5.0",
 		"@web/test-runner-puppeteer": "^0.10.5",
+		"coveralls": "^3.1.1",
 		"eslint": "^8.18.0",
 		"husky": "^8.0.1",
 		"prettier-eslint": "^15.0.1",

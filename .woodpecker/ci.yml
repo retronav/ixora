@@ -7,13 +7,14 @@ pipeline:
     lint:
         image: node:16
         commands:
-            - pnpm lint
+            - npm run lint
     test:
         image: node:16
         environment:
             - COVERALLS_SERVICE_NAME="Codeberg CI"
         commands:
-            - pnpm test
+            - npm run test
+            - npx coveralls < coverage/lcov.info
             - export COVERALLS_SERVICE_NUMBER=$CI_BUILD_NUMBER
             - export COVERALLS_SERVICE_JOB_NUMBER=$CI_JOB_NUMBER
             - export COVERALLS_GIT_BRANCH=$CI_COMMIT_BRANCH
