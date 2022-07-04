@@ -45,7 +45,7 @@
 		@apply border-solid border-0 border-b-2 border-black;
 	}
 	button {
-		@apply sm:hidden w-fit h-8 justify-self-end bg-transparent;
+		@apply sm:hidden w-fit h-6 box-content justify-self-end bg-transparent;
 	}
 	.links {
 		@apply h-full list-none p-0 m-0 flex justify-center items-center gap-4 sm:justify-end <sm:hidden;
