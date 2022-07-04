@@ -133,3 +133,4 @@ dist
 
 # Rollup stats
 stats.html
+.vercel
