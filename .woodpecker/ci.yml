@@ -4,6 +4,7 @@ pipeline:
         commands:
             - npm i pnpm -g
             - pnpm i
+            - pnpm build
     lint:
         image: node:16
         commands:
