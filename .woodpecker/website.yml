@@ -12,4 +12,4 @@ pipeline:
             - apt update && apt install git rsync -y
             - ./scripts/deploy.sh
         secrets:
-            - GIT_SSH_KEY
+            - CODEBERG_TOKEN

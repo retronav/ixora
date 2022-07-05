@@ -17,7 +17,7 @@ rsync -av $DEPLOYMENT_DIR/* /tmp/pages.git/
 
 cd /tmp/pages.git/
 git init
-git remote add origin git@codeberg.org:retronav/ixora.git
+git remote add origin https://retronav:$CODEBERG_TOKEN@codeberg.org/retronav/ixora.git
 git checkout --orphan $DEPLOYMENT_BRANCH
 git add .
 git commit -m "Deploy site"
