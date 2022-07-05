@@ -1,12 +1,15 @@
 pipeline:
-    deploy:
+    build:
         image: node:16
         commands:
             - npm i pnpm -g
-            - pnpm i
             - cd www
+            - pnpm i
             - pnpm build
-            - cd ..
+    deploy:
+        image: ubuntu
+        commands:
+            - apt update && apt install git rsync -y
             - ./scripts/deploy.sh
         secrets:
-          - GIT_SSH_KEY
+            - GIT_SSH_KEY

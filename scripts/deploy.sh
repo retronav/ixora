@@ -6,12 +6,11 @@ export DEPLOYMENT_DIR="dist"
 if [[ ! -z $CI ]]; then
     mkdir -p ~/.ssh
     echo $GIT_SSH_KEY >> ~/.ssh/id_rsa
-    git config "user.name" "codeberg-ci"
-    git config "user.email" "noreply@noreply.codeberg.org"
+    git config --global "user.name" "codeberg-ci"
+    git config --global "user.email" "noreply@noreply.codeberg.org"
 fi
 
 cd www/
-pnpm build
 
 mkdir /tmp/pages.git
 rsync -av $DEPLOYMENT_DIR/* /tmp/pages.git/
