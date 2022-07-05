@@ -1,21 +1,15 @@
-![Ixora logo](https://codeberg.org/retronav/ixora/raw/branch/main/assets/social-preview.png)
-
----
-
 # Ixora
+
+> WARNING: Ixora is under heavy development, but is quite usable.
+
+<img align="right"
+    src="https://codeberg.org/retronav/ixora/raw/branch/main/assets/logo.svg"
+    alt="Ixora logo" />
 
 A CodeMirror 6 extension pack to make writing Markdown fun and beautiful.
 
 ![CI build](https://ci.codeberg.org/api/badges/retronav/ixora/status.svg)
 ![npm version](https://img.shields.io/npm/v/@retronav/ixora?logo=npm&style=flat)
-
-> ⚠️ NOTE: Ixora is under development, does not guarantee API stability at this
-> stage and probably has some bugs. Although it is usable, but right now it's
-> not suited for production use-cases.
-> The 0.x version should reflect overall instability and will be bumped to 1.x
-> as Ixora reaches stability and maturity.
-
-## Features
 
 This library includes:
 
