@@ -4,10 +4,9 @@ pipeline:
         commands:
             - npm i pnpm -g
             - pnpm i
-            - pnpm vercel --prod --scope retronav --token=$VERCEL_TOKEN
+            - cd www
+            - pnpm build
+            - cd ..
+            - ./scripts/deploy.sh
         secrets:
-            - VERCEL_PROJECT_ID
-            - VERCEL_ORG_ID
-            - VERCEL_TOKEN
-        when:
-            path: www
+          - GIT_SSH_KEY
