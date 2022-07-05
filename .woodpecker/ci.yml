@@ -11,8 +11,8 @@ pipeline:
             - npm run lint
     test:
         image: node:16
-        environment:
-            - COVERALLS_SERVICE_NAME="Codeberg CI"
+        # environment:
+        #     - COVERALLS_SERVICE_NAME="Codeberg CI"
         commands:
             - |
                 apt-get update \
@@ -24,9 +24,9 @@ pipeline:
                 --no-install-recommends \
                 && rm -rf /var/lib/apt/lists/*
             - npm run test
-            - npx coveralls < coverage/lcov.info
-            - export COVERALLS_SERVICE_NUMBER=$CI_BUILD_NUMBER
-            - export COVERALLS_SERVICE_JOB_NUMBER=$CI_JOB_NUMBER
-            - export COVERALLS_GIT_BRANCH=$CI_COMMIT_BRANCH
-        secrets:
-            - COVERALLS_REPO_TOKEN
+            # - npx coveralls < coverage/lcov.info
+            # - export COVERALLS_SERVICE_NUMBER=$CI_BUILD_NUMBER
+            # - export COVERALLS_SERVICE_JOB_NUMBER=$CI_JOB_NUMBER
+            # - export COVERALLS_GIT_BRANCH=$CI_COMMIT_BRANCH
+        # secrets:
+        #     - COVERALLS_REPO_TOKEN
