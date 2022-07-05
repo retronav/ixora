@@ -10,6 +10,6 @@ pipeline:
         image: ubuntu
         commands:
             - apt update && apt install git rsync -y
-            - ./scripts/deploy.sh
+            - ./scripts/deploy-website.sh
         secrets:
             - CODEBERG_TOKEN

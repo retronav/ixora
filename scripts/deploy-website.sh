@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash
 
 export DEPLOYMENT_BRANCH="pages"
 export DEPLOYMENT_DIR="dist"
@@ -12,12 +12,17 @@ fi
 
 cd www/
 
-mkdir /tmp/pages.git
+rm -rf /tmp/pages.git
+mkdir -p /tmp/pages.git
 rsync -av $DEPLOYMENT_DIR/ /tmp/pages.git/
 
 cd /tmp/pages.git/
 git init
-git remote add origin https://retronav:$CODEBERG_TOKEN@codeberg.org/retronav/ixora.git
+if [[ ! -z $CI ]]; then
+    git remote add origin https://retronav:$CODEBERG_TOKEN@codeberg.org/retronav/ixora.git
+else
+    git remote add origin  git@codeberg.org:retronav/ixora.git
+fi
 git checkout --orphan $DEPLOYMENT_BRANCH
 git add .
 git commit -m "Deploy site"
