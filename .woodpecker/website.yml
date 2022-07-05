@@ -13,3 +13,6 @@ pipeline:
             - ./scripts/deploy-website.sh
         secrets:
             - CODEBERG_TOKEN
+        when:
+            path: www/*
+            branch: main
