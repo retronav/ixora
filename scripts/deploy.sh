@@ -13,7 +13,7 @@ fi
 cd www/
 
 mkdir /tmp/pages.git
-rsync -av $DEPLOYMENT_DIR/* /tmp/pages.git/
+rsync -av $DEPLOYMENT_DIR/ /tmp/pages.git/
 
 cd /tmp/pages.git/
 git init
