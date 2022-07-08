@@ -20,13 +20,13 @@ export default defineConfig({
 			const buttons = {
 				'.btn': {
 					border: '2px solid black',
-					borderBottomWidth: '6px',
+					borderBottomWidth: '5px',
 					borderRadius: '.25rem',
 					fontWeight: '700',
 					transition: 'border-bottom-width 50ms, margin-top 50ms',
 					'&:active': {
 						borderBottomWidth: '2px',
-						marginTop: '4px'
+						marginTop: '3px'
 					}
 				},
 				'.btn-red': {

@@ -12,3 +12,7 @@ body {
 a, a:visited {
 	@apply text-blue-600;
 }
+
+*:focus {
+	outline: 4px dotted #ff2400;
+}

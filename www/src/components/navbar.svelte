@@ -1,5 +1,5 @@
 <script lang="ts">
-	import GitHubIcon from 'virtual:icons/simple-icons/github?&width=2em&height=2em';
+	import CodebergIcon from 'virtual:icons/simple-icons/codeberg?&width=2em&height=2em';
 	import NPMIcon from 'virtual:icons/simple-icons/npm?&width=2em&height=2em';
 	import HamburgerIcon from 'virtual:icons/eva/menu-fill?width=2em&height=2em';
 	import { onMount } from 'svelte';
@@ -25,10 +25,10 @@
 		{@html HamburgerIcon}
 	</button>
 	<ul class="links" bind:this={menuLinks}>
-		<li><a href="">Docs</a></li>
-		<li title="Link to GitHub repository">
-			<a href="https://github.com/retronav/ixora">
-				{@html GitHubIcon}
+		<li><a href="/docs">Docs</a></li>
+		<li title="Link to Git repository hosted on Codeberg">
+			<a href="https://codeberg.org/retronav/ixora">
+				{@html CodebergIcon}
 			</a>
 		</li>
 		<li title="Link to NPM package">
