@@ -7,12 +7,13 @@ pipeline:
             - pnpm i
             - pnpm build
     deploy:
-        image: ubuntu
+        image: node:16
         commands:
-            - apt update && apt install git rsync -y
-            - ./scripts/deploy-website.sh
+            - npx vercel --production --token=$VERCEL_TOKEN
         secrets:
-            - CODEBERG_TOKEN
+            - VERCEL_PROJECT_ID
+            - VERCEL_ORG_ID
+            - VERCEL_TOKEN
         when:
             path: www/*
             branch: main
