@@ -9,7 +9,7 @@ pipeline:
     deploy:
         image: node:16
         commands:
-            - npx vercel --production --token=$VERCEL_TOKEN
+            - npx vercel --prod --token=$VERCEL_TOKEN
         secrets:
             - VERCEL_PROJECT_ID
             - VERCEL_ORG_ID
