@@ -1,3 +1,10 @@
+<p align="center">
+    <img
+    height="150px"
+    src="https://codeberg.org/retronav/ixora/raw/branch/main/assets/logo.svg"
+    alt="Ixora logo" />
+</p>
+
 # Ixora
 
 ![CI build](https://ci.codeberg.org/api/badges/retronav/ixora/status.svg)
@@ -5,12 +12,8 @@
 
 > WARNING: Ixora is under heavy development, but is quite usable.
 
-<img align="right"
-    height="150px"
-    src="https://codeberg.org/retronav/ixora/raw/branch/main/assets/logo.svg"
-    alt="Ixora logo" />
-
-A CodeMirror 6 extension pack to make writing Markdown fun and beautiful.
+Ixora is a CodeMirror 6 extension pack to make writing
+Markdown fun and beautiful.
 
 This library includes:
 

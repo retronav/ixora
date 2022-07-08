@@ -31,7 +31,15 @@
 		"wysiwym"
 	],
 	"author": "Pranav Karawale",
-	"funding": "https://liberapay.com/retronav",
+	"funding": {
+		"type": "liberapay",
+		"url": "https://liberapay.com/retronav"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://codeberg.org/retronav/ixora.git"
+	},
+	"homepage": "https://ixora.karawale.in",
 	"dependencies": {
 		"@codemirror/commands": "^6.0.0",
 		"@codemirror/lang-html": "^6.1.0",
