@@ -1,5 +1,4 @@
-/**
- * A single source of truth for all the classes used for decorations in Ixora.
+/** A single source of truth for all the classes used for decorations in Ixora.
  *  These are kept together here to simplify changing/adding classes later
  * and serve as a reference.
  *
@@ -12,7 +11,7 @@ export const blockquote = {
 		/** Blockquote widget */
 		widget: 'cm-blockquote',
 		/** Replace decoration for the quote mark */
-		mark: 'cm-blockquote-border'
+		mark: 'cm-blockquote-border',
 	},
 	/** Classes for codeblock decorations. */
 	codeblock = {
@@ -21,7 +20,7 @@ export const blockquote = {
 		/** First line of the codeblock widget */
 		widgetBegin: 'cm-codeblock-begin',
 		/** Last line of the codeblock widget */
-		widgetEnd: 'cm-codeblock-end'
+		widgetEnd: 'cm-codeblock-end',
 	},
 	/** Classes for heading decorations. */
 	heading = {
@@ -30,12 +29,12 @@ export const blockquote = {
 		/** Heading levels (h1, h2, etc) */
 		level: (level: number) => `cm-heading-${level}`,
 		/** Heading slug */
-		slug: (slug: string) => `cm-heading-slug-${slug}`
+		slug: (slug: string) => `cm-heading-slug-${slug}`,
 	},
 	/** Classes for link (URL) widgets. */
 	link = {
 		/** URL widget */
-		widget: 'cm-link'
+		widget: 'cm-link',
 	},
 	/** Classes for list widgets. */
 	list = {
@@ -44,5 +43,5 @@ export const blockquote = {
 		/** List task checkbox */
 		taskCheckbox: 'cm-task-marker-checkbox',
 		/** Task list item with checkbox checked */
-		taskChecked: 'cm-task-checked'
+		taskChecked: 'cm-task-checked',
 	};

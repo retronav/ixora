@@ -1,6 +1,6 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
-import { classes } from '../dist';
+import { classes } from '../dist/index.js';
 import { setup } from './util';
 
 let editor!: EditorView;

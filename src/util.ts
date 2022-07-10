@@ -11,7 +11,7 @@ import { Decoration, EditorView } from '@codemirror/view';
  */
 export function checkRangeOverlap(
 	range1: [number, number],
-	range2: [number, number]
+	range2: [number, number],
 ) {
 	return range1[0] <= range2[1] && range2[0] <= range1[1];
 }
@@ -24,7 +24,7 @@ export function checkRangeOverlap(
  */
 export function checkRangeSubset(
 	parent: [number, number],
-	child: [number, number]
+	child: [number, number],
 ) {
 	return child[0] >= parent[0] && child[1] <= parent[1];
 }
@@ -51,7 +51,7 @@ export function iterateTreeInVisibleRanges(
 	iterateFns: {
 		enter(node: SyntaxNodeRef): boolean | void;
 		leave?(node: SyntaxNodeRef): void;
-	}
+	},
 ) {
 	for (const { from, to } of view.visibleRanges) {
 		syntaxTree(view.state).iterate({ ...iterateFns, from, to });
@@ -85,8 +85,8 @@ export function editorLines(view: EditorView, from: number, to: number) {
 			(line) =>
 				!checkRangeOverlap(
 					[folded.from, folded.to],
-					[line.from, line.to]
-				)
+					[line.from, line.to],
+				),
 		);
 		folded.next();
 	}

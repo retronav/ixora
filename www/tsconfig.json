@@ -10,6 +10,12 @@
 		// Enable stricter transpilation for better output.
 		"isolatedModules": true,
 		// Add type definitions for our Vite runtime.
-		"types": ["vite/client", "unplugin-icons/types/raw"]
+		"types": ["vite/client", "unplugin-icons/types/raw"],
+		"baseUrl": ".",
+		"paths": {
+			"~/*": ["src/*"]
+		},
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true
 	}
 }

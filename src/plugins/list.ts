@@ -4,12 +4,12 @@ import {
 	EditorView,
 	ViewPlugin,
 	ViewUpdate,
-	WidgetType
+	WidgetType,
 } from '@codemirror/view';
-import { isCursorInRange, iterateTreeInVisibleRanges } from '../util';
+import { isCursorInRange, iterateTreeInVisibleRanges } from '../util.ts';
 import { ChangeSpec, Range } from '@codemirror/state';
 import { NodeType, SyntaxNodeRef } from '@lezer/common';
-import { list as classes } from '../classes';
+import { list as classes } from '../classes.ts';
 
 const bulletListMarkerRE = /^[-+*]/;
 
@@ -31,11 +31,12 @@ class ListBulletPlugin {
 		this.decorations = this.decorateLists(view);
 	}
 	update(update: ViewUpdate) {
-		if (update.docChanged || update.viewportChanged || update.selectionSet)
+		if (update.docChanged || update.viewportChanged || update.selectionSet) {
 			this.decorations = this.decorateLists(update.view);
+		}
 	}
 	private decorateLists(view: EditorView) {
-		const widgets = [];
+		const widgets = new Array<Range<Decoration>>();
 		iterateTreeInVisibleRanges(view, {
 			enter: ({ type, from, to }) => {
 				if (isCursorInRange(view, [from, to])) return;
@@ -43,18 +44,18 @@ class ListBulletPlugin {
 					const listMark = view.state.sliceDoc(from, to);
 					if (bulletListMarkerRE.test(listMark)) {
 						const dec = Decoration.replace({
-							widget: new ListBulletWidget(listMark)
+							widget: new ListBulletWidget(listMark),
 						});
 						widgets.push(dec.range(from, to));
 					}
 				}
-			}
+			},
 		});
 		return Decoration.set(widgets, true);
 	}
 }
 const listBulletPlugin = ViewPlugin.fromClass(ListBulletPlugin, {
-	decorations: (v) => v.decorations
+	decorations: (v) => v.decorations,
 });
 
 /**
@@ -81,13 +82,14 @@ class TaskListsPlugin {
 		this.decorations = this.addCheckboxes(view);
 	}
 	update(update: ViewUpdate) {
-		if (update.docChanged || update.viewportChanged || update.selectionSet)
+		if (update.docChanged || update.viewportChanged || update.selectionSet) {
 			this.decorations = this.addCheckboxes(update.view);
+		}
 	}
 	addCheckboxes(view: EditorView) {
 		const widgets: Range<Decoration>[] = [];
 		iterateTreeInVisibleRanges(view, {
-			enter: this.iterateTree(view, widgets)
+			enter: this.iterateTree(view, widgets),
 		});
 		return Decoration.set(widgets, true);
 	}
@@ -98,15 +100,16 @@ class TaskListsPlugin {
 			let checked = false;
 			// Iterate inside the task node to find the checkbox
 			node.toTree().iterate({
-				enter: (ref) => iterateInner(ref.type, ref.from, ref.to)
+				enter: (ref) => iterateInner(ref.type, ref.from, ref.to),
 			});
-			if (checked)
+			if (checked) {
 				widgets.push(
 					Decoration.mark({
 						tagName: 'span',
-						class: 'cm-task-checked'
-					}).range(from, to)
+						class: 'cm-task-checked',
+					}).range(from, to),
 				);
+			}
 
 			function iterateInner(type: NodeType, nfrom: number, nto: number) {
 				if (type.name !== 'TaskMarker') return;
@@ -115,7 +118,7 @@ class TaskListsPlugin {
 				// Checkbox is checked if it has a 'x' in between the []
 				if ('xX'.includes(checkbox[1])) checked = true;
 				const dec = Decoration.replace({
-					widget: new CheckboxWidget(checked, from + nfrom + 1)
+					widget: new CheckboxWidget(checked, from + nfrom + 1),
 				});
 				widgets.push(dec.range(from + nfrom, from + nto));
 			}
@@ -140,7 +143,7 @@ class CheckboxWidget extends WidgetType {
 			const change: ChangeSpec = {
 				from: this.pos,
 				to: this.pos + 1,
-				insert: this.checked ? ' ' : 'x'
+				insert: this.checked ? ' ' : 'x',
 			};
 			view.dispatch({ changes: change });
 			this.checked = !this.checked;
@@ -152,7 +155,7 @@ class CheckboxWidget extends WidgetType {
 }
 
 const taskListPlugin = ViewPlugin.fromClass(TaskListsPlugin, {
-	decorations: (v) => v.decorations
+	decorations: (v) => v.decorations,
 });
 
 /**
@@ -161,16 +164,16 @@ const taskListPlugin = ViewPlugin.fromClass(TaskListsPlugin, {
 const baseTheme = EditorView.baseTheme({
 	['.' + classes.bullet]: {
 		position: 'relative',
-		visibility: 'hidden'
+		visibility: 'hidden',
 	},
 	['.' + classes.taskChecked]: {
-		textDecoration: 'line-through !important'
+		textDecoration: 'line-through !important',
 	},
 	['.' + classes.bullet + ':after']: {
 		visibility: 'visible',
 		position: 'absolute',
 		top: 0,
 		left: 0,
-		content: "'\\2022'" /* U+2022 BULLET */
-	}
+		content: '\'\\2022\'', /* U+2022 BULLET */
+	},
 });

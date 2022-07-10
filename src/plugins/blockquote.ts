@@ -4,16 +4,16 @@ import {
 	EditorView,
 	ViewPlugin,
 	ViewUpdate,
-	WidgetType
+	WidgetType,
 } from '@codemirror/view';
 import { Range } from '@codemirror/state';
 import {
-	iterateTreeInVisibleRanges,
+	checkRangeSubset,
 	editorLines,
 	isCursorInRange,
-	checkRangeSubset
-} from '../util';
-import { blockquote as classes } from '../classes';
+	iterateTreeInVisibleRanges,
+} from '../util.ts';
+import { blockquote as classes } from '../classes.ts';
 
 const quoteMarkRE = /^(\s*>+)/gm;
 
@@ -34,16 +34,11 @@ class BlockQuotePlugin {
 		this.decorations = this.styleBlockquote(view);
 	}
 	update(update: ViewUpdate) {
-		if (
-			update.docChanged ||
-			update.viewportChanged ||
-			update.selectionSet
-		) {
+		if (update.docChanged || update.viewportChanged || update.selectionSet) {
 			this.decorations = this.styleBlockquote(update.view);
 		}
 	}
 	/**
-	 *
 	 * @param view - The editor view
 	 * @returns The blockquote decorations to add to the editor
 	 */
@@ -56,51 +51,47 @@ class BlockQuotePlugin {
 
 				lines.forEach((line) => {
 					const lineDec = Decoration.line({
-						class: classes.widget
+						class: classes.widget,
 					});
 					widgets.push(lineDec.range(line.from));
 				});
 
 				if (
-					lines.every(
-						(line) => !isCursorInRange(view, [line.from, line.to])
-					)
+					lines.every((line) => !isCursorInRange(view, [line.from, line.to]))
 				) {
 					const marks = Array.from(
-						view.state.sliceDoc(from, to).matchAll(quoteMarkRE)
+						view.state.sliceDoc(from, to).matchAll(quoteMarkRE),
 					)
-						.map((x) => from + x.index)
+						.map((x) => from + x.index!)
 						.map((i) =>
 							Decoration.replace({
-								widget: new BlockQuoteBorderWidget()
+								widget: new BlockQuoteBorderWidget(),
 							}).range(i, i + 1)
 						);
 					lines.forEach((line) => {
 						if (
 							!marks.some((mark) =>
-								checkRangeSubset(
-									[line.from, line.to],
-									[mark.from, mark.to]
-								)
+								checkRangeSubset([line.from, line.to], [mark.from, mark.to])
 							)
-						)
+						) {
 							marks.push(
 								Decoration.widget({
-									widget: new BlockQuoteBorderWidget()
-								}).range(line.from)
+									widget: new BlockQuoteBorderWidget(),
+								}).range(line.from),
 							);
+						}
 					});
 
 					widgets.push(...marks);
 				}
-			}
+			},
 		});
 		return Decoration.set(widgets, true);
 	}
 }
 
 const blockQuotePlugin = ViewPlugin.fromClass(BlockQuotePlugin, {
-	decorations: (v) => v.decorations
+	decorations: (v) => v.decorations,
 });
 
 /**
@@ -108,11 +99,11 @@ const blockQuotePlugin = ViewPlugin.fromClass(BlockQuotePlugin, {
  */
 const baseTheme = EditorView.baseTheme({
 	['.' + classes.mark]: {
-		'border-left': '4px solid #ccc'
+		'border-left': '4px solid #ccc',
 	},
 	['.' + classes.widget]: {
-		color: '#555'
-	}
+		color: '#555',
+	},
 });
 
 /**

@@ -11,7 +11,7 @@ export default defineConfig({
 		}),
 		Icons({
 			compiler: 'raw',
-			autoInstall: true,
+			autoInstall: true
 		})
 	]
 });

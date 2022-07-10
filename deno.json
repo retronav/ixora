@@ -1,0 +1,32 @@
+{
+    "importMap": "./import_map.json",
+    "lint": {
+        "files": {
+            "exclude": [
+                "dist/**/*"
+            ]
+        }
+    },
+    "fmt": {
+        "files": {
+            "exclude": [
+                "dist/**/*"
+            ]
+        },
+        "options": {
+            "useTabs": true,
+            "singleQuote": true
+        }
+    },
+    "compilerOptions": {
+        "lib": [
+            "ES2017",
+            "DOM",
+            "ES2020",
+            "deno.ns"
+        ]
+    },
+    "tasks": {
+        "dev": "./scripts/serve.ts"
+    }
+}

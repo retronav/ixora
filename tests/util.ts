@@ -1,7 +1,7 @@
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { EditorState } from '@codemirror/state';
 import { EditorView, minimalSetup } from 'codemirror';
-import ixora, { frontmatter } from '../dist';
+import ixora, { frontmatter } from '../dist/mod.js';
 
 /**
  * Modify the editor's text content.
@@ -12,14 +12,14 @@ import ixora, { frontmatter } from '../dist';
 export function setEditorContent(
 	content: string,
 	view: EditorView,
-	append = false
+	append = false,
 ): void {
 	const tx = view.state.update({
 		changes: {
 			from: append ? view.state.doc.length : 0,
 			insert: content,
-			to: append ? content.length : undefined
-		}
+			to: append ? content.length : undefined,
+		},
 	});
 	view.dispatch(tx);
 }
@@ -33,21 +33,21 @@ export function setEditorContent(
 export function moveCursor(
 	type: 'line' | 'position',
 	value: number,
-	view: EditorView
+	view: EditorView,
 ): void {
 	if (type === 'line') {
 		const line = view.viewportLineBlocks[value];
 		const tx = view.state.update({
 			selection: {
-				anchor: line.from
-			}
+				anchor: line.from,
+			},
 		});
 		view.dispatch(tx);
 	} else if (type === 'position') {
 		const tx = view.state.update({
 			selection: {
-				anchor: value
-			}
+				anchor: value,
+			},
 		});
 		view.dispatch(tx);
 	} else {
@@ -60,21 +60,20 @@ export function moveCursor(
  * @param el - The element to attach the editor to.
  * @returns The editor instance.
  */
-export function setup(el: HTMLElement) {
+export function setup(el: HTMLElement, doc?: string) {
 	const editor = new EditorView({
-		state: EditorState.create({
-			extensions: [
-				markdown({
-					base: markdownLanguage,
-					extensions: [frontmatter]
-				}),
-				EditorView.lineWrapping,
+		doc,
+		extensions: [
+			markdown({
+				base: markdownLanguage,
+				extensions: [frontmatter],
+			}),
+			EditorView.lineWrapping,
 
-				minimalSetup,
-				ixora
-			]
-		}),
-		parent: el
+			minimalSetup,
+			ixora,
+		],
+		parent: el,
 	});
 
 	editor.focus();

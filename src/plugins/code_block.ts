@@ -1,18 +1,19 @@
 import { Extension } from '@codemirror/state';
 import {
-	ViewPlugin,
-	DecorationSet,
 	Decoration,
+	DecorationSet,
 	EditorView,
-	ViewUpdate
+	ViewPlugin,
+	ViewUpdate,
 } from '@codemirror/view';
+import { Range } from '@codemirror/state';
 import {
-	isCursorInRange,
+	editorLines,
 	invisibleDecoration,
+	isCursorInRange,
 	iterateTreeInVisibleRanges,
-	editorLines
-} from '../util';
-import { codeblock as classes } from '../classes';
+} from '../util.ts';
+import { codeblock as classes } from '../classes.ts';
 
 /**
  * Ixora code block plugin.
@@ -34,15 +35,16 @@ const codeBlockPlugin = ViewPlugin.fromClass(
 				update.docChanged ||
 				update.viewportChanged ||
 				update.selectionSet
-			)
+			) {
 				this.decorations = decorateCodeBlocks(update.view);
+			}
 		}
 	},
-	{ decorations: (v) => v.decorations }
+	{ decorations: (v) => v.decorations },
 );
 
 function decorateCodeBlocks(view: EditorView) {
-	const widgets = [];
+	const widgets = new Array<Range<Decoration>>();
 	iterateTreeInVisibleRanges(view, {
 		enter: ({ type, from, to, node }) => {
 			if (!['FencedCode', 'CodeBlock'].includes(type.name)) return;
@@ -54,8 +56,8 @@ function decorateCodeBlocks(view: EditorView) {
 							? classes.widgetBegin
 							: block.to === to
 							? classes.widgetEnd
-							: ''
-					].join(' ')
+							: '',
+					].join(' '),
 				});
 				widgets.push(lineDec.range(block.from));
 			});
@@ -69,14 +71,14 @@ function decorateCodeBlocks(view: EditorView) {
 							// eslint-disable-next-line no-case-declarations
 							const decRange = invisibleDecoration.range(
 								from + nodeFrom,
-								from + nodeTo
+								from + nodeTo,
 							);
 							widgets.push(decRange);
 							break;
 					}
-				}
+				},
 			});
-		}
+		},
 	});
 	return Decoration.set(widgets, true);
 }
@@ -86,12 +88,12 @@ function decorateCodeBlocks(view: EditorView) {
  */
 const baseTheme = EditorView.baseTheme({
 	['.' + classes.widget]: {
-		backgroundColor: '#CCC7'
+		backgroundColor: '#CCC7',
 	},
 	['.' + classes.widgetBegin]: {
-		borderRadius: '5px 5px 0 0'
+		borderRadius: '5px 5px 0 0',
 	},
 	['.' + classes.widgetEnd]: {
-		borderRadius: '0 0 5px 5px'
-	}
+		borderRadius: '0 0 5px 5px',
+	},
 });

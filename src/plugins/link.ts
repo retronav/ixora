@@ -5,11 +5,12 @@ import {
 	EditorView,
 	ViewPlugin,
 	ViewUpdate,
-	WidgetType
+	WidgetType,
 } from '@codemirror/view';
-import { headingSlugField } from '../state/heading-slug';
-import { checkRangeOverlap, invisibleDecoration } from '../util';
-import { link as classes } from '../classes';
+import { Range } from '@codemirror/state';
+import { headingSlugField } from '../state/heading_slug.ts';
+import { checkRangeOverlap, invisibleDecoration } from '../util.ts';
+import { link as classes } from '../classes.ts';
 
 /**
  * Ixora Links plugin.
@@ -29,14 +30,12 @@ export class GoToLinkWidget extends WidgetType {
 			// Handle links within the markdown document.
 			const slugs = view.state.field(headingSlugField);
 			anchor.addEventListener('click', () => {
-				const pos = slugs.find(
-					(h) => h.slug === this.link.slice(1)
-				)?.pos;
+				const pos = slugs.find((h) => h.slug === this.link.slice(1))?.pos;
 				// pos could be zero, so instead check if its undefined
 				if (typeof pos !== 'undefined') {
 					const tr = view.state.update({
 						selection: { anchor: pos },
-						scrollIntoView: true
+						scrollIntoView: true,
 					});
 					view.dispatch(tr);
 				}
@@ -50,7 +49,7 @@ export class GoToLinkWidget extends WidgetType {
 }
 
 function getLinkAnchor(view: EditorView) {
-	const widgets = [];
+	const widgets = new Array<Range<Decoration>>();
 
 	for (const { from, to } of view.visibleRanges) {
 		syntaxTree(view.state).iterate({
@@ -72,19 +71,17 @@ function getLinkAnchor(view: EditorView) {
 							...marks.map(({ from, to }) =>
 								invisibleDecoration.range(from, to)
 							),
-							invisibleDecoration.range(from, to)
+							invisibleDecoration.range(from, to),
 						);
 					}
 
 					const dec = Decoration.widget({
-						widget: new GoToLinkWidget(
-							view.state.sliceDoc(from, to)
-						),
-						side: 1
+						widget: new GoToLinkWidget(view.state.sliceDoc(from, to)),
+						side: 1,
 					});
 					widgets.push(dec.range(to, to));
 				}
-			}
+			},
 		});
 	}
 
@@ -98,15 +95,12 @@ export const goToLinkPlugin = ViewPlugin.fromClass(
 			this.decorations = getLinkAnchor(view);
 		}
 		update(update: ViewUpdate) {
-			if (
-				update.docChanged ||
-				update.viewportChanged ||
-				update.selectionSet
-			)
+			if (update.docChanged || update.viewportChanged || update.selectionSet) {
 				this.decorations = getLinkAnchor(update.view);
+			}
 		}
 	},
-	{ decorations: (v) => v.decorations }
+	{ decorations: (v) => v.decorations },
 );
 
 /**
@@ -115,6 +109,6 @@ export const goToLinkPlugin = ViewPlugin.fromClass(
 const baseTheme = EditorView.baseTheme({
 	['.' + classes.widget]: {
 		cursor: 'pointer',
-		textDecoration: 'underline'
-	}
+		textDecoration: 'underline',
+	},
 });

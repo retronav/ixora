@@ -3,14 +3,15 @@ import {
 	DecorationSet,
 	EditorView,
 	ViewPlugin,
-	ViewUpdate
+	ViewUpdate,
 } from '@codemirror/view';
+import { Range } from '@codemirror/state';
 import {
 	checkRangeOverlap,
 	invisibleDecoration,
 	isCursorInRange,
-	iterateTreeInVisibleRanges
-} from '../util';
+	iterateTreeInVisibleRanges,
+} from '../util.ts';
 
 /**
  * These types contain markers as child elements that can be hidden.
@@ -19,7 +20,7 @@ export const typesWithMarks = [
 	'Emphasis',
 	'StrongEmphasis',
 	'InlineCode',
-	'Strikethrough'
+	'Strikethrough',
 ];
 /**
  * The elements which are used as marks.
@@ -35,11 +36,12 @@ class HideMarkPlugin {
 		this.decorations = this.compute(view);
 	}
 	update(update: ViewUpdate) {
-		if (update.docChanged || update.viewportChanged || update.selectionSet)
+		if (update.docChanged || update.viewportChanged || update.selectionSet) {
 			this.decorations = this.compute(update.view);
+		}
 	}
 	compute(view: EditorView): DecorationSet {
-		const widgets = [];
+		const widgets = new Array<Range<Decoration>>();
 		let parentRange: [number, number];
 		iterateTreeInVisibleRanges(view, {
 			enter: ({ type, from, to, node }) => {
@@ -47,12 +49,9 @@ class HideMarkPlugin {
 					// There can be a possibility that the current node is a
 					// child eg. a bold node in a emphasis node, so check
 					// for that or else save the node range
-					if (
-						parentRange &&
-						checkRangeOverlap([from, to], parentRange)
-					)
+					if (parentRange && checkRangeOverlap([from, to], parentRange)) {
 						return;
-					else parentRange = [from, to];
+					} else parentRange = [from, to];
 					if (isCursorInRange(view, [from, to])) return;
 					const innerTree = node.toTree();
 					innerTree.iterate({
@@ -61,15 +60,12 @@ class HideMarkPlugin {
 							// decoration
 							if (!markTypes.includes(type.name)) return;
 							widgets.push(
-								invisibleDecoration.range(
-									from + markFrom,
-									from + markTo
-								)
+								invisibleDecoration.range(from + markFrom, from + markTo),
 							);
-						}
+						},
 					});
 				}
-			}
+			},
 		});
 		return Decoration.set(widgets, true);
 	}
@@ -83,6 +79,6 @@ class HideMarkPlugin {
  */
 export const hideMarks = () => [
 	ViewPlugin.fromClass(HideMarkPlugin, {
-		decorations: (v) => v.decorations
-	})
+		decorations: (v) => v.decorations,
+	}),
 ];

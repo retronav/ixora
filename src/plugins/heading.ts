@@ -3,11 +3,12 @@ import {
 	DecorationSet,
 	EditorView,
 	ViewPlugin,
-	ViewUpdate
+	ViewUpdate,
 } from '@codemirror/view';
-import { checkRangeOverlap, iterateTreeInVisibleRanges } from '../util';
-import { headingSlugField } from '../state/heading-slug';
-import { heading as classes } from '../classes';
+import { Range } from '@codemirror/state';
+import { checkRangeOverlap, iterateTreeInVisibleRanges } from '../util.ts';
+import { headingSlugField } from '../state/heading_slug.ts';
+import { heading as classes } from '../classes.ts';
 
 /**
  * Ixora headings plugin.
@@ -19,7 +20,7 @@ import { heading as classes } from '../classes';
 export const headings = () => [
 	headingDecorationsPlugin,
 	hideHeaderMarkPlugin,
-	baseTheme
+	baseTheme,
 ];
 
 class HideHeaderMarkPlugin {
@@ -28,8 +29,9 @@ class HideHeaderMarkPlugin {
 		this.decorations = this.hideHeaderMark(view);
 	}
 	update(update: ViewUpdate) {
-		if (update.docChanged || update.viewportChanged || update.selectionSet)
+		if (update.docChanged || update.viewportChanged || update.selectionSet) {
 			this.decorations = this.hideHeaderMark(update.view);
+		}
 	}
 	/**
 	 * Function to decide if to insert a decoration to hide the header mark
@@ -37,7 +39,7 @@ class HideHeaderMarkPlugin {
 	 * @returns The `Decoration`s that hide the header marks
 	 */
 	private hideHeaderMark(view: EditorView) {
-		const widgets = [];
+		const widgets = new Array<Range<Decoration>>();
 		const ranges = view.state.selection.ranges;
 		iterateTreeInVisibleRanges(view, {
 			enter: ({ type, from, to }) => {
@@ -56,7 +58,7 @@ class HideHeaderMarkPlugin {
 					const dec = Decoration.replace({});
 					widgets.push(dec.range(from, to + 1));
 				}
-			}
+			},
 		});
 		return Decoration.set(widgets, true);
 	}
@@ -70,7 +72,7 @@ class HideHeaderMarkPlugin {
  * - The mark is on a line which is in the current selection
  */
 const hideHeaderMarkPlugin = ViewPlugin.fromClass(HideHeaderMarkPlugin, {
-	decorations: (v) => v.decorations
+	decorations: (v) => v.decorations,
 });
 
 class HeadingDecorationsPlugin {
@@ -79,16 +81,12 @@ class HeadingDecorationsPlugin {
 		this.decorations = this.decorateHeadings(view);
 	}
 	update(update: ViewUpdate) {
-		if (
-			update.docChanged ||
-			update.viewportChanged ||
-			update.selectionSet
-		) {
+		if (update.docChanged || update.viewportChanged || update.selectionSet) {
 			this.decorations = this.decorateHeadings(update.view);
 		}
 	}
 	private decorateHeadings(view: EditorView) {
-		const widgets = [];
+		const widgets = new Array<Range<Decoration>>();
 		iterateTreeInVisibleRanges(view, {
 			enter: ({ name, from }) => {
 				// To capture ATXHeading and SetextHeading
@@ -96,16 +94,16 @@ class HeadingDecorationsPlugin {
 				const slug = view.state
 					.field(headingSlugField)
 					.find((s) => s.pos === from)?.slug;
-				const level = parseInt(/[1-6]$/.exec(name)[0]);
+				const level = parseInt(/[1-6]$/.exec(name)![0]);
 				const dec = Decoration.line({
 					class: [
 						classes.heading,
 						classes.level(level),
-						slug ? classes.slug(slug) : ''
-					].join(' ')
+						slug ? classes.slug(slug) : '',
+					].join(' '),
 				});
 				widgets.push(dec.range(view.state.doc.lineAt(from).from));
-			}
+			},
 		});
 		return Decoration.set(widgets, true);
 	}
@@ -113,7 +111,7 @@ class HeadingDecorationsPlugin {
 
 const headingDecorationsPlugin = ViewPlugin.fromClass(
 	HeadingDecorationsPlugin,
-	{ decorations: (v) => v.decorations }
+	{ decorations: (v) => v.decorations },
 );
 
 /**
@@ -121,12 +119,12 @@ const headingDecorationsPlugin = ViewPlugin.fromClass(
  */
 const baseTheme = EditorView.baseTheme({
 	'.cm-heading': {
-		fontWeight: 'bold'
+		fontWeight: 'bold',
 	},
 	['.' + classes.level(1)]: { fontSize: '2.2rem' },
 	['.' + classes.level(2)]: { fontSize: '1.8rem' },
 	['.' + classes.level(3)]: { fontSize: '1.4rem' },
 	['.' + classes.level(4)]: { fontSize: '1.2rem' },
 	['.' + classes.level(5)]: { fontSize: '1rem' },
-	['.' + classes.level(6)]: { fontSize: '0.8rem' }
+	['.' + classes.level(6)]: { fontSize: '0.8rem' },
 });

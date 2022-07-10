@@ -14,9 +14,14 @@
 		"@iconify-json/eva": "^1.1.2",
 		"@iconify-json/simple-icons": "^1.1.18",
 		"astro": "1.0.0-beta.59",
+		"prettier-plugin-astro": "^0.1.1",
+		"remark-shiki-twoslash": "^3.1.0",
 		"sass": "^1.53.0",
 		"sharp": "^0.30.7",
 		"svelte": "^3.48.0",
+		"typescript": "^4.7.4",
+		"unplugin-icons": "^0.14.7",
+		"vite-plugin-windicss": "^1.8.6",
 		"windicss": "^3.5.6"
 	},
 	"dependencies": {
@@ -26,9 +31,6 @@
 		"@codemirror/view": "^6.0.2",
 		"@lezer/highlight": "^1.0.0",
 		"@retronav/ixora": "^0.2.1",
-		"codemirror": "^6.0.1",
-		"prettier-plugin-astro": "^0.1.1",
-		"unplugin-icons": "^0.14.7",
-		"vite-plugin-windicss": "^1.8.6"
+		"codemirror": "^6.0.1"
 	}
 }

@@ -133,4 +133,9 @@ dist
 
 # Rollup stats
 stats.html
+
+# Vercel
 .vercel
+
+# Auto-generated npm package
+npm
