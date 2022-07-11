@@ -11,6 +11,8 @@
         "@codemirror/language-data": "https://esm.sh/@codemirror/language-data@6.1.0",
         "@codemirror/commands": "https://esm.sh/@codemirror/commands@6.0.1",
         "@codemirror/lang-markdown": "https://esm.sh/@codemirror/lang-markdown@6.0.0",
-        "codemirror": "https://esm.sh/codemirror@6.0.1"
+        "codemirror": "https://esm.sh/codemirror@6.0.1",
+
+        "@open-wc/testing": "https://esm.sh/@open-wc/testing@3.1.6?bundle"
     }
 }

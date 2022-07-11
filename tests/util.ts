@@ -1,5 +1,4 @@
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
-import { EditorState } from '@codemirror/state';
 import { EditorView, minimalSetup } from 'codemirror';
 import ixora, { frontmatter } from '../dist/mod.js';
 

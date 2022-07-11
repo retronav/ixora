@@ -27,6 +27,8 @@
         ]
     },
     "tasks": {
-        "dev": "./scripts/serve.ts"
+        "dev": "./scripts/serve.ts",
+        "build": "./scripts/build.ts",
+        "test": "deno run -A ./scripts/run_test.ts"
     }
 }

@@ -1,7 +1,7 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
-import { classes } from '../dist';
-import { setup, setEditorContent, moveCursor } from './util';
+import { classes } from '../dist/mod.js';
+import { setup, setEditorContent, moveCursor } from './util.ts';
 
 let editor!: EditorView;
 const content = `# Hello

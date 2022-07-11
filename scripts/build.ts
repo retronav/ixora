@@ -2,8 +2,6 @@
 
 import { build } from 'https://deno.land/x/esbuild@v0.14.48/mod.js';
 import * as importMap from 'https://esm.sh/esbuild-plugin-import-map@2.1.0';
-import { globbySync } from 'https://esm.sh/globby@13.1.2';
-import ts from 'https://esm.sh/typescript@4.7.4';
 
 interface ImportMap {
 	imports: {
@@ -16,10 +14,12 @@ interface ImportMap {
 
 const map: ImportMap = JSON.parse(await Deno.readTextFile('./import_map.json'));
 Object.keys(map.imports).forEach((key) => {
-	map.imports[key] = map.imports[key] + '?dev';
+	const url = new URL(map.imports[key]);
+	url.searchParams.append('dev', 'true');
+	map.imports[key] = url.toString();
 });
 
-await importMap.load(['./import_map.json']);
+await importMap.load([map]);
 
 await build({
 	entryPoints: ['src/mod.ts'],
@@ -33,21 +33,6 @@ await build({
 	outdir: 'dist',
 	sourcemap: true
 });
-
-// Generate d.ts
-
-const tsOptions: ts.CompilerOptions = {
-	declaration: true,
-	emitDeclarationOnly: true,
-	outDir: 'dist',
-};
-
-const host = ts.createCompilerHost(tsOptions);
-host.writeFile = (fileName: string, contents: string) =>
-	Deno.writeTextFileSync(fileName, contents);
-
-const program = ts.createProgram(globbySync('src/**/*.ts'), tsOptions, host);
-program.emit();
 
 console.log('Build done');
 Deno.exit(0);

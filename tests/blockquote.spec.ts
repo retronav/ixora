@@ -1,7 +1,7 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
-import { classes } from '../dist';
-import { moveCursor, setEditorContent, setup } from './util';
+import { classes } from '../dist/mod.js';
+import { moveCursor, setEditorContent, setup } from './util.ts';
 
 let editor!: EditorView;
 const content = `> Hello
@@ -16,8 +16,8 @@ beforeEach(() => {
 	const tn = editor.state.update({
 		changes: {
 			from: 0,
-			insert: content
-		}
+			insert: content,
+		},
 	});
 	editor.dispatch(tn);
 });
@@ -30,8 +30,8 @@ describe('Blockquote plugin', () => {
 	it('Should render a solid bar when cursor is not on the line', () => {
 		const tn = editor.state.update({
 			selection: {
-				anchor: editor.viewportLineBlocks[2].from
-			}
+				anchor: editor.viewportLineBlocks[2].from,
+			},
 		});
 		editor.dispatch(tn);
 
@@ -59,14 +59,14 @@ I am still in a blockquote
 			moveCursor('line', editor.viewportLineBlocks.length - 1, editor);
 
 			const secondLine = editor.domAtPos(
-				editor.viewportLineBlocks[1].from
+				editor.viewportLineBlocks[1].from,
 			).node as HTMLElement;
 
 			expect(secondLine.textContent).to.equal(
-				'I am still in a blockquote'
+				'I am still in a blockquote',
 			);
 			expect(secondLine.getElementsByClassName(classes.blockquote.mark))
 				.to.exist;
-		}
+		},
 	);
 });

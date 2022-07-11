@@ -1,6 +1,6 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
-import { moveCursor, setEditorContent, setup } from './util';
+import { moveCursor, setEditorContent, setup } from './util.ts';
 
 let editor!: EditorView;
 const content = `**_\`foo\`_** is bar`;

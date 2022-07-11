@@ -6,7 +6,7 @@ import { keymap } from '@codemirror/view';
 import { languages } from '@codemirror/language-data';
 import {
 	defaultHighlightStyle,
-	syntaxHighlighting
+	syntaxHighlighting,
 } from '@codemirror/language';
 import ixora, { frontmatter } from '../src/mod.ts';
 
@@ -19,16 +19,18 @@ const editor = new EditorView({
 		markdown({
 			base: markdownLanguage,
 			codeLanguages: languages,
-			extensions: [frontmatter, { props: [tagStyles] }]
+			extensions: [frontmatter, { props: [tagStyles] }],
 		}),
 		EditorView.lineWrapping,
 		theme,
 
 		basicSetup,
-		ixora
+		ixora,
 	],
-	doc: "# Hello World",
-	parent: document.body
+	doc: '# Hello World',
+	parent: document.body,
 });
 
 editor.focus();
+//@ts-ignore: trust me
+window.editor = editor;

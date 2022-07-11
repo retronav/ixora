@@ -1,7 +1,7 @@
 import { syntaxTree } from '@codemirror/language';
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
-import { setEditorContent, setup } from './util';
+import { setEditorContent, setup } from './util.ts';
 
 let editor!: EditorView;
 const content = `---
