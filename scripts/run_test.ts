@@ -5,7 +5,7 @@ import * as importMap from 'https://esm.sh/esbuild-plugin-import-map@2.1.0';
 import puppeteer, {
 	JSHandle,
 } from 'https://deno.land/x/puppeteer@14.1.1/mod.ts';
-import { basename } from 'https://deno.land/std/path/posix.ts';
+import { basename } from "https://deno.land/std@0.147.0/path/posix.ts";
 import { globby } from "https://esm.sh/globby@13.1.2";
 
 import 'https://esm.sh/mocha@10.0.0';

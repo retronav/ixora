@@ -67,7 +67,7 @@ function decorateCodeBlocks(view: EditorView) {
 				enter: ({ type, from: nodeFrom, to: nodeTo }) => {
 					switch (type.name) {
 						case 'CodeInfo':
-						case 'CodeMark':
+						case 'CodeMark': {
 							// eslint-disable-next-line no-case-declarations
 							const decRange = invisibleDecoration.range(
 								from + nodeFrom,
@@ -75,6 +75,7 @@ function decorateCodeBlocks(view: EditorView) {
 							);
 							widgets.push(decRange);
 							break;
+						}
 					}
 				},
 			});

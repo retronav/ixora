@@ -29,6 +29,7 @@
     "tasks": {
         "dev": "./scripts/serve.ts",
         "build": "./scripts/build.ts",
+        "lint": "deno lint src/ tests/ scripts/",
         "test": "deno run -A ./scripts/run_test.ts"
     }
 }
