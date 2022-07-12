@@ -17,8 +17,8 @@ beforeEach(() => {
 	const tn = editor.state.update({
 		changes: {
 			from: 0,
-			insert: content
-		}
+			insert: content,
+		},
 	});
 	editor.dispatch(tn);
 });
@@ -43,14 +43,14 @@ describe('links plugin', () => {
 		// Move the cursor to the start of the third line
 		editor.dispatch(
 			editor.state.update({
-				selection: { anchor: from }
-			})
+				selection: { anchor: from },
+			}),
 		);
 
 		expect(editor.state.selection.main.from).to.eq(from);
 
 		const link = (thirdLine.node as HTMLElement).querySelector(
-			'a'
+			'a',
 		) as HTMLAnchorElement;
 
 		expect(link).to.exist.and.have.class(classes.link.widget);

@@ -25,10 +25,10 @@ describe('Hide marks plugin', () => {
 		() => {
 			moveCursor('position', editor.viewportLineBlocks[0].to, editor);
 			const firstLine = editor.domAtPos(
-				editor.viewportLineBlocks[0].from
+				editor.viewportLineBlocks[0].from,
 			);
 			expect(firstLine.node).to.have.text(contentWithoutMarks);
-		}
+		},
 	);
 	it('Should not hide the marks when the cursor is on the text', () => {
 		moveCursor('line', 0, editor);

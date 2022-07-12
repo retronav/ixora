@@ -15,8 +15,8 @@ beforeEach(() => {
 	const tn = editor.state.update({
 		changes: {
 			from: 0,
-			insert: content
-		}
+			insert: content,
+		},
 	});
 	editor.dispatch(tn);
 });
@@ -38,12 +38,12 @@ describe('Lists plugin', () => {
 		// Move the cursor to the end
 		editor.dispatch(
 			editor.state.update({
-				selection: { anchor: editor.viewportLineBlocks[0].to }
-			})
+				selection: { anchor: editor.viewportLineBlocks[0].to },
+			}),
 		);
 
 		listItemBullet = (listItem.node as HTMLElement).getElementsByClassName(
-			classes.list.bullet
+			classes.list.bullet,
 		)[0];
 		expect(listItemBullet).to.exist;
 	});
@@ -59,8 +59,8 @@ describe('Lists plugin', () => {
 		// Move cursor to the opening bracket of the task list item
 		editor.dispatch(
 			editor.state.update({
-				selection: { anchor: 3 }
-			})
+				selection: { anchor: 3 },
+			}),
 		);
 
 		listItemCheckbox = (
@@ -77,7 +77,7 @@ describe('Lists plugin', () => {
 			const listItemCheckbox = (
 				listItem.node as HTMLElement
 			).querySelector(
-				`.${classes.list.taskCheckbox} input[type="checkbox"]`
+				`.${classes.list.taskCheckbox} input[type="checkbox"]`,
 			) as HTMLInputElement;
 			expect(listItemCheckbox).to.exist;
 
@@ -87,8 +87,8 @@ describe('Lists plugin', () => {
 			// Check for striked content
 			expect(
 				(listItem.node as HTMLElement).getElementsByClassName(
-					classes.list.taskChecked
-				)[0]
+					classes.list.taskChecked,
+				)[0],
 			).to.exist.and.have.trimmed.text('todo');
 
 			// Unset the checkbox
@@ -96,9 +96,9 @@ describe('Lists plugin', () => {
 			expect(editor.state.doc.toString()).to.eq(content);
 			expect(
 				(listItem.node as HTMLElement).getElementsByClassName(
-					classes.list.taskChecked
-				)[0]
+					classes.list.taskChecked,
+				)[0],
 			).to.not.exist;
-		}
+		},
 	);
 });

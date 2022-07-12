@@ -1,7 +1,7 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
 import { classes } from '../dist/mod.js';
-import { setup, setEditorContent, moveCursor } from './util.ts';
+import { moveCursor, setEditorContent, setup } from './util.ts';
 
 let editor!: EditorView;
 const content = `# Hello
@@ -32,7 +32,7 @@ describe('Heading plugin', () => {
 
 		expect(
 			headingEl.textContent,
-			'will not hide mark when cursor is on that line'
+			'will not hide mark when cursor is on that line',
 		).to.equal(headingContent);
 
 		// Move the cursor to a position after the heading
@@ -40,12 +40,12 @@ describe('Heading plugin', () => {
 
 		// CodeMirror uses this to mark the positions of hidden widgets
 		expect(
-			headingEl.querySelector('img.cm-widgetBuffer')
+			headingEl.querySelector('img.cm-widgetBuffer'),
 		).to.exist.and.have.attribute('aria-hidden', 'true');
 
 		expect(
 			headingEl.textContent,
-			'will hide mark when cursor is not on that line'
+			'will hide mark when cursor is not on that line',
 		).to.equal(headingContentWithoutHash);
 	});
 

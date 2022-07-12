@@ -31,7 +31,7 @@ await build({
 	platform: 'browser',
 	target: 'esnext',
 	outdir: 'dist',
-	sourcemap: true
+	sourcemap: true,
 });
 
 console.log('Build done');

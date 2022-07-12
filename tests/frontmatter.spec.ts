@@ -38,7 +38,7 @@ describe('Frontmatter plugin', () => {
 				if (name === 'FrontmatterMark') {
 					expect(editor.state.sliceDoc(from, to).trim()).to.eq('---');
 				}
-			}
+			},
 		});
 	});
 
@@ -57,9 +57,10 @@ title: Hello
 			from: 0,
 			to: editor.state.doc.length,
 			enter: (type) => {
-				if (type.name === 'Frontmatter')
+				if (type.name === 'Frontmatter') {
 					expect.fail('Frontmatter should not be parsed');
-			}
+				}
+			},
 		});
 	});
 });
