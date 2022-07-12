@@ -98,7 +98,7 @@ const mocha = await page.evaluateHandle<JSHandle<BrowserMocha>>(
 async function onTestDone(failures: number) {
 	await browser.close().then(() => {
 		server.stop();
-		Deno.exit(failures < 0 ? 0 : 1);
+		Deno.exit(failures === 0 ? 0 : 1);
 	});
 }
 await page.exposeFunction('__onTestDone', onTestDone);
