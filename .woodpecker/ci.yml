@@ -1,21 +1,16 @@
 pipeline:
-    build:
-        image: denoland/deno
-        commands:
-            - deno task build
-    lint:
-        image: denoland/deno
-        commands:
-            - deno task lint
-    test:
-        image: denoland/deno
-        # environment:
-        #     - COVERALLS_SERVICE_NAME="Codeberg CI"
-        commands:
-            - deno task test
-            # - npx coveralls < coverage/lcov.info
-            # - export COVERALLS_SERVICE_NUMBER=$CI_BUILD_NUMBER
-            # - export COVERALLS_SERVICE_JOB_NUMBER=$CI_JOB_NUMBER
-            # - export COVERALLS_GIT_BRANCH=$CI_COMMIT_BRANCH
-        # secrets:
-        #     - COVERALLS_REPO_TOKEN
+  build:
+    image: denoland/deno
+    commands:
+      - deno task build
+  lint:
+    image: denoland/deno
+    commands:
+      - deno task lint
+  test:
+    image: satantime/puppeteer-node:16
+    commands:
+      - curl -fsSL https://deno.land/x/install/install.sh | sh
+      - cp $HOME/.deno/bin/deno /usr/bin/deno
+      - "PUPPETEER_PRODUCT=chrome deno run -A --unstable https://deno.land/x/puppeteer@14.1.1/install.ts"
+      - deno task test
