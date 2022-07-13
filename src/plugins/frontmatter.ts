@@ -22,6 +22,7 @@ export const frontmatter: MarkdownExtension = {
 		foldNodeProp.add({
 			Frontmatter: foldInside,
 			// Marks don't need to be folded
+			/* c8 ignore next */
 			FrontmatterMark: () => null,
 		}),
 	],
