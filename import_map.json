@@ -1,18 +1,16 @@
 {
-    "imports": {
-        "@codemirror/state": "https://esm.sh/@codemirror/state@6.1.0",
-        "@codemirror/view": "https://esm.sh/@codemirror/view@6.0.3",
-        "@codemirror/language": "https://esm.sh/@codemirror/language@6.2.0",
-        "@codemirror/legacy-modes/mode/yaml": "https://esm.sh/@codemirror/legacy-modes@6.1.0/mode/yaml.js",
-        "@lezer/common": "https://esm.sh/@lezer/common@1.0.0",
-        "@lezer/highlight": "https://esm.sh/@lezer/highlight@1.0.0",
-        "@lezer/markdown": "https://esm.sh/@lezer/markdown@1.0.1",
-
-        "@codemirror/language-data": "https://esm.sh/@codemirror/language-data@6.1.0",
-        "@codemirror/commands": "https://esm.sh/@codemirror/commands@6.0.1",
-        "@codemirror/lang-markdown": "https://esm.sh/@codemirror/lang-markdown@6.0.0",
-        "codemirror": "https://esm.sh/codemirror@6.0.1",
-
-        "@open-wc/testing": "https://esm.sh/@open-wc/testing@3.1.6?bundle"
-    }
+	"imports": {
+		"@codemirror/state": "https://esm.sh/@codemirror/state@6.1.0",
+		"@codemirror/view": "https://esm.sh/@codemirror/view@6.0.3",
+		"@codemirror/language": "https://esm.sh/@codemirror/language@6.2.0",
+		"@codemirror/legacy-modes/mode/yaml": "https://esm.sh/@codemirror/legacy-modes@6.1.0/mode/yaml.js",
+		"@lezer/common": "https://esm.sh/@lezer/common@1.0.0",
+		"@lezer/highlight": "https://esm.sh/@lezer/highlight@1.0.0",
+		"@lezer/markdown": "https://esm.sh/@lezer/markdown@1.0.1",
+		"@codemirror/language-data": "https://esm.sh/@codemirror/language-data@6.1.0",
+		"@codemirror/commands": "https://esm.sh/@codemirror/commands@6.0.1",
+		"@codemirror/lang-markdown": "https://esm.sh/@codemirror/lang-markdown@6.0.0",
+		"codemirror": "https://esm.sh/codemirror@6.0.1",
+		"@open-wc/testing": "https://esm.sh/@open-wc/testing@3.1.6?bundle"
+	}
 }

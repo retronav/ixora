@@ -35,6 +35,6 @@
         "build": "./scripts/build.ts",
         "lint": "deno lint src/ tests/ scripts/",
         "package-npm": "deno run -A ./scripts/package_npm.ts",
-        "test": "deno run -A ./scripts/run_test.ts"
+        "test": "deno run -A -q ./scripts/run_test.ts"
     }
 }
