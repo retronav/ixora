@@ -5,7 +5,7 @@ pipeline:
             - npm i pnpm -g
             - cd www
             - pnpm i
-            - pnpm build
+            - DEBUG="Eleventy*" pnpm build
     deploy:
         image: node:16
         commands:
