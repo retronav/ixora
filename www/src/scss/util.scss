@@ -1,0 +1,32 @@
+$breakpoints: (
+	small: 640px,
+	medium: 768px,
+	large: 1024px,
+	xlarge: 1280px,
+	2xlarge: 1536px,
+);
+
+@forward 'sass-mq' with (
+	$breakpoints: $breakpoints
+);
+
+@mixin btn {
+	font-size: var(--step-0);
+	border: 2px solid black;
+	padding: 0.25rem 0.5rem;
+	border-radius: 0.25rem;
+	box-shadow: 0px 5px 0px 0px black;
+	transition-property: box-shadow background color transform;
+	transition-duration: 30ms;
+	&:active {
+		box-shadow: 0px 0px 0px 0px black;
+		transform: translateY(5px);
+	}
+}
+
+.btn {
+	@include btn;
+}
+
+$scarlet: #ff2400;
+$melon: #ffc3ad;

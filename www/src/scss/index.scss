@@ -1,0 +1,48 @@
+// This stylesheet is for the webpage at /.
+
+@use './util.scss' as *;
+
+.hero {
+	overflow: auto;
+	padding: 2rem;
+	background-color: $melon;
+	width: 100%;
+	height: 100%;
+	.title {
+		font-size: var(--step-5);
+		margin: 0;
+	}
+	.subtitle {
+		font-size: var(--step-0);
+	}
+	.title,
+	.subtitle {
+		text-align: center;
+	}
+	.get-started {
+		display: flex;
+		justify-content: center;
+		a {
+			padding: 0.5rem 1rem;
+		}
+	}
+}
+
+.editor {
+	background-color: white;
+	display: flex;
+	width: 70%;
+	height: 50vh;
+	margin-left: auto;
+	margin-right: auto;
+	border: 5px solid black;
+	border-radius: 5px;
+
+	&:focus-within {
+		border-color: $scarlet;
+	}
+
+	@include mq($until: large) {
+		width: 100%;
+	}
+}

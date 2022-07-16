@@ -1,0 +1,35 @@
+---
+layout: base
+title: Ixora
+---
+
+<main>
+	<section class="hero">
+		<h1 class="title">Write and preview Markdown at the same time.</h1>
+		<p class="subtitle">
+			Ixora is a CodeMirror 6 extension pack that enhances your Markdown
+			writing experience.
+		</p>
+		<div class="m-4 get-started">
+			<a href="/docs/" class="btn bg-red-500 active-bg-red-700 text-white">Get started</a>
+		</div>
+		<div class="editor">
+			<div class="placeholder w-full h-full flex items-center justify-center">
+				Loding editor...
+			</div>
+		</div>
+		<p class="text-center">
+			<small>
+				&uparrow;  This is Ixora in action, editing the project README
+			</small>
+		</p>
+	</section>
+</main>
+
+{% block styles %}
+<link rel="stylesheet" href="/scss/index.scss">
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ '/ts/index.ts' | url }}" type="module"></script>
+{% endblock %}
