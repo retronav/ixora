@@ -1,0 +1,43 @@
+---
+layout: base
+eleventyComputed:
+    title: "{{ pageTitle }} — Ixora Docs"
+---
+
+<main>
+    <aside>
+        <details class="sidebar-details" open>
+            <summary class="btn">Docs Directory</summary>
+            <nav>
+                {# https://www.11ty.dev/docs/plugins/navigation/#bring-your-own-html-render-the-menu-items-manually #}
+                {% set navPages = collections.docs | eleventyNavigation %}
+                {% macro renderNavListItem(entry) %}
+                <li{% if entry.url == page.url %} class="active"{% endif %}>
+                <a href="{{ entry.url | url }}">{{ entry.title }}</a>
+                {% if entry.children.length %}
+                <ul>
+                    {% for child in entry.children %}{{ renderNavListItem(child) }}{% endfor %}
+                </ul>
+                {% endif %}
+                </li>
+                {%- endmacro %}
+
+                <ul>
+                {%- for entry in navPages %}{{ renderNavListItem(entry) }}{%- endfor -%}
+                </ul>
+            </nav>
+        </details>
+    </aside>
+    <section class="main-content">
+        <h1>{{ pageTitle }}</h1>
+        {{ content | safe }}
+    </section>
+</main>
+
+{% block styles %}
+    <link rel="stylesheet" href="{{ '/scss/docs.scss' | url }}">
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ '/ts/docs.ts' | url }}" type="module"></script>
+{% endblock %}
