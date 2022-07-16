@@ -1,6 +1,6 @@
 pipeline:
     build:
-        image: node:16
+        image: node:18
         commands:
             - npm i pnpm -g
             - cd www
