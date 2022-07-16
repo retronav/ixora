@@ -1,10 +1,4 @@
 pipeline:
-    build:
-        image: node
-        commands:
-            - cd www
-            - npm i
-            - DEBUG="Eleventy*" pnpm build
     deploy:
         image: node:16
         commands:
@@ -14,5 +8,5 @@ pipeline:
             - VERCEL_ORG_ID
             - VERCEL_TOKEN
         when:
-            path: www/*
+            path: [.woodpecker/*, www/*]
             branch: main
