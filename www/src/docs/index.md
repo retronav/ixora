@@ -2,30 +2,12 @@
 pageTitle: Overview
 eleventyNavigation:
   key: Overview
+  order: 0
 ---
 
-## Installation
+Ixora is a CodeMirror 6 extension pack that enhances your markdown writing
+experience. It has a myriad of features that, as of now, are yet to be
+implemented, so this documentation will cover only those extensions/plugins
+which are implemented at the time of writing.
 
-```bash
-$ npm i @retronav/ixora
-```
-
-```ts twoslash
-import { basicSetup, EditorView } from 'codemirror';
-import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
-// ---cut---
-import ixora, { frontmatter } from '@retronav/ixora';
-
-const editor = new EditorView({
-	extensions: [
-		// ...
-		ixora,
-
-		// Install frontmatter extension with Markdown extension
-		markdown({
-			base: markdownLanguage,
-			extensions: [frontmatter],
-		}),
-	],
-});
-```
+**NOTE: Documentation is still in progress, expect incomplete content.**

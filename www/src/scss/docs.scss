@@ -94,6 +94,14 @@ main {
 		@include markdown-styles;
 	}
 }
+
+a span.icon-link {
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 0.25rem;
+	color: #333;
+}
+
 /*  Start of Shiki Twoslash CSS:
 
 Code blocks structurally look like:
@@ -151,7 +159,14 @@ pre.shiki div.line {
 }
 
 pre.shiki .language-id {
-	text-align: right;
+	display: none;
+}
+
+pre.shiki .code-title {
+	padding: 0.25rem;
+	border: 1px solid #fee;
+	width: fit-content;
+	border-radius: 0.25rem;
 }
 
 /* Visually differentiates twoslash code samples  */

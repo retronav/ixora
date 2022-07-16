@@ -2,6 +2,8 @@ import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import remarkTwoslash from 'remark-shiki-twoslash';
+import rehypeSlug from 'rehype-slug';
+import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeStringify from 'rehype-stringify';
 import rehypeFormat from 'rehype-format';
 import rehypeParse from 'rehype-parse';
@@ -19,6 +21,8 @@ export async function render(md) {
 		.use(remarkParse)
 		.use(remarkTwoslash.default, { theme: gruvboxDark })
 		.use(remarkRehype, { allowDangerousHtml: true })
+		.use(rehypeSlug)
+		.use(rehypeAutolinkHeadings)
 		.use(rehypeStringify, { allowDangerousHtml: true });
 
 	return await processor.process(md);

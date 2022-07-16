@@ -1,8 +1,8 @@
+import { editor } from './editor';
 import {
 	defaultHighlightStyle,
 	syntaxHighlighting,
 } from '@codemirror/language';
-import { editor } from './editor';
 import { highlightStyle, theme } from './theme';
 
 const editorDiv = document.querySelector('div.editor');

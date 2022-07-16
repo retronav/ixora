@@ -14,7 +14,7 @@ module.exports = function (eleventyConfig) {
 				rollupOptions: {
 					output: {
 						manualChunks: {
-							codemirror: ['codemirror', '@codemirror/language'],
+							codemirror: ['codemirror', '@codemirror/view'],
 						},
 					},
 				},
@@ -26,6 +26,9 @@ module.exports = function (eleventyConfig) {
 			},
 			plugins: [
 				Unocss({
+					shortcuts: {
+						'icon-link': ' i-material-symbols:link',
+					},
 					presets: [presetUno(), presetIcons()],
 				}),
 			],
