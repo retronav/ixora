@@ -34,7 +34,7 @@ module.exports = function (eleventyConfig) {
 	eleventyConfig.setServerPassthroughCopyBehavior('copy');
 	eleventyConfig.addPassthroughCopy('src/ts');
 	eleventyConfig.addPassthroughCopy('src/scss');
-	eleventyConfig.addPassthroughCopy('assets');
+	eleventyConfig.addPassthroughCopy('public');
 
 	eleventyConfig.addPlugin(EleventyNavigationPlugin);
 	eleventyConfig.setDataDeepMerge(true);
