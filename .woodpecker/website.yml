@@ -1,10 +1,9 @@
 pipeline:
     build:
-        image: cimg/node:16.16
+        image: node
         commands:
-            - npm i pnpm -g
             - cd www
-            - pnpm i
+            - npm i
             - DEBUG="Eleventy*" pnpm build
     deploy:
         image: node:16
