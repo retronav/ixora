@@ -2,6 +2,8 @@
 
 import { build } from 'https://deno.land/x/esbuild@v0.14.48/mod.js';
 import * as importMap from 'https://esm.sh/esbuild-plugin-import-map@2.1.0';
+import { emptyDir } from 'https://deno.land/std@0.148.0/fs/mod.ts';
+import { globby } from 'https://esm.sh/globby@13.1.2';
 
 interface ImportMap {
 	imports: {
@@ -20,9 +22,9 @@ Object.keys(map.imports).forEach((key) => {
 });
 
 await importMap.load([map]);
-
+await emptyDir('dist');
 await build({
-	entryPoints: ['src/mod.ts'],
+	entryPoints: await globby('src/**/*.ts'),
 	plugins: [
 		importMap.plugin(),
 	],

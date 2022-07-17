@@ -7,6 +7,7 @@ import puppeteer, {
 	Page,
 } from 'https://deno.land/x/puppeteer@14.1.1/mod.ts';
 import { basename, join } from 'https://deno.land/std@0.147.0/path/mod.ts';
+import { emptyDir } from 'https://deno.land/std@0.148.0/fs/mod.ts';
 import { globby } from 'https://esm.sh/globby@13.1.2';
 
 import v8ToIstanbul from 'https://esm.sh/v8-to-istanbul@9.0.1';
@@ -92,6 +93,9 @@ const onTestDone = (page: Page) =>
 
 			return converter.toIstanbul();
 		}));
+
+		await emptyDir("coverage");
+
 		const coverageMap = libCoverage.createCoverageMap();
 		coverageMapsData.forEach((map) => coverageMap.merge(map));
 		const reportCtx = libReport.createContext({
