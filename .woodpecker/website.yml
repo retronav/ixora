@@ -8,5 +8,6 @@ pipeline:
             - VERCEL_ORG_ID
             - VERCEL_TOKEN
         when:
-            path: [.woodpecker/*, www/*]
+            path:
+                include: [.woodpecker/*, www/*]
             branch: main
