@@ -4,6 +4,7 @@ import {
 	syntaxHighlighting,
 } from '@codemirror/language';
 import { highlightStyle, theme } from './theme';
+import { EditorView } from 'codemirror';
 
 const editorDiv = document.querySelector('div.editor');
 
@@ -18,6 +19,7 @@ if (editorDiv)
 					syntaxHighlighting(defaultHighlightStyle),
 					syntaxHighlighting(highlightStyle),
 					theme,
+					EditorView.lineWrapping,
 				],
 				doc,
 			});

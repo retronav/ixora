@@ -7,7 +7,7 @@ eleventyComputed:
 <main>
     <aside>
         <details class="sidebar-details" open>
-            <summary class="btn">Docs Directory</summary>
+            <summary class="btn" aria-label="Open docs directory">Docs Directory</summary>
             <nav>
                 {# https://www.11ty.dev/docs/plugins/navigation/#bring-your-own-html-render-the-menu-items-manually #}
                 {% set navPages = collections.docs | eleventyNavigation %}

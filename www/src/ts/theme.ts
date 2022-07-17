@@ -26,6 +26,7 @@ export const theme = EditorView.theme({
 		width: '100%',
 		height: '100%',
 		outline: 'none',
+		fontSize: '15px',
 	},
 	'.cm-content': {
 		fontFamily: 'Switzer-Variable',

@@ -3,7 +3,7 @@ header nav {
 	display: grid;
 	min-height: 3rem;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
-	border-bottom: 2px solid black;
+	border-bottom: 2px solid var(--border-color);
 
 	@include mq($until: small) {
 		grid-template-columns: 1fr 1fr;
@@ -28,6 +28,8 @@ header nav {
 		width: 2.5rem;
 		font-size: 1.75rem;
 		justify-self: end;
+		position: relative;
+		bottom: 3px;
 	}
 
 	ul.links {
@@ -52,7 +54,7 @@ header nav {
 		}
 
 		a {
-			color: black;
+			color: var(--fg);
 			transition: color 100ms;
 			&:hover {
 				color: $scarlet;

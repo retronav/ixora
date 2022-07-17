@@ -1,4 +1,5 @@
 @use './fluid.scss';
+@use './theme.scss';
 @use './util.scss' as *;
 @use './switzer.css';
 @use './partials/navbar.scss';
@@ -12,4 +13,12 @@ body {
 	margin: 0;
 	font-size: var(--step-0);
 	font-family: 'Switzer-Variable', sans-serif;
+	color: var(--fg);
+	background-color: var(--bg);
+}
+
+a,
+a:visited,
+a:active {
+	color: var(--anchor-color)
 }

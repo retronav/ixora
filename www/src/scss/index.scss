@@ -5,12 +5,13 @@
 .hero {
 	overflow: auto;
 	padding: 2rem;
-	background-color: $melon;
+	background: var(--hero-bg);
 	width: 100%;
 	height: 100%;
 	.title {
 		font-size: var(--step-5);
 		margin: 0;
+		margin-bottom: 0.5rem;
 	}
 	.subtitle {
 		font-size: var(--step-0);
@@ -18,10 +19,16 @@
 	.title,
 	.subtitle {
 		text-align: center;
+		@include mq($from: large) {
+			width: 70%;
+			margin-left: auto;
+			margin-right: auto;
+		}
 	}
 	.get-started {
 		display: flex;
 		justify-content: center;
+		margin-bottom: 1.5rem;
 		a {
 			padding: 0.5rem 1rem;
 		}
@@ -29,13 +36,15 @@
 }
 
 .editor {
+	// FIXME: Hardcoded color values
 	background-color: white;
+	color: black;
 	display: flex;
 	width: 70%;
 	height: 50vh;
 	margin-left: auto;
 	margin-right: auto;
-	border: 5px solid black;
+	border: 5px solid var(--border-color);
 	border-radius: 5px;
 
 	&:focus-within {

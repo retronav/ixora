@@ -1,0 +1,34 @@
+@use './util.scss' as *;
+
+$scarlet: #ff2400;
+$melon: #ffc3ad;
+$eerieblack: #151513;
+$white: #fff;
+
+:root {
+	--bg: #{$eerieblack};
+	--fg: #{$white};
+	--button-bg: #{lighten($eerieblack, 10)};
+	--button-pressed-bg: #{$eerieblack};
+	--hero-bg: radial-gradient(circle at 0.72% 80.16%, #ff240066, transparent 27%),
+		radial-gradient(circle at 99.28% 23.26%, #6112ff55, transparent 24%),
+		radial-gradient(circle at 50% 50%, #{$eerieblack}, #{$eerieblack} 100%);
+	--border-color: #{$white};
+	--anchor-color: #BFBFFF;
+
+	@include lightmode {
+		--bg: #{$white};
+		--fg: #{$eerieblack};
+		--button-bg: #{$white};
+		--button-pressed-bg: #{darken($white, 10)};
+		--hero-bg: radial-gradient(
+				circle at 0.72% 80.16%,
+				#ff240066,
+				transparent 24%
+			),
+			radial-gradient(circle at 99.28% 23.26%, #6112ff55, transparent 20%),
+			radial-gradient(circle at 50% 50%, #{$white}, #{$white} 100%);
+		--border-color: #{$eerieblack};
+		--anchor-color: blue;
+	}
+}

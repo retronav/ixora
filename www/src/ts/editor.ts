@@ -3,6 +3,7 @@ import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
 import { languages } from '@codemirror/language-data';
 import ixora, { frontmatter } from '@retronav/ixora';
 import type { EditorViewConfig } from '@codemirror/view';
+import { customTagStyles } from './theme';
 
 export function editor(
 	userConfig: Pick<
@@ -16,7 +17,7 @@ export function editor(
 			ixora,
 			markdown({
 				base: markdownLanguage,
-				extensions: [frontmatter],
+				extensions: [frontmatter, { props: [customTagStyles] }],
 				codeLanguages: languages,
 			}),
 			userConfig.extensions ?? [],
@@ -25,5 +26,5 @@ export function editor(
 		selection: userConfig.selection,
 		parent: userConfig.parent,
 	};
-	new EditorView(config);
+	return new EditorView(config);
 }

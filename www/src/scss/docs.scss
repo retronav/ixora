@@ -1,5 +1,6 @@
 @use './util.scss' as *;
 @use 'sass:map';
+@use 'sass:color';
 
 @mixin markdown-styles {
 	$heading-font-size: (
@@ -36,13 +37,13 @@ main {
 		grid-template-columns: 20% 80%;
 
 		aside {
-			border-right: 2px solid black;
+			border-right: 2px solid var(--border-color);
 		}
 	}
 
 	@include mq($until: large) {
 		aside {
-			border-bottom: 2px solid black;
+			border-bottom: 2px solid var(--border-color);
 		}
 	}
 
@@ -65,16 +66,15 @@ main {
 				list-style: none;
 				& > li > a {
 					font-weight: 600;
-					color: black !important;
-					border-bottom: 1px solid gray;
+					color: var(--fg) !important;
+					border-bottom: 1px solid #666;
 				}
 				li {
-					margin: 0.25rem 0;
 					a {
-						padding: 0 0.25rem;
+						padding: 0.1rem 0.25rem;
 						display: inline-block;
 						width: 100%;
-						color: #2563eb;
+						color: #6193ff;
 						text-decoration: none;
 					}
 					ul {
@@ -84,7 +84,10 @@ main {
 				}
 			}
 			li.active > a {
-				background: lighten(gray, 35);
+				background: color.adjust(gray, $alpha: -0.5);
+				@include lightmode {
+					background: color.adjust(#bbb, $alpha: -0.5);
+				}
 			}
 		}
 	}
@@ -99,7 +102,7 @@ a span.icon-link {
 	display: inline-block;
 	vertical-align: middle;
 	margin-right: 0.25rem;
-	color: #333;
+	color: var(--fg);
 }
 
 /*  Start of Shiki Twoslash CSS:
@@ -122,10 +125,6 @@ pre {
 
 	/* Give it some space to breathe */
 	padding: 12px;
-
-	/* All code samples get a grey border, twoslash ones get a different color */
-	border-left: 1px solid #999;
-	border-bottom: 1px solid #999;
 
 	margin-bottom: 3rem;
 
@@ -167,11 +166,6 @@ pre.shiki .code-title {
 	border: 1px solid #fee;
 	width: fit-content;
 	border-radius: 0.25rem;
-}
-
-/* Visually differentiates twoslash code samples  */
-pre.twoslash {
-	border-color: #719af4;
 }
 
 /** When you mouse over the pre, show the underlines */
