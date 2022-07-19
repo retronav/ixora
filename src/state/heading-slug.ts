@@ -19,8 +19,7 @@ export interface HeadingSlug {
  */
 export const headingSlugField = StateField.define<HeadingSlug[]>({
 	create: (state) => {
-		const slugs = new Array<HeadingSlug>();
-		extractSlugs(state);
+		const slugs = extractSlugs(state);
 		return slugs;
 	},
 	update: (value, tx) => {
