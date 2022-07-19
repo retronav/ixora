@@ -12,8 +12,7 @@ beforeEach(() => {
 	const editorEl = document.createElement('div');
 	editorEl.id = 'editor';
 	document.body.appendChild(editorEl);
-	editor = setup(editorEl);
-	setEditorContent(content, editor);
+	editor = setup(editorEl, content);
 });
 afterEach(() => {
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -21,23 +20,20 @@ afterEach(() => {
 });
 
 describe('Heading plugin', () => {
-	it('Should not mess with the doc content', () => {
-		expect(editor.state.doc.toString()).to.equal(content);
-	});
-
 	it('Should hide the heading marker appropriately', () => {
 		const headingContent = '# Hello';
 		const headingContentWithoutHash = 'Hello';
-		const headingEl = editor.domAtPos(0).node as HTMLElement;
+		let headingEl = editor.domAtPos(0).node as HTMLElement;
 
 		expect(
 			headingEl.textContent,
-			'will not hide mark when cursor is on that line'
+			'will not hide mark when cursor is not on that line'
 		).to.equal(headingContent);
 
 		// Move the cursor to a position after the heading
 		moveCursor('line', 1, editor);
 
+		headingEl = editor.domAtPos(0).node as HTMLElement;
 		// CodeMirror uses this to mark the positions of hidden widgets
 		expect(
 			headingEl.querySelector('img.cm-widgetBuffer')
@@ -45,7 +41,7 @@ describe('Heading plugin', () => {
 
 		expect(
 			headingEl.textContent,
-			'will hide mark when cursor is not on that line'
+			'will not hide mark when cursor is on that line'
 		).to.equal(headingContentWithoutHash);
 	});
 

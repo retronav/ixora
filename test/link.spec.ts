@@ -13,14 +13,7 @@ beforeEach(() => {
 	const editorEl = document.createElement('div');
 	editorEl.id = 'editor';
 	document.body.appendChild(editorEl);
-	editor = setup(editorEl);
-	const tn = editor.state.update({
-		changes: {
-			from: 0,
-			insert: content
-		}
-	});
-	editor.dispatch(tn);
+	editor = setup(editorEl, content);
 });
 afterEach(() => {
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -39,15 +32,6 @@ describe('links plugin', () => {
 	it('Should handle heading links correctly', () => {
 		const from = editor.viewportLineBlocks[2].from;
 		const thirdLine = editor.domAtPos(from);
-
-		// Move the cursor to the start of the third line
-		editor.dispatch(
-			editor.state.update({
-				selection: { anchor: from }
-			})
-		);
-
-		expect(editor.state.selection.main.from).to.eq(from);
 
 		const link = (thirdLine.node as HTMLElement).querySelector(
 			'a'

@@ -12,14 +12,7 @@ beforeEach(() => {
 	const editorEl = document.createElement('div');
 	editorEl.id = 'editor';
 	document.body.appendChild(editorEl);
-	editor = setup(editorEl);
-	const tn = editor.state.update({
-		changes: {
-			from: 0,
-			insert: content
-		}
-	});
-	editor.dispatch(tn);
+	editor = setup(editorEl, content);
 });
 afterEach(() => {
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion

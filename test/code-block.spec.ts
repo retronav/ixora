@@ -1,7 +1,7 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
 import { classes } from '../dist';
-import { moveCursor, setEditorContent, setup } from './util';
+import { moveCursor, setup } from './util';
 
 let editor!: EditorView;
 const content = `\`\`\`typescript
@@ -14,8 +14,7 @@ beforeEach(() => {
 	const editorEl = document.createElement('div');
 	editorEl.id = 'editor';
 	document.body.appendChild(editorEl);
-	editor = setup(editorEl);
-	setEditorContent(content, editor);
+	editor = setup(editorEl, content);
 });
 afterEach(() => {
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion

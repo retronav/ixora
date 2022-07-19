@@ -1,5 +1,4 @@
 import { markdown, markdownLanguage } from '@codemirror/lang-markdown';
-import { EditorState } from '@codemirror/state';
 import { EditorView, minimalSetup } from 'codemirror';
 import ixora, { frontmatter } from '../dist';
 
@@ -58,22 +57,22 @@ export function moveCursor(
 /**
  * Minimal CodeMirror setup for testing plugins.
  * @param el - The element to attach the editor to.
+ * @param doc - Initial content of the editor.
  * @returns The editor instance.
  */
-export function setup(el: HTMLElement) {
+export function setup(el: HTMLElement, doc?: string) {
 	const editor = new EditorView({
-		state: EditorState.create({
-			extensions: [
-				markdown({
-					base: markdownLanguage,
-					extensions: [frontmatter]
-				}),
-				EditorView.lineWrapping,
+		extensions: [
+			markdown({
+				base: markdownLanguage,
+				extensions: [frontmatter]
+			}),
+			EditorView.lineWrapping,
 
-				minimalSetup,
-				ixora
-			]
-		}),
+			minimalSetup,
+			ixora
+		],
+		doc,
 		parent: el
 	});
 
