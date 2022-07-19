@@ -1,3 +1,15 @@
+---
+title: Ixora — WYSIWYM Markdown for CodeMirror
+eleventyComputed:
+    domain: "{{ process.env.VERCEL_URL or 'https://ixora.karawale.in' }}"
+    description: "{{ description or title }}"
+    og:
+        img:
+            alt: "Ixora logo; The letter M with an ixora flower in a bordered box."
+            src: "{{ domain }}/og.png"
+        description: "Ixora — WYSIWYM Markdown for CodeMirror"
+---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
