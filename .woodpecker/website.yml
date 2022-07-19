@@ -9,5 +9,5 @@ pipeline:
             - VERCEL_TOKEN
         when:
             path:
-                include: [.woodpecker/*, www/*]
+                include: ['.woodpecker/*', 'www/*']
             branch: main
