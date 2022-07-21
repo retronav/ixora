@@ -6,6 +6,8 @@
 
 # Known bugs
 
+-   Messed up gutter state after image loads
+
 # Minor improvements
 
 -   Move all line decorations into a single plugin

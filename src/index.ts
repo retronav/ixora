@@ -27,15 +27,15 @@ export { lists } from './plugins/list';
 export * as classes from './classes';
 
 const ixora: Extension = [
-    headingSlugField,
-    imageURLStateField,
-    blockquote(),
-    codeblock(),
-    headings(),
-    hideMarks(),
-    lists(),
-    links(),
-    image()
+	headingSlugField,
+	imageURLStateField,
+	blockquote(),
+	codeblock(),
+	headings(),
+	hideMarks(),
+	lists(),
+	links(),
+	image()
 ];
 
 export default ixora;
