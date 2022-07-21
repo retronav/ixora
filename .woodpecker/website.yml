@@ -10,4 +10,5 @@ pipeline:
         when:
             path:
                 include: ['.woodpecker/*', 'www/*']
+            event: push
             branch: main
