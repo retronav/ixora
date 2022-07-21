@@ -1,11 +1,20 @@
 # @retronav/ixora
 
+## 0.3.0
+
+### Minor Changes
+
+Changeset committed in eb147ad
+
+Added image plugin.
+
 ## 0.2.1
 
 ### Patch Changes
 
 Changeset committed in 64acd12
-Fix heading plugin crash if slugs are not calculated
+
+Fix heading plugin crash if slugs are not calculated.
 
 ## 0.2.0
 
@@ -25,7 +34,7 @@ Changeset committed in ece965e
 
 Changeset committed in d2123da
 
-Update dependencies (CodeMirror 6 released)
+Update dependencies (CodeMirror 6 released).
 
 ## 0.1.3
 
@@ -44,7 +53,7 @@ Changeset committed in 5a90f6e
 
 Changeset committed in d323e10
 
-Export intended symbols instead of everything
+Export intended symbols instead of everything.
 
 ## 0.1.1
 
