@@ -45,4 +45,9 @@ export const blockquote = {
 		taskCheckbox: 'cm-task-marker-checkbox',
 		/** Task list item with checkbox checked */
 		taskChecked: 'cm-task-checked'
+	},
+	/** Classes for image widgets. */
+	image = {
+		/** Image preview */
+		widget: 'cm-image'
 	};
