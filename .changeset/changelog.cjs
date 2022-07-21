@@ -5,7 +5,7 @@ const getReleaseLine = async (changeset, _type) => {
 		.join('\n');
 
 	const returnVal = changeset.commit
-		? `Changeset committed in ${changeset.commit}\n${summary}`
+		? `Changeset committed in ${changeset.commit}\n\n${summary.trim()}`
 		: summary;
 
 	return returnVal;
