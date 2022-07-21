@@ -16,7 +16,7 @@
 	],
 	"scripts": {
 		"dev": "wds",
-		"build": "esbuild src/*.ts --outdir=dist --platform=browser --sourcemap && tsc",
+		"build": "node scripts/build.mjs",
 		"lint": "eslint --ignore-path .gitignore .",
 		"lint:fix": "eslint --ignore-path .gitignore . --fix",
 		"format": "pretty-quick",
