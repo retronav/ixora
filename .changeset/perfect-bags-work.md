@@ -1,5 +1,5 @@
 ---
-'@retronav/ixora': patch
+'@retronav/ixora': minor
 ---
 
-Update dependencies (CodeMirror 6 released)
+Added image plugin.
