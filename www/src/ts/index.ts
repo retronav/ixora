@@ -9,7 +9,7 @@ import { EditorView } from 'codemirror';
 const editorDiv = document.querySelector('div.editor');
 
 if (editorDiv)
-	fetch('https://raw.githubusercontent.com/retronav/ixora/main/README.md')
+	fetch(window.location.pathname + 'README.ixora.md')
 		.then((doc) => doc.text())
 		.then((doc) => {
 			editorDiv.innerHTML = '';

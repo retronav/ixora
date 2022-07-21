@@ -1,7 +1,9 @@
 const EleventyVite = require('@11ty/eleventy-plugin-vite');
 const EleventyNavigationPlugin = require('@11ty/eleventy-navigation');
+const EleventyFetch = require('@11ty/eleventy-fetch');
 const { default: Unocss } = require('unocss/vite');
 const { presetIcons, presetUno } = require('unocss');
+const fs = require('fs/promises');
 
 /**
  *
@@ -63,6 +65,17 @@ module.exports = function (eleventyConfig) {
 		if (outputPath.endsWith('.html')) {
 			return await formatHtml(content);
 		}
+	});
+
+	eleventyConfig.on('eleventy.before', async () => {
+		const mainReadme = await EleventyFetch(
+			'https://codeberg.org/retronav/ixora/raw/branch/main/README.md',
+			{
+				duration: '1d',
+				type: 'text',
+			}
+		);
+		await fs.writeFile('public/README.ixora.md', mainReadme);
 	});
 
 	return {

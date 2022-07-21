@@ -2,6 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@11ty/eleventy': ^2.0.0-canary.13
+  '@11ty/eleventy-fetch': ^3.0.0
   '@11ty/eleventy-navigation': ^0.3.3
   '@11ty/eleventy-plugin-vite': ^2.0.0-canary.1
   '@codemirror/commands': ^6.0.1
@@ -43,6 +44,7 @@ dependencies:
 
 devDependencies:
   '@11ty/eleventy': 2.0.0-canary.13
+  '@11ty/eleventy-fetch': 3.0.0
   '@11ty/eleventy-navigation': 0.3.3
   '@11ty/eleventy-plugin-vite': 2.0.0-canary.1_sass@1.53.0
   '@codemirror/state': 6.1.0
@@ -95,6 +97,22 @@ packages:
       - bufferutil
       - supports-color
       - utf-8-validate
+    dev: true
+
+  /@11ty/eleventy-fetch/3.0.0:
+    resolution:
+      {
+        integrity: sha512-qJvfb331rYQAmlCS71Ygg0/XHUdB4/qXBOLsG0DJ1m61WL5JNha52OtKVeQq34u2J2Nfzim+X4TIL/+QyesB7Q==,
+      }
+    engines: { node: '>=12' }
+    dependencies:
+      debug: 4.3.4
+      flat-cache: 3.0.4
+      node-fetch: 2.6.7
+      p-queue: 6.6.2
+    transitivePeerDependencies:
+      - encoding
+      - supports-color
     dev: true
 
   /@11ty/eleventy-navigation/0.3.3:
@@ -1966,6 +1984,13 @@ packages:
       }
     dev: true
 
+  /eventemitter3/4.0.7:
+    resolution:
+      {
+        integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==,
+      }
+    dev: true
+
   /execa/5.1.1:
     resolution:
       {
@@ -2078,6 +2103,24 @@ packages:
     dependencies:
       locate-path: 6.0.0
       path-exists: 4.0.0
+    dev: true
+
+  /flat-cache/3.0.4:
+    resolution:
+      {
+        integrity: sha512-dm9s5Pw7Jc0GvMYbshN6zchCA9RgQlzzEZX3vylR9IqFfS8XciblUXOKfW6SiuJ0e13eDYZoZV5wdrev7P3Nwg==,
+      }
+    engines: { node: ^10.12.0 || >=12.0.0 }
+    dependencies:
+      flatted: 3.2.6
+      rimraf: 3.0.2
+    dev: true
+
+  /flatted/3.2.6:
+    resolution:
+      {
+        integrity: sha512-0sQoMh9s0BYsm+12Huy/rkKxVu4R1+r96YX5cG44rHV0pQ6iC3Q+mkoMFaGWObMFYQxCVT+ssG1ksneA2MI9KQ==,
+      }
     dev: true
 
   /fs.realpath/1.0.0:
@@ -3259,6 +3302,21 @@ packages:
       }
     dev: true
 
+  /node-fetch/2.6.7:
+    resolution:
+      {
+        integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==,
+      }
+    engines: { node: 4.x || >=6.0.0 }
+    peerDependencies:
+      encoding: ^0.1.0
+    peerDependenciesMeta:
+      encoding:
+        optional: true
+    dependencies:
+      whatwg-url: 5.0.0
+    dev: true
+
   /normalize-path/3.0.0:
     resolution:
       {
@@ -3345,6 +3403,14 @@ packages:
       mimic-fn: 2.1.0
     dev: true
 
+  /p-finally/1.0.0:
+    resolution:
+      {
+        integrity: sha512-LICb2p9CB7FS+0eR1oqWnHhp0FljGLZCWBE9aix0Uye9W8LTQPwMTYVGWQWIw9RdQiDg4+epXQODwIYJtSJaow==,
+      }
+    engines: { node: '>=4' }
+    dev: true
+
   /p-limit/3.1.0:
     resolution:
       {
@@ -3363,6 +3429,27 @@ packages:
     engines: { node: '>=10' }
     dependencies:
       p-limit: 3.1.0
+    dev: true
+
+  /p-queue/6.6.2:
+    resolution:
+      {
+        integrity: sha512-RwFpb72c/BhQLEXIZ5K2e+AhgNVmIejGlTgiB9MzZ0e93GRvqZ7uSi0dvRF7/XIXDeNkra2fNHBxTyPDGySpjQ==,
+      }
+    engines: { node: '>=8' }
+    dependencies:
+      eventemitter3: 4.0.7
+      p-timeout: 3.2.0
+    dev: true
+
+  /p-timeout/3.2.0:
+    resolution:
+      {
+        integrity: sha512-rhIwUycgwwKcP9yTOOFK/AKsAopjjCakVqLHePO3CC6Mir1Z99xT+R63jZxAT5lFZLa2inS5h+ZS2GvR99/FBg==,
+      }
+    engines: { node: '>=8' }
+    dependencies:
+      p-finally: 1.0.0
     dev: true
 
   /parse5/6.0.1:
@@ -3834,6 +3921,16 @@ packages:
       glob: 7.2.3
     dev: true
 
+  /rimraf/3.0.2:
+    resolution:
+      {
+        integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==,
+      }
+    hasBin: true
+    dependencies:
+      glob: 7.2.3
+    dev: true
+
   /rollup/2.77.0:
     resolution:
       {
@@ -4125,6 +4222,13 @@ packages:
         integrity: sha512-eM+pCBxXO/njtF7vdFsHuqb+ElbxqtI4r5EAvk6grfAFyJ6IvWlSkfZ5T9ozC6xWw3Fj1fGoSmrl0gUs46JVIw==,
       }
     engines: { node: '>=6' }
+    dev: true
+
+  /tr46/0.0.3:
+    resolution:
+      {
+        integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==,
+      }
     dev: true
 
   /trim-lines/3.0.1:
@@ -4457,6 +4561,23 @@ packages:
       {
         integrity: sha512-bKr1DkiNa2krS7qxNtdrtHAmzuYGFQLiQ13TsorsdT6ULTkPLKuu5+GsFpDlg6JFjUTwX2DyhMPG2be8uPrqsQ==,
       }
+    dev: true
+
+  /webidl-conversions/3.0.1:
+    resolution:
+      {
+        integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==,
+      }
+    dev: true
+
+  /whatwg-url/5.0.0:
+    resolution:
+      {
+        integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==,
+      }
+    dependencies:
+      tr46: 0.0.3
+      webidl-conversions: 3.0.1
     dev: true
 
   /which/2.0.2:
