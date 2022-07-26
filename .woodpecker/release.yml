@@ -1,0 +1,12 @@
+pipeline:
+    release:
+        image: cimg/node:lts
+        commands:
+            - npm i pnpm -g
+            - pnpm build
+            - pnpm changeset publish
+        secrets:
+            - NPM_TOKEN
+        when:
+            event: tag
+            tag: v*
