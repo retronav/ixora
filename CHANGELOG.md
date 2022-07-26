@@ -1,5 +1,16 @@
 # @retronav/ixora
 
+## 0.3.1
+
+### Patch Changes
+
+Changeset committed in a77fa82
+
+Fix messed up editor when an image preview is loaded.
+
+This is done by rendering a placeholder while the image loads,
+then replace it by the loaded image.
+
 ## 0.3.0
 
 ### Minor Changes
