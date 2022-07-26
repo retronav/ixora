@@ -7,8 +7,8 @@
 
 # Ixora
 
-![CI build](https://ci.codeberg.org/api/badges/retronav/ixora/status.svg)
-![npm version](https://img.shields.io/npm/v/@retronav/ixora?logo=npm&style=flat)
+[![CI build](https://ci.codeberg.org/api/badges/retronav/ixora/status.svg)](https://ci.codeberg.org/retronav/ixora)
+[![npm version](https://img.shields.io/npm/v/@retronav/ixora?logo=npm&style=flat)](https://www.npmjs.com/package/@retronav/ixora)
 
 > WARNING: Ixora is under heavy development, but is quite usable.
 
