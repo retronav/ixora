@@ -1,6 +1,6 @@
 import { Extension, Range } from '@codemirror/state';
 import { EditorView } from 'codemirror';
-import { imageURLStateField } from '../state/image';
+import { imagePreview } from '../state/image';
 import { image as classes } from '../classes';
 import {
 	Decoration,
@@ -54,7 +54,7 @@ const hideImageNodePlugin = ViewPlugin.fromClass(
  * @returns The image plugin.
  */
 export const image = (): Extension => [
-	imageURLStateField,
+	imagePreview,
 	hideImageNodePlugin,
 	baseTheme
 ];

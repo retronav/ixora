@@ -7,11 +7,11 @@ import { image } from './plugins/image';
 import { links } from './plugins/link';
 import { lists } from './plugins/list';
 import { headingSlugField } from './state/heading-slug';
-import { imageURLStateField } from './state/image';
+import { imagePreview } from './state/image';
 
 // State fields
 export { headingSlugField } from './state/heading-slug';
-export { imageURLStateField as imagePreviewStateField } from './state/image';
+export { imagePreview } from './state/image';
 
 // Extensions
 export { blockquote } from './plugins/blockquote';
@@ -28,7 +28,7 @@ export * as classes from './classes';
 
 const ixora: Extension = [
 	headingSlugField,
-	imageURLStateField,
+	imagePreview,
 	blockquote(),
 	codeblock(),
 	headings(),

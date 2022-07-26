@@ -19,15 +19,22 @@ afterEach(() => {
 });
 
 describe('Image plugin', () => {
-	it('Loads the image', () => {
-		const secondLine = editor.domAtPos(editor.viewportLineBlocks[1].from)
-			.node as HTMLElement;
-		const img = secondLine.nextSibling as HTMLImageElement | null;
+	it('Loads the image', (done) => {
+		// Wait for image to load
+		new Promise((resolve) => setTimeout(resolve, 2000))
+			.then(() => {
+				const secondLine = editor.domAtPos(
+					editor.viewportLineBlocks[1].from
+				).node as HTMLElement;
+				const img = secondLine.nextSibling as HTMLImageElement | null;
 
-		expect(img).to.exist;
-		expect(img)
-			.to.have.class('cm-image')
-			.and.have.attr('alt', 'A random image loaded from Picsum');
+				expect(img).to.exist;
+				expect(img)
+					.to.have.class('cm-image')
+					.and.have.attr('alt', 'A random image loaded from Picsum');
+				done();
+			})
+			.catch(done);
 	});
 	it('Should reveal the source text when cursor is on it', () => {
 		moveCursor('line', 1, editor);

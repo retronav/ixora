@@ -9,7 +9,13 @@ const config = {
 	plugins: [esbuildPlugin({ ts: true, target: 'esnext' })],
 	nodeResolve: true,
 	coverage: true,
+	testFramework: {
+		config: {
+			timeout: '5000'
+		}
+	},
 	coverageConfig: {
+		nativeInstrumentation: true,
 		include: ['dist/**/*.js']
 	},
 	browsers: [

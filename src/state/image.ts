@@ -1,5 +1,10 @@
 import { syntaxTree } from '@codemirror/language';
-import { StateField, EditorState, StateEffect } from '@codemirror/state';
+import {
+	StateField,
+	EditorState,
+	StateEffect,
+	TransactionSpec
+} from '@codemirror/state';
 import {
 	DecorationSet,
 	Decoration,
@@ -11,33 +16,74 @@ import { image as classes } from '../classes';
 /**
  * Representation of the data held by the image URL state field.
  */
-export interface ImageURLInfo {
-	/**
-	 * The source of the image.
-	 */
+export interface ImageInfo {
+	/** The source of the image. */
 	src: string;
-	/**
-	 * The starting position of the image element in the document.
-	 */
+	/** The starting position of the image element in the document. */
 	from: number;
-	/**
-	 * The end position of the image element in the document.
-	 */
+	/** The end position of the image element in the document. */
 	to: number;
-	/**
-	 * The alt text of the image.
-	 */
+	/** The alt text of the image. */
 	alt: string;
 }
 
-export const imageURLStateField = StateField.define<DecorationSet>({
+/**
+ * The current state of the image preview widget.
+ * Used to indicate to render a placeholder or the actual image.
+ */
+export enum WidgetState {
+	INITIAL,
+	LOADED
+}
+
+/**
+ * The state effect to dispatch when a image loads, regardless of the result.
+ */
+export const imageLoadedEffect = StateEffect.define<ImageInfo>();
+
+/** State field to store image preview decorations. */
+export const imagePreview = StateField.define<DecorationSet>({
 	create(state) {
-		return extractImages(state);
+		const images = extractImages(state);
+		const decorations = images.map((img) =>
+			// This does not need to be a block widget
+			Decoration.widget({
+				widget: new ImagePreviewWidget(img, WidgetState.INITIAL),
+				src: img.src
+			}).range(img.to)
+		);
+		return Decoration.set(decorations, true);
 	},
 
 	update(value, tx) {
-		if (tx.docChanged) return extractImages(tx.state);
-		return value.map(tx.changes);
+		const loadedImages = tx.effects.filter((effect) =>
+			effect.is(imageLoadedEffect)
+		) as StateEffect<ImageInfo>[];
+
+		if (tx.docChanged || loadedImages.length > 0) {
+			const images = extractImages(tx.state);
+			const decorations = images.map((img) => {
+				const hasImageLoaded = Boolean(
+					loadedImages.find((effect) => effect.value.src === img.src)
+				);
+				return Decoration.widget({
+					widget: new ImagePreviewWidget(
+						img,
+						hasImageLoaded
+							? WidgetState.LOADED
+							: WidgetState.INITIAL
+					),
+					// Create returns a inline widget, return inline image
+					// if image is not loaded for consistency.
+					block: hasImageLoaded ? true : false,
+					src: img.src,
+					side: 1
+				}).range(img.to);
+			});
+			return Decoration.set(decorations, true);
+		} else {
+			return value.map(tx.changes);
+		}
 	},
 
 	provide(field) {
@@ -45,15 +91,18 @@ export const imageURLStateField = StateField.define<DecorationSet>({
 	}
 });
 
-function extractImages(state: EditorState): DecorationSet {
-	const imageUrls: ImageURLInfo[] = [];
+/**
+ * Capture everything in square brackets of a markdown image, after
+ * the exclamation mark.
+ */
+const imageTextRE = /(?:!\[)(.*?)(?:\])/;
+
+function extractImages(state: EditorState): ImageInfo[] {
+	const imageUrls: ImageInfo[] = [];
 	syntaxTree(state).iterate({
 		enter: ({ name, node, from, to }) => {
 			if (name !== 'Image') return;
-			const alt = state
-				.sliceDoc(from, to)
-				.match(/(?:!\[)(.*?)(?:\])/)
-				.pop();
+			const alt = state.sliceDoc(from, to).match(imageTextRE).pop();
 			const urlNode = node.getChild('URL');
 			if (urlNode) {
 				const url = state.sliceDoc(urlNode.from, urlNode.to);
@@ -61,55 +110,44 @@ function extractImages(state: EditorState): DecorationSet {
 			}
 		}
 	});
-	const widgets = imageUrls.map((info) =>
-		Decoration.widget({
-			block: true,
-			widget: new ImagePreviewWidget(info),
-			side: 1
-		}).range(info.to)
-	);
-
-	return Decoration.set(widgets, true);
+	return imageUrls;
 }
 
 class ImagePreviewWidget extends WidgetType {
-	/** Preloaded image */
-	private preloaded: HTMLImageElement;
-
-	constructor(public readonly imageInfo: ImageURLInfo) {
+	constructor(
+		public readonly info: ImageInfo,
+		public readonly state: WidgetState
+	) {
 		super();
-		this.preloaded = preloadImage(this.imageInfo.src);
-	}
-
-	get estimatedHeight(): number {
-		return this.preloaded.height || -1;
 	}
 
 	toDOM(view: EditorView): HTMLElement {
-		// Reuse the preloaded image instead of creating another one.
-		const img = this.preloaded.cloneNode() as HTMLImageElement;
-		img.setAttribute('draggable', 'false');
+		const img = new Image();
 		img.classList.add(classes.widget);
-		img.alt = this.imageInfo.alt;
-		// Since this is styled as a block element, setting a height
-		// beforehand prevents out of sync editor gutters.
-		// FIXME: out of sync gutter still persists if image is not loaded yet
-		if (img.height > 0) img.style.height = String(img.height) + 'px';
-		img.onload = img.onerror = () => {
-			view.requestMeasure();
-		};
-		return img;
+		img.src = this.info.src;
+		img.alt = this.info.alt;
+
+		img.addEventListener('load', () => {
+			const tx: TransactionSpec = {};
+			if (this.state === WidgetState.INITIAL) {
+				tx.effects = [imageLoadedEffect.of(this.info)];
+			}
+			// After this is dispatched, this widget will be updated,
+			// and since the image is already loaded, this will not change
+			// its height dynamically, hence prevent all sorts of weird
+			// mess related to other parts of the editor.
+			view.dispatch(tx);
+		});
+
+		if (this.state === WidgetState.LOADED) return img;
+		// Render placeholder
+		else return new Image();
 	}
 
 	eq(widget: ImagePreviewWidget): boolean {
 		return (
-			JSON.stringify(widget.imageInfo) === JSON.stringify(this.imageInfo)
+			JSON.stringify(widget.info) === JSON.stringify(this.info) &&
+			widget.state === this.state
 		);
 	}
-}
-
-function preloadImage(url: string) {
-	const img = new Image();
-	img.src = url;
-	return img;
 }
