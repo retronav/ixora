@@ -10,6 +10,6 @@ pipeline:
         commands:
             - npm run lint
     test:
-        image: cimg/node:lts-browsers
+        image: satantime/puppeteer-node:lts
         commands:
-            - $NVM_BIN/npm run test
+            - npm run test
