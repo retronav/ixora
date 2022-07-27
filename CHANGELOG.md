@@ -1,5 +1,13 @@
 # @retronav/ixora
 
+## 0.3.2
+
+### Patch Changes
+
+Changeset committed in 1cf9fc3
+
+Fix image preview re-rendering when a change is made to the document.
+
 ## 0.3.1
 
 ### Patch Changes
