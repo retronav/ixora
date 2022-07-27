@@ -21,7 +21,6 @@
 		"lint:fix": "eslint --ignore-path .gitignore . --fix",
 		"format": "pretty-quick",
 		"test": "web-test-runner",
-		"prepare": "husky install",
 		"release": "changeset publish"
 	},
 	"keywords": [
