@@ -72,7 +72,7 @@ export const imagePreview = StateField.define<DecorationSet>({
 				previous.next();
 			}
 			const decorations = images.map((img) => {
-				let hasImageLoaded = Boolean(
+				const hasImageLoaded = Boolean(
 					loadedImages.find(
 						(effect) => effect.value.src === img.src
 					) ||
