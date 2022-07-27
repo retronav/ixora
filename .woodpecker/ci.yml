@@ -12,4 +12,4 @@ pipeline:
     test:
         image: cimg/node:lts-browsers
         commands:
-            - npm run test
+            - $NVM_BIN/npm run test
