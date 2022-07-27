@@ -25,6 +25,8 @@ export interface ImageInfo {
 	to: number;
 	/** The alt text of the image. */
 	alt: string;
+	/** If image has already loaded. */
+	loaded?: true;
 }
 
 /**
@@ -49,6 +51,7 @@ export const imagePreview = StateField.define<DecorationSet>({
 			// This does not need to be a block widget
 			Decoration.widget({
 				widget: new ImagePreviewWidget(img, WidgetState.INITIAL),
+				info: img,
 				src: img.src
 			}).range(img.to)
 		);
@@ -62,9 +65,19 @@ export const imagePreview = StateField.define<DecorationSet>({
 
 		if (tx.docChanged || loadedImages.length > 0) {
 			const images = extractImages(tx.state);
+			const previous = value.iter();
+			const previousSpecs = new Array<ImageInfo>();
+			while (previous.value !== null) {
+				previousSpecs.push(previous.value.spec.info);
+				previous.next();
+			}
 			const decorations = images.map((img) => {
-				const hasImageLoaded = Boolean(
-					loadedImages.find((effect) => effect.value.src === img.src)
+				let hasImageLoaded = Boolean(
+					loadedImages.find(
+						(effect) => effect.value.src === img.src
+					) ||
+						previousSpecs.find((spec) => spec.src === img.src)
+							?.loaded
 				);
 				return Decoration.widget({
 					widget: new ImagePreviewWidget(
@@ -77,7 +90,9 @@ export const imagePreview = StateField.define<DecorationSet>({
 					// if image is not loaded for consistency.
 					block: hasImageLoaded ? true : false,
 					src: img.src,
-					side: 1
+					side: 1,
+					// This is important to keep track of loaded images
+					info: { ...img, loaded: hasImageLoaded }
 				}).range(img.to);
 			});
 			return Decoration.set(decorations, true);
@@ -130,7 +145,10 @@ class ImagePreviewWidget extends WidgetType {
 		img.addEventListener('load', () => {
 			const tx: TransactionSpec = {};
 			if (this.state === WidgetState.INITIAL) {
-				tx.effects = [imageLoadedEffect.of(this.info)];
+				tx.effects = [
+					// Indicate image has loaded by setting the loaded value
+					imageLoadedEffect.of({ ...this.info, loaded: true })
+				];
 			}
 			// After this is dispatched, this widget will be updated,
 			// and since the image is already loaded, this will not change
