@@ -38,7 +38,7 @@ class ListBulletPlugin {
 		const widgets = [];
 		iterateTreeInVisibleRanges(view, {
 			enter: ({ type, from, to }) => {
-				if (isCursorInRange(view, [from, to])) return;
+				if (isCursorInRange(view.state, [from, to])) return;
 				if (type.name === 'ListMark') {
 					const listMark = view.state.sliceDoc(from, to);
 					if (bulletListMarkerRE.test(listMark)) {
@@ -110,7 +110,7 @@ class TaskListsPlugin {
 
 			function iterateInner(type: NodeType, nfrom: number, nto: number) {
 				if (type.name !== 'TaskMarker') return;
-				if (isCursorInRange(view, [from + nfrom, from + nto])) return;
+				if (isCursorInRange(view.state, [from + nfrom, from + nto])) return;
 				const checkbox = view.state.sliceDoc(from + nfrom, from + nto);
 				// Checkbox is checked if it has a 'x' in between the []
 				if ('xX'.includes(checkbox[1])) checked = true;

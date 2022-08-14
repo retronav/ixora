@@ -63,7 +63,7 @@ class BlockQuotePlugin {
 
 				if (
 					lines.every(
-						(line) => !isCursorInRange(view, [line.from, line.to])
+						(line) => !isCursorInRange(view.state, [line.from, line.to])
 					)
 				) {
 					const marks = Array.from(

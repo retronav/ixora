@@ -20,7 +20,7 @@ function hideNodes(view: EditorView) {
 		enter(node) {
 			if (
 				node.name === 'Image' &&
-				!isCursorInRange(view, [node.from, node.to])
+				!isCursorInRange(view.state, [node.from, node.to])
 			) {
 				widgets.push(invisibleDecoration.range(node.from, node.to));
 			}

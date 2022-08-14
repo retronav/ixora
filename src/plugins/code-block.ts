@@ -59,7 +59,7 @@ function decorateCodeBlocks(view: EditorView) {
 				});
 				widgets.push(lineDec.range(block.from));
 			});
-			if (isCursorInRange(view, [from, to])) return;
+			if (isCursorInRange(view.state, [from, to])) return;
 			const codeBlock = node.toTree();
 			codeBlock.iterate({
 				enter: ({ type, from: nodeFrom, to: nodeTo }) => {

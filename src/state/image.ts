@@ -96,9 +96,8 @@ export const imagePreview = StateField.define<DecorationSet>({
 				}).range(img.to);
 			});
 			return Decoration.set(decorations, true);
-		} else {
-			return value.map(tx.changes);
 		}
+		return value.map(tx.changes);
 	},
 
 	provide(field) {

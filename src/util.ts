@@ -1,6 +1,7 @@
 import { foldedRanges, syntaxTree } from '@codemirror/language';
 import type { SyntaxNodeRef } from '@lezer/common';
 import { Decoration, EditorView } from '@codemirror/view';
+import { EditorState } from '@codemirror/state';
 
 /**
  * Check if two ranges overlap
@@ -31,12 +32,12 @@ export function checkRangeSubset(
 
 /**
  * Check if any of the editor cursors is in the given range
- * @param view - Editor view
+ * @param state - Editor state
  * @param range - Range to check
  * @returns True if the cursor is in the range
  */
-export function isCursorInRange(view: EditorView, range: [number, number]) {
-	return view.state.selection.ranges.some((selection) =>
+export function isCursorInRange(state: EditorState, range: [number, number]) {
+	return state.selection.ranges.some((selection) =>
 		checkRangeOverlap(range, [selection.from, selection.to])
 	);
 }

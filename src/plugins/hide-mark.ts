@@ -53,7 +53,7 @@ class HideMarkPlugin {
 					)
 						return;
 					else parentRange = [from, to];
-					if (isCursorInRange(view, [from, to])) return;
+					if (isCursorInRange(view.state, [from, to])) return;
 					const innerTree = node.toTree();
 					innerTree.iterate({
 						enter({ type, from: markFrom, to: markTo }) {
