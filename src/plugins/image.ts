@@ -1,5 +1,5 @@
 import { Extension, Range } from '@codemirror/state';
-import { EditorView } from 'codemirror';
+import { EditorView } from '@codemirror/view';
 import { imagePreview } from '../state/image';
 import { image as classes } from '../classes';
 import {

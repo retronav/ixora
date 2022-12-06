@@ -17,6 +17,6 @@ await build({
 	target: 'es2017',
 	logLevel: 'info',
 	outdir: 'dist',
-	format: 'esm'
+	format: 'cjs'
 });
 await exec('node_modules/.bin/tsc');
