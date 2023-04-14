@@ -38,8 +38,9 @@ describe('Image plugin', () => {
 	});
 	it('Should reveal the source text when cursor is on it', () => {
 		moveCursor('line', 1, editor);
-		const secondLine = editor.domAtPos(editor.viewportLineBlocks[1].from)
-			.node as HTMLElement;
+		const secondLine = Array.from(
+			editor.dom.querySelectorAll('.cm-line')
+		)[1];
 		expect(secondLine).to.have.text(
 			'![A random image loaded from Picsum](https://picsum.photos/200)'
 		);

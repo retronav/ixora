@@ -1,12 +1,12 @@
 pipeline:
     build:
-        image: node:16
+        image: node:18
         commands:
             - npm i pnpm -g
             - pnpm i
             - pnpm build
     lint:
-        image: node:16
+        image: node:18
         commands:
             - npm run lint
     test:

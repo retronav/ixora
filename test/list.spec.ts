@@ -20,10 +20,10 @@ afterEach(() => {
 
 describe('Lists plugin', () => {
 	it('Should render a list item marker appropriately', () => {
-		const listItem = editor.domAtPos(editor.viewportLineBlocks[0].from);
-		let listItemBullet = (
-			listItem.node as HTMLElement
-		).getElementsByClassName(classes.list.bullet)[0];
+		const listItem = editor.dom.querySelector('.cm-line')!;
+		let listItemBullet = listItem.getElementsByClassName(
+			classes.list.bullet
+		)[0];
 
 		// It shouldn't render the list bullet when the cursor is on the bullet
 		expect(listItemBullet).to.not.exist;
@@ -35,17 +35,17 @@ describe('Lists plugin', () => {
 			})
 		);
 
-		listItemBullet = (listItem.node as HTMLElement).getElementsByClassName(
+		listItemBullet = listItem.getElementsByClassName(
 			classes.list.bullet
 		)[0];
 		expect(listItemBullet).to.exist;
 	});
 
 	it('Should render a checkbox for a task appropriately', () => {
-		const listItem = editor.domAtPos(editor.viewportLineBlocks[0].from);
-		let listItemCheckbox = (
-			listItem.node as HTMLElement
-		).getElementsByClassName(classes.list.taskCheckbox)[0];
+		const listItem = editor.dom.querySelector('.cm-line')!;
+		let listItemCheckbox = listItem.getElementsByClassName(
+			classes.list.taskCheckbox
+		)[0];
 		expect(listItemCheckbox).to.exist;
 		expect(listItemCheckbox).to.have.descendant('input[type="checkbox"]');
 
@@ -56,9 +56,9 @@ describe('Lists plugin', () => {
 			})
 		);
 
-		listItemCheckbox = (
-			listItem.node as HTMLElement
-		).getElementsByClassName(classes.list.taskCheckbox)[0];
+		listItemCheckbox = listItem.getElementsByClassName(
+			classes.list.taskCheckbox
+		)[0];
 		expect(listItemCheckbox).to.not.exist;
 	});
 
@@ -66,10 +66,8 @@ describe('Lists plugin', () => {
 		'Should be able to toggle the task status via the checkbox' +
 			' and style the text appropriately',
 		() => {
-			const listItem = editor.domAtPos(editor.viewportLineBlocks[0].from);
-			const listItemCheckbox = (
-				listItem.node as HTMLElement
-			).querySelector(
+			const listItem = editor.dom.querySelector('.cm-line')!;
+			const listItemCheckbox = listItem.querySelector(
 				`.${classes.list.taskCheckbox} input[type="checkbox"]`
 			) as HTMLInputElement;
 			expect(listItemCheckbox).to.exist;
@@ -79,19 +77,14 @@ describe('Lists plugin', () => {
 
 			// Check for striked content
 			expect(
-				(listItem.node as HTMLElement).getElementsByClassName(
-					classes.list.taskChecked
-				)[0]
+				listItem.getElementsByClassName(classes.list.taskChecked)[0]
 			).to.exist.and.have.trimmed.text('todo');
 
 			// Unset the checkbox
 			listItemCheckbox.click();
 			expect(editor.state.doc.toString()).to.eq(content);
-			expect(
-				(listItem.node as HTMLElement).getElementsByClassName(
-					classes.list.taskChecked
-				)[0]
-			).to.not.exist;
+			expect(listItem.getElementsByClassName(classes.list.taskChecked)[0])
+				.to.not.exist;
 		}
 	);
 });

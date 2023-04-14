@@ -23,7 +23,7 @@ describe('Heading plugin', () => {
 	it('Should hide the heading marker appropriately', () => {
 		const headingContent = '# Hello';
 		const headingContentWithoutHash = 'Hello';
-		let headingEl = editor.domAtPos(0).node as HTMLElement;
+		let headingEl = editor.dom.querySelector('.cm-line')!;
 
 		expect(
 			headingEl.textContent,
@@ -33,7 +33,6 @@ describe('Heading plugin', () => {
 		// Move the cursor to a position after the heading
 		moveCursor('line', 1, editor);
 
-		headingEl = editor.domAtPos(0).node as HTMLElement;
 		// CodeMirror uses this to mark the positions of hidden widgets
 		expect(
 			headingEl.querySelector('img.cm-widgetBuffer')
@@ -46,18 +45,20 @@ describe('Heading plugin', () => {
 	});
 
 	it('Should add an appropriate slug to heading', () => {
-		const headingEl = editor.domAtPos(0).node as HTMLElement;
+		const headingEl = editor.dom.querySelector('.cm-line')!;
 		expect(headingEl).to.have.class(classes.heading.slug('hello'));
 
-		const pos = editor.viewportLineBlocks[2].from;
-		const thirdHeadingEl = editor.domAtPos(pos).node as HTMLElement;
+		const thirdHeadingEl = Array.from(
+			editor.dom.querySelectorAll('.cm-line')
+		)[2]!;
 		expect(thirdHeadingEl).to.have.class(classes.heading.slug('hello-2'));
 	});
 
 	it('Should add a class with heading level', () => {
-		const headingEl = editor.domAtPos(0).node as HTMLElement;
-		const heading2El = editor.domAtPos(editor.viewportLineBlocks[1].from)
-			.node as HTMLElement;
+		const headingEl = editor.dom.querySelector('.cm-line')!;
+		const heading2El = Array.from(
+			editor.dom.querySelectorAll('.cm-line')
+		)[1]!;
 
 		expect(headingEl).to.have.class(classes.heading.level(1));
 		expect(heading2El).to.have.class(classes.heading.level(2));
@@ -69,7 +70,7 @@ describe('Heading plugin', () => {
 `;
 		setEditorContent(content, editor);
 
-		const headingEl = editor.domAtPos(0).node as HTMLElement;
+		const headingEl = editor.dom.querySelector('.cm-line')!;
 		expect(headingEl)
 			.to.exist.and.have.class(classes.heading.level(1))
 			.and.have.class(classes.heading.slug('hello'))

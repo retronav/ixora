@@ -23,18 +23,13 @@ afterEach(() => {
 
 describe('Codeblock plugin', () => {
 	it('Should apply line decorations to the block', () => {
-		const firstLine = editor.domAtPos(editor.viewportLineBlocks[0].from)
-			.node as HTMLElement;
-		const secondLine = editor.domAtPos(editor.viewportLineBlocks[1].from)
-			.node as HTMLElement;
-		const lastLine = editor.domAtPos(editor.viewportLineBlocks[2].from)
-			.node as HTMLElement;
+		const lines = Array.from(editor.dom.querySelectorAll('.cm-line'));
 
-		expect(firstLine)
+		expect(lines[0])
 			.to.have.class(classes.codeblock.widget)
 			.and.class(classes.codeblock.widgetBegin);
-		expect(secondLine).to.have.class(classes.codeblock.widget);
-		expect(lastLine)
+		expect(lines[1]).to.have.class(classes.codeblock.widget);
+		expect(lines[2])
 			.to.have.class(classes.codeblock.widget)
 			.and.class(classes.codeblock.widgetEnd);
 	});
@@ -42,15 +37,10 @@ describe('Codeblock plugin', () => {
 	it('Should remove the code marks and language name', () => {
 		/// Move cursor out of the codeblock
 		moveCursor('line', editor.viewportLineBlocks.length - 1, editor);
-		const firstLine = editor.domAtPos(editor.viewportLineBlocks[0].from)
-			.node as HTMLElement;
-		const secondLine = editor.domAtPos(editor.viewportLineBlocks[1].from)
-			.node as HTMLElement;
-		const lastLine = editor.domAtPos(editor.viewportLineBlocks[2].from)
-			.node as HTMLElement;
+		const lines = Array.from(editor.dom.querySelectorAll('.cm-line'));
 
-		expect(firstLine.textContent).to.be.empty;
-		expect(secondLine.textContent).to.equal(contentWithoutMarks);
-		expect(lastLine.textContent).to.be.empty;
+		expect(lines[0].textContent).to.be.empty;
+		expect(lines[1].textContent).to.equal(contentWithoutMarks);
+		expect(lines[2].textContent).to.be.empty;
 	});
 });
