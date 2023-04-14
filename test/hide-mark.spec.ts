@@ -23,15 +23,13 @@ describe('Hide marks plugin', () => {
 			' the cursor is not inside that text',
 		() => {
 			moveCursor('position', editor.viewportLineBlocks[0].to, editor);
-			const firstLine = editor.domAtPos(
-				editor.viewportLineBlocks[0].from
-			);
-			expect(firstLine.node).to.have.text(contentWithoutMarks);
+			const firstLine = editor.dom.querySelector('.cm-line');
+			expect(firstLine).to.have.text(contentWithoutMarks);
 		}
 	);
 	it('Should not hide the marks when the cursor is on the text', () => {
 		moveCursor('line', 0, editor);
-		const firstLine = editor.domAtPos(editor.viewportLineBlocks[0].from);
-		expect(firstLine.node).to.have.text(content);
+		const firstLine = editor.dom.querySelector('.cm-line');
+		expect(firstLine).to.have.text(content);
 	});
 });
