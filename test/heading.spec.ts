@@ -1,7 +1,7 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
 import { classes } from '../dist';
-import { setup, setEditorContent, moveCursor } from './util';
+import { setup, setEditorContent, moveCursor, getLineDom } from './util';
 
 let editor!: EditorView;
 const content = `# Hello
@@ -23,7 +23,7 @@ describe('Heading plugin', () => {
 	it('Should hide the heading marker appropriately', () => {
 		const headingContent = '# Hello';
 		const headingContentWithoutHash = 'Hello';
-		let headingEl = editor.dom.querySelector('.cm-line')!;
+		const headingEl = getLineDom(editor, 0);
 
 		expect(
 			headingEl.textContent,
@@ -45,20 +45,16 @@ describe('Heading plugin', () => {
 	});
 
 	it('Should add an appropriate slug to heading', () => {
-		const headingEl = editor.dom.querySelector('.cm-line')!;
+		const headingEl = getLineDom(editor, 0);
 		expect(headingEl).to.have.class(classes.heading.slug('hello'));
 
-		const thirdHeadingEl = Array.from(
-			editor.dom.querySelectorAll('.cm-line')
-		)[2]!;
+		const thirdHeadingEl = getLineDom(editor, 2);
 		expect(thirdHeadingEl).to.have.class(classes.heading.slug('hello-2'));
 	});
 
 	it('Should add a class with heading level', () => {
-		const headingEl = editor.dom.querySelector('.cm-line')!;
-		const heading2El = Array.from(
-			editor.dom.querySelectorAll('.cm-line')
-		)[1]!;
+		const headingEl = getLineDom(editor, 0);
+		const heading2El = getLineDom(editor, 1);
 
 		expect(headingEl).to.have.class(classes.heading.level(1));
 		expect(heading2El).to.have.class(classes.heading.level(2));
@@ -70,7 +66,7 @@ describe('Heading plugin', () => {
 `;
 		setEditorContent(content, editor);
 
-		const headingEl = editor.dom.querySelector('.cm-line')!;
+		const headingEl = getLineDom(editor, 0);
 		expect(headingEl)
 			.to.exist.and.have.class(classes.heading.level(1))
 			.and.have.class(classes.heading.slug('hello'))

@@ -1,7 +1,7 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
 import { classes } from '../dist';
-import { moveCursor, setup } from './util';
+import { getLineDom, moveCursor, setup } from './util';
 
 let editor!: EditorView;
 const content = `\`\`\`typescript
@@ -23,13 +23,11 @@ afterEach(() => {
 
 describe('Codeblock plugin', () => {
 	it('Should apply line decorations to the block', () => {
-		const lines = Array.from(editor.dom.querySelectorAll('.cm-line'));
-
-		expect(lines[0])
+		expect(getLineDom(editor, 0))
 			.to.have.class(classes.codeblock.widget)
 			.and.class(classes.codeblock.widgetBegin);
-		expect(lines[1]).to.have.class(classes.codeblock.widget);
-		expect(lines[2])
+		expect(getLineDom(editor, 1)).to.have.class(classes.codeblock.widget);
+		expect(getLineDom(editor, 2))
 			.to.have.class(classes.codeblock.widget)
 			.and.class(classes.codeblock.widgetEnd);
 	});
@@ -37,10 +35,9 @@ describe('Codeblock plugin', () => {
 	it('Should remove the code marks and language name', () => {
 		/// Move cursor out of the codeblock
 		moveCursor('line', editor.viewportLineBlocks.length - 1, editor);
-		const lines = Array.from(editor.dom.querySelectorAll('.cm-line'));
 
-		expect(lines[0].textContent).to.be.empty;
-		expect(lines[1].textContent).to.equal(contentWithoutMarks);
-		expect(lines[2].textContent).to.be.empty;
+		expect(getLineDom(editor, 0).textContent).to.be.empty;
+		expect(getLineDom(editor, 1).textContent).to.equal(contentWithoutMarks);
+		expect(getLineDom(editor, 2).textContent).to.be.empty;
 	});
 });

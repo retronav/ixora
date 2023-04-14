@@ -1,7 +1,7 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
 import { classes } from '../dist';
-import { moveCursor, setEditorContent, setup } from './util';
+import { getLineDom, moveCursor, setEditorContent, setup } from './util';
 
 let editor!: EditorView;
 const content = `> Hello
@@ -28,10 +28,8 @@ describe('Blockquote plugin', () => {
 		});
 		editor.dispatch(tn);
 
-		const firstLine = editor.domAtPos(editor.viewportLineBlocks[0].from)
-			.node as HTMLElement;
-		const secondLine = editor.domAtPos(editor.viewportLineBlocks[1].from)
-			.node as HTMLElement;
+		const firstLine = getLineDom(editor, 0);
+		const secondLine = getLineDom(editor, 1);
 
 		expect(firstLine).to.have.trimmed.text('Hello');
 		expect(secondLine).to.have.trimmed.text('Hi!');
@@ -51,9 +49,7 @@ I am still in a blockquote
 			setEditorContent(contentWithoutQuote, editor);
 			moveCursor('line', editor.viewportLineBlocks.length - 1, editor);
 
-			const secondLine = editor.domAtPos(
-				editor.viewportLineBlocks[1].from
-			).node as HTMLElement;
+			const secondLine = getLineDom(editor, 1);
 
 			expect(secondLine.textContent).to.equal(
 				'I am still in a blockquote'

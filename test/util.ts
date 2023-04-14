@@ -3,6 +3,15 @@ import { EditorView, minimalSetup } from 'codemirror';
 import ixora, { frontmatter } from '../dist';
 
 /**
+ * Get the underlying DOM of a line in the editor view.
+ * @param view The editor view.
+ * @param lineNo The line number (zero-indexed)
+ */
+export function getLineDom(view: EditorView, lineNo: number): HTMLElement {
+	return view.dom.querySelectorAll('.cm-line')[lineNo] as HTMLElement;
+}
+
+/**
  * Modify the editor's text content.
  * @param content The new text content.
  * @param view The editor view.

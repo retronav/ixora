@@ -1,6 +1,6 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
-import { moveCursor, setup } from './util';
+import { getLineDom, moveCursor, setup } from './util';
 
 let editor!: EditorView;
 const content = `**_\`foo\`_** is bar`;
@@ -23,13 +23,13 @@ describe('Hide marks plugin', () => {
 			' the cursor is not inside that text',
 		() => {
 			moveCursor('position', editor.viewportLineBlocks[0].to, editor);
-			const firstLine = editor.dom.querySelector('.cm-line');
+			const firstLine = getLineDom(editor, 0);
 			expect(firstLine).to.have.text(contentWithoutMarks);
 		}
 	);
 	it('Should not hide the marks when the cursor is on the text', () => {
 		moveCursor('line', 0, editor);
-		const firstLine = editor.dom.querySelector('.cm-line');
+		const firstLine = getLineDom(editor, 0);
 		expect(firstLine).to.have.text(content);
 	});
 });

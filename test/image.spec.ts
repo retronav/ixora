@@ -1,5 +1,5 @@
 import { EditorView } from 'codemirror';
-import { moveCursor, setup } from './util';
+import { getLineDom, moveCursor, setup } from './util';
 import { expect } from '@open-wc/testing';
 
 let editor: EditorView;
@@ -23,9 +23,7 @@ describe('Image plugin', () => {
 		// Wait for image to load
 		new Promise((resolve) => setTimeout(resolve, 2000))
 			.then(() => {
-				const secondLine = editor.domAtPos(
-					editor.viewportLineBlocks[1].from
-				).node as HTMLElement;
+				const secondLine = getLineDom(editor, 1);
 				const img = secondLine.nextSibling as HTMLImageElement | null;
 
 				expect(img).to.exist;
@@ -38,9 +36,7 @@ describe('Image plugin', () => {
 	});
 	it('Should reveal the source text when cursor is on it', () => {
 		moveCursor('line', 1, editor);
-		const secondLine = Array.from(
-			editor.dom.querySelectorAll('.cm-line')
-		)[1];
+		const secondLine = getLineDom(editor, 1);
 		expect(secondLine).to.have.text(
 			'![A random image loaded from Picsum](https://picsum.photos/200)'
 		);

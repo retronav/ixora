@@ -1,7 +1,7 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
 import { classes } from '../dist';
-import { setup } from './util';
+import { getLineDom, setup } from './util';
 
 let editor!: EditorView;
 const content = `# Hello
@@ -22,20 +22,17 @@ afterEach(() => {
 
 describe('links plugin', () => {
 	it('Should render an anchor beside the link', () => {
-		const secondLine = editor.domAtPos(editor.viewportLineBlocks[1].from);
-		const link = (secondLine.node as HTMLElement).querySelector('a');
+		const secondLine = getLineDom(editor, 1);
+		const link = secondLine.querySelector('a');
 		expect(link)
 			.to.exist.and.have.class(classes.link.widget)
 			.and.have.text('🔗')
 			.and.have.attr('href', 'https://example.com');
 	});
 	it('Should handle heading links correctly', () => {
-		const from = editor.viewportLineBlocks[2].from;
-		const thirdLine = editor.domAtPos(from);
+		const thirdLine = getLineDom(editor, 2);
 
-		const link = (thirdLine.node as HTMLElement).querySelector(
-			'a'
-		) as HTMLAnchorElement;
+		const link = thirdLine.querySelector('a') as HTMLAnchorElement;
 
 		expect(link).to.exist.and.have.class(classes.link.widget);
 

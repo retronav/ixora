@@ -31,5 +31,4 @@ const editor = new EditorView({
 });
 
 editor.focus();
-//@ts-ignore
-window.editor = editor;
+globalThis.editor = editor;

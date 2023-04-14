@@ -19,7 +19,6 @@ function extractHTMLBlocks(state: EditorState) {
 	const blocks = new Array<EmbedBlockData>();
 	syntaxTree(state).iterate({
 		enter({ from, to, name }) {
-			console.log(name);
 			if (name !== 'HTMLBlock') return;
 			if (isCursorInRange(state, [from, to])) return;
 			const html = state.sliceDoc(from, to);

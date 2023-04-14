@@ -1,7 +1,7 @@
 import { EditorView } from '@codemirror/view';
 import { expect } from '@open-wc/testing';
 import { classes } from '../dist';
-import { setup } from './util';
+import { getLineDom, setup } from './util';
 
 let editor!: EditorView;
 const content = `- [ ] todo`;
@@ -20,7 +20,7 @@ afterEach(() => {
 
 describe('Lists plugin', () => {
 	it('Should render a list item marker appropriately', () => {
-		const listItem = editor.dom.querySelector('.cm-line')!;
+		const listItem = getLineDom(editor, 0);
 		let listItemBullet = listItem.getElementsByClassName(
 			classes.list.bullet
 		)[0];
@@ -42,7 +42,7 @@ describe('Lists plugin', () => {
 	});
 
 	it('Should render a checkbox for a task appropriately', () => {
-		const listItem = editor.dom.querySelector('.cm-line')!;
+		const listItem = getLineDom(editor, 0);
 		let listItemCheckbox = listItem.getElementsByClassName(
 			classes.list.taskCheckbox
 		)[0];
@@ -66,7 +66,7 @@ describe('Lists plugin', () => {
 		'Should be able to toggle the task status via the checkbox' +
 			' and style the text appropriately',
 		() => {
-			const listItem = editor.dom.querySelector('.cm-line')!;
+			const listItem = getLineDom(editor, 0);
 			const listItemCheckbox = listItem.querySelector(
 				`.${classes.list.taskCheckbox} input[type="checkbox"]`
 			) as HTMLInputElement;
