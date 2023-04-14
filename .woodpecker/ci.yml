@@ -2,7 +2,7 @@ pipeline:
     build:
         image: node:18
         commands:
-            - npm i pnpm -g
+            - npm i pnpm@8 -g
             - pnpm i
             - pnpm build
     lint:

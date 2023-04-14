@@ -20,7 +20,7 @@ export const theme = EditorView.theme(
 			borderRadius: '5px'
 		},
 		'.cm-codeblock': {
-			fontFamily: 'Victor Mono'
+			fontFamily: 'monospace'
 		}
 	},
 	{ dark: false }
@@ -43,6 +43,6 @@ export const highlightStyle = HighlightStyle.define([
 	},
 	{
 		tag: defaultTags.monospace,
-		fontFamily: 'Victor Mono'
+		fontFamily: 'monospace'
 	}
 ]);
