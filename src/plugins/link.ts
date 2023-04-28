@@ -8,8 +8,14 @@ import {
 	WidgetType
 } from '@codemirror/view';
 import { headingSlugField } from '../state/heading-slug';
-import { checkRangeOverlap, invisibleDecoration } from '../util';
+import {
+	checkRangeOverlap,
+	invisibleDecoration,
+	isCursorInRange
+} from '../util';
 import { link as classes } from '../classes';
+
+const autoLinkMarkRE = /^<|>$/g;
 
 /**
  * Ixora Links plugin.
@@ -20,7 +26,7 @@ import { link as classes } from '../classes';
 export const links = () => [goToLinkPlugin, baseTheme];
 
 export class GoToLinkWidget extends WidgetType {
-	constructor(readonly link: string) {
+	constructor(readonly link: string, readonly title?: string) {
 		super();
 	}
 	toDOM(view: EditorView): HTMLElement {
@@ -45,6 +51,7 @@ export class GoToLinkWidget extends WidgetType {
 		anchor.target = '_blank';
 		anchor.classList.add(classes.widget);
 		anchor.textContent = '🔗';
+		if (this.title) anchor.title = this.title;
 		return anchor;
 	}
 }
@@ -63,22 +70,49 @@ function getLinkAnchor(view: EditorView) {
 				const blackListedParents = ['Image'];
 				if (parent && !blackListedParents.includes(parent.name)) {
 					const marks = parent.getChildren('LinkMark');
+					const linkTitle = parent.getChild('LinkTitle');
 					const ranges = view.state.selection.ranges;
-					const cursorOverlaps = ranges.some(({ from, to }) =>
+					let cursorOverlaps = ranges.some(({ from, to }) =>
 						checkRangeOverlap([from, to], [parent.from, parent.to])
 					);
-					if (!cursorOverlaps) {
+					if (!cursorOverlaps && marks.length > 0) {
 						widgets.push(
 							...marks.map(({ from, to }) =>
 								invisibleDecoration.range(from, to)
 							),
 							invisibleDecoration.range(from, to)
 						);
+						if (linkTitle)
+							widgets.push(
+								invisibleDecoration.range(
+									linkTitle.from,
+									linkTitle.to
+								)
+							);
 					}
 
+					let linkContent = view.state.sliceDoc(from, to);
+					if (autoLinkMarkRE.test(linkContent)) {
+						// Remove '<' and '>' from link and content
+						linkContent = linkContent.replace(autoLinkMarkRE, '');
+						cursorOverlaps = isCursorInRange(view.state, [
+							node.from,
+							node.to
+						]);
+						if (!cursorOverlaps) {
+							widgets.push(
+								invisibleDecoration.range(from, from + 1),
+								invisibleDecoration.range(to - 1, to)
+							);
+						}
+					}
+					const linkTitleContent = linkTitle
+						? view.state.sliceDoc(linkTitle.from, linkTitle.to)
+						: null;
 					const dec = Decoration.widget({
 						widget: new GoToLinkWidget(
-							view.state.sliceDoc(from, to)
+							linkContent,
+							linkTitleContent
 						),
 						side: 1
 					});

@@ -7,6 +7,8 @@ let editor!: EditorView;
 const content = `# Hello
 [link to somewhere](https://example.com)
 [link to hello](#hello)
+[link to somewhere](https://example.com "Title")
+<https://example.com>
 `;
 
 beforeEach(() => {
@@ -22,8 +24,23 @@ afterEach(() => {
 
 describe('links plugin', () => {
 	it('Should render an anchor beside the link', () => {
-		const secondLine = getLineDom(editor, 1);
-		const link = secondLine.querySelector('a');
+		let line = getLineDom(editor, 1);
+		let link = line.querySelector('a');
+		expect(link)
+			.to.exist.and.have.class(classes.link.widget)
+			.and.have.text('🔗')
+			.and.have.attr('href', 'https://example.com');
+
+		line = getLineDom(editor, 3);
+		link = line.querySelector('a');
+		expect(link)
+			.to.exist.and.have.class(classes.link.widget)
+			.and.have.text('🔗')
+			.and.have.attr('href', 'https://example.com');
+		expect(link).to.have.attr('title', '"Title"');
+
+		line = getLineDom(editor, 4);
+		link = line.querySelector('a');
 		expect(link)
 			.to.exist.and.have.class(classes.link.widget)
 			.and.have.text('🔗')
