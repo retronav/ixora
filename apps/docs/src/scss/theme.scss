@@ -16,7 +16,7 @@ $white: #fff;
 		radial-gradient(circle at 99.28% 23.26%, #6112ff55, transparent 24%),
 		radial-gradient(circle at 50% 50%, #{$eerieblack}, #{$eerieblack} 100%);
 	--border-color: #{$white};
-	--anchor-color: #BFBFFF;
+	--anchor-color: #bfbfff;
 
 	@include lightmode {
 		--bg: #{$white};

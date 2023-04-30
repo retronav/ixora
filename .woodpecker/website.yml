@@ -2,13 +2,13 @@ pipeline:
     deploy:
         image: node:16
         commands:
-            - npx vercel --prod --token=$VERCEL_TOKEN
+            - npm run deploy
         secrets:
             - VERCEL_PROJECT_ID
             - VERCEL_ORG_ID
             - VERCEL_TOKEN
         when:
             path:
-                include: ['.woodpecker/*', 'www/*']
+                include: ['.woodpecker/*', 'apps/docs/*']
             event: push
             branch: main
