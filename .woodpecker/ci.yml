@@ -8,8 +8,10 @@ pipeline:
     lint:
         image: node:18
         commands:
-            - npm run lint
+            - npm i pnpm@8 -g
+            - pnpm lint
     test:
         image: cimg/node:lts-browsers
         commands:
-            - npm run test
+            - npm i pnpm@8 -g
+            - pnpm test
