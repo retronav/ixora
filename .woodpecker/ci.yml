@@ -1,17 +1,7 @@
 pipeline:
-    build:
-        image: node:18
+    test:
+        image: satantime/puppeteer-node:current-buster
         commands:
             - npm i pnpm@8 -g
             - pnpm i
-            - pnpm build
-    lint:
-        image: node:18
-        commands:
-            - npm i pnpm@8 -g
-            - pnpm lint
-    test:
-        image: cimg/node:lts-browsers
-        commands:
-            - npm i pnpm@8 -g
             - pnpm test

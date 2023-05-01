@@ -6,6 +6,7 @@
 		"deploy": "turbo run deploy --filter='@retronav/ixora-docs'",
 		"test": "turbo run test --filter='@retronav/ixora'",
 		"format": "turbo run format",
+		"lint": "turbo run lint",
 		"changeset": "changeset",
 		"version-packages": "changeset version",
 		"release": "turbo run build lint test && changeset version && changeset publish"

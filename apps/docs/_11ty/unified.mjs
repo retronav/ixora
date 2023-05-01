@@ -1,16 +1,19 @@
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
-import remarkTwoslash from 'remark-shiki-twoslash';
+import rehypeShiki from '@retronav/rehype-shiki';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeStringify from 'rehype-stringify';
 import rehypeFormat from 'rehype-format';
 import rehypeParse from 'rehype-parse';
-import { loadTheme } from 'shiki';
+import { getHighlighter, loadTheme } from 'shiki';
 import { resolve } from 'path';
 
 const gruvboxDark = await loadTheme(resolve('./_11ty/gruvbox-dark-hard.json'));
+const highlighter = await getHighlighter({
+	theme: gruvboxDark,
+});
 
 /**
  * Convert Markdown to HTML using the unified ecosystem.
@@ -19,10 +22,10 @@ const gruvboxDark = await loadTheme(resolve('./_11ty/gruvbox-dark-hard.json'));
 export async function render(md) {
 	const processor = unified()
 		.use(remarkParse)
-		.use(remarkTwoslash.default, { theme: gruvboxDark })
 		.use(remarkRehype, { allowDangerousHtml: true })
 		.use(rehypeSlug)
 		.use(rehypeAutolinkHeadings)
+		.use(rehypeShiki, { highlighter })
 		.use(rehypeStringify, { allowDangerousHtml: true });
 
 	return await processor.process(md);

@@ -1,8 +1,9 @@
 pipeline:
     deploy:
-        image: node:16
+        image: node:18
         commands:
             - npm i pnpm@8 -g
+            - pnpm i
             - pnpm run deploy
         secrets:
             - VERCEL_PROJECT_ID
