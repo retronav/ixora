@@ -1,6 +1,6 @@
 pipeline:
     test:
-        image: satantime/puppeteer-node:current-buster
+        image: satantime/puppeteer-node:20-buster
         commands:
             - npm i pnpm@8 -g
             - pnpm i
