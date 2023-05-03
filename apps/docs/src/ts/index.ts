@@ -7,9 +7,8 @@ import { highlightStyle, theme } from './theme';
 import { EditorView } from 'codemirror';
 
 const editorDiv = document.querySelector('div.editor');
-
 if (editorDiv)
-	fetch(window.location.pathname + 'README.ixora.md')
+	fetch(new URL('README.ixora.md', window.location.href))
 		.then((doc) => doc.text())
 		.then((doc) => {
 			editorDiv.innerHTML = '';
@@ -22,5 +21,8 @@ if (editorDiv)
 					EditorView.lineWrapping,
 				],
 				doc,
+				selection: {
+					anchor: doc.length,
+				},
 			});
 		});

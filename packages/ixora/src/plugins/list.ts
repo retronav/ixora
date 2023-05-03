@@ -110,7 +110,8 @@ class TaskListsPlugin {
 
 			function iterateInner(type: NodeType, nfrom: number, nto: number) {
 				if (type.name !== 'TaskMarker') return;
-				if (isCursorInRange(view.state, [from + nfrom, from + nto])) return;
+				if (isCursorInRange(view.state, [from + nfrom, from + nto]))
+					return;
 				const checkbox = view.state.sliceDoc(from + nfrom, from + nto);
 				// Checkbox is checked if it has a 'x' in between the []
 				if ('xX'.includes(checkbox[1])) checked = true;

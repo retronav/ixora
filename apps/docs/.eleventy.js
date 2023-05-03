@@ -1,10 +1,9 @@
 const EleventyVite = require('@11ty/eleventy-plugin-vite');
 const EleventyNavigationPlugin = require('@11ty/eleventy-navigation');
-const EleventyFetch = require('@11ty/eleventy-fetch');
 const { default: Unocss } = require('unocss/vite');
 const { presetIcons, presetUno } = require('unocss');
+const path = require('path');
 const fs = require('fs/promises');
-
 /**
  *
  * @param {import("@11ty/eleventy/src/UserConfig")} eleventyConfig
@@ -68,14 +67,10 @@ module.exports = function (eleventyConfig) {
 	});
 
 	eleventyConfig.on('eleventy.before', async () => {
-		const mainReadme = await EleventyFetch(
-			'https://codeberg.org/retronav/ixora/raw/branch/main/README.md',
-			{
-				duration: '1d',
-				type: 'text',
-			}
+		await fs.copyFile(
+			path.resolve('../../packages/ixora/README.md'),
+			path.resolve('./public/README.ixora.md')
 		);
-		await fs.writeFile('public/README.ixora.md', mainReadme);
 	});
 
 	return {

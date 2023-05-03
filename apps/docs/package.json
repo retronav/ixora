@@ -1,8 +1,12 @@
 {
-	"private": "true",
+	"name": "@retronav/ixora-docs",
 	"scripts": {
 		"build": "eleventy",
-		"dev": "eleventy --serve --incremental"
+		"dev": "eleventy --serve --incremental",
+		"deploy": "vercel --prod --token=$VERCEL_TOKEN",
+		"lint": "eslint --ignore-path .gitignore",
+		"lint:fix": "eslint --ignore-path .gitignore --fix",
+		"format": "pretty-quick"
 	},
 	"devDependencies": {
 		"@11ty/eleventy": "^2.0.1",
@@ -12,8 +16,14 @@
 		"@codemirror/state": "^6.2.0",
 		"@iconify-json/material-symbols": "^1.1.41",
 		"@iconify-json/simple-icons": "^1.1.51",
+		"@retronav/rehype-shiki": "^1.0.2",
+		"@typescript-eslint/eslint-plugin": "^5.58.0",
+		"@typescript-eslint/parser": "^5.58.0",
 		"@unocss/preset-icons": "^0.51.8",
+		"eslint": "^8.38.0",
 		"prettier": "^2.8.8",
+		"prettier-eslint": "^15.0.1",
+		"pretty-quick": "^3.1.3",
 		"rehype-autolink-headings": "^6.1.1",
 		"rehype-format": "^4.0.1",
 		"rehype-parse": "^8.0.4",
@@ -21,21 +31,22 @@
 		"rehype-stringify": "^9.0.3",
 		"remark-parse": "^10.0.1",
 		"remark-rehype": "^10.1.0",
-		"remark-shiki-twoslash": "^3.1.3",
 		"sass": "^1.62.1",
 		"sass-mq": "^6.0.0",
 		"shiki": "^0.14.2",
 		"unified": "^10.1.2",
-		"unocss": "^0.51.8"
+		"unocss": "^0.51.8",
+		"vercel": "^28.18.5"
 	},
 	"dependencies": {
+		"@changesets/cli": "^2.26.1",
 		"@codemirror/commands": "^6.2.3",
 		"@codemirror/lang-markdown": "^6.1.1",
 		"@codemirror/language": "^6.6.0",
 		"@codemirror/language-data": "^6.3.0",
 		"@codemirror/view": "^6.10.0",
 		"@lezer/highlight": "^1.1.4",
-		"@retronav/ixora": "^0.3.3",
+		"@retronav/ixora": "workspace:*",
 		"codemirror": "^6.0.1"
 	}
 }

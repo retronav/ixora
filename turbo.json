@@ -1,0 +1,22 @@
+{
+	"$schema": "https://turbo.build/schema.json",
+	"pipeline": {
+		"build": {
+			"outputs": ["dist"]
+		},
+		"test": {
+			"dependsOn": ["build"],
+			"inputs": ["src/**/*.ts", "test/**/*.ts"]
+		},
+    "deploy": {
+      "dependsOn": ["build"],
+      "inputs": ["src/*", "_11ty/*", "public/*"]
+    },
+		"lint": {},
+		"format": {},
+		"dev": {
+			"cache": false,
+			"persistent": true
+		}
+	}
+}
