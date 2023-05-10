@@ -1,7 +1,7 @@
 <p align="center">
     <img
     height="150px"
-    src="https://codeberg.org/retronav/ixora/raw/branch/main/assets/logo.svg"
+    src="https://codeberg.org/retronav/ixora/raw/branch/main/packages/ixora/assets/logo.svg"
     alt="Ixora logo" />
 </p>
 
