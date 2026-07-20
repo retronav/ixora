@@ -38,7 +38,7 @@ export const frontmatter: MarkdownExtension = {
 	}),
 	parseBlock: [
 		{
-			name: 'Fronmatter',
+			name: 'Frontmatter',
 			before: 'HorizontalRule',
 			parse: (cx, line) => {
 				let end: number;
